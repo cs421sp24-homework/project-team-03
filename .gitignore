@@ -20,7 +20,7 @@
 # Environment and config files
 *.pem
 **/.env*.local
-.env
+**/.env
 .env.dev
 .env.prod
 .env.test
