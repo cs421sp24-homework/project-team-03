@@ -20,7 +20,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        # Checkout the repository code, including the 'app' directory.
+
+      - name: Change directory to 'app'
+        run: cd app
 
       - name: Detect package manager
         id: detect-package-manager
@@ -64,20 +66,14 @@ jobs:
 
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
-        working-directory: ./app
-        # Install dependencies within the 'app' directory.
 
       - name: Build with Vite
         run: ${{ steps.detect-package-manager.outputs.manager }} run build
-        working-directory: ./app
-        # Build the app within the 'app' directory.
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-pages-artifact@v1
         with:
-          name: app
-          path: ./app/dist
-        # Upload the built application located in the 'app/dist' directory as an artifact.
+          path: ./dist
 
   deploy:
     environment:
@@ -86,16 +82,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: app
-          path: ./app/dist
-        # Download the built application artifact to the 'app/dist' directory.
-
+      - name: Change directory to 'app'
+        run: cd app
+      
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
-        with:
-          target_folder: ./app/dist
-        # Deploy the built application from the 'app/dist' directory to GitHub Pages.
