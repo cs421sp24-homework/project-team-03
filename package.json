@@ -1,4 +1,13 @@
 {
+	"name": "oose-project",
+	"scripts": {
+    "docker:up": "pnpm --filter oose-project-api run docker:up",
+    "start:api": "pnpm --filter oose-project-api run start:dev",
+    "start:app": "pnpm --filter oose-project-app run dev",
+    "start:all": "concurrently \"pnpm run start:app\" \"pnpm run start:api\"",
+    "format:write": "prettier --write \"**/{src,test}/**/*.{ts,tsx}\" --config \".prettierrc\" --cache",
+    "format:check": "prettier --check \"**/{src,test}/**/*.{ts,tsx}\" --config \".prettierrc\" --cache"
+  },
 	"devDependencies": {
 		"@types/node": "^20.11.14",
 		"typescript": "^5.3.3"
