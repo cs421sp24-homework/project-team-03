@@ -16,7 +16,7 @@ Our app aims to centralize the process of searching for off-campus housing. The 
 
 Must-haves
 
-- As a JHU student, I want to log in with my JHU email, so I am able to post apartment reviews and listings on the feed. (This will ensure the credibility of reviews and listings)
+- As a JHU student, I want to log in with my @jhu email, so I am able to post apartment reviews and listings on the feed. (This will ensure the credibility of reviews and listings)
 - As a JHU student, I want to view a visually-appealing catalog of off-campus apartments and row homes, so that I can easily explore my housing options near campus.
 - As a JHU student, I want to filter housing options by cost and location, so that I can find accommodations that best fit my budget and preferred area.
 - As a JHU student, I want to read apartment reviews written by other students, so that I can make informed decisions based on peer experiences.
