@@ -4,7 +4,7 @@ import { FindHousingsQueryDTO } from './find-housings-query.dto';
 import { FindHousingsResponseDTO } from './find-housings-reponse.dto';
 import { HousingResponseDTO } from './housing-reponse.dto';
 
-@Controller('housing')
+@Controller('housings')
 export class HousingController {
   constructor(private readonly housingService: HousingService) {}
 
