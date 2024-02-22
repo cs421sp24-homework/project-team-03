@@ -12,6 +12,12 @@ export class HousingService {
     private housingRepository: Repository<Housing>,
   ) {}
 
+  async create(
+    createHousingDto: CreateHousingDTO
+  ): Promise<Housing> {
+    return this.housingRepository.create(createHousingDto);
+  }
+
   async findAll(
     limit: number,
     offset: number,
@@ -39,10 +45,15 @@ export class HousingService {
     return this.housingRepository.findOne({ where: {id}, });
   }
 
-  async create(
-    createHousingDto: CreateHousingDTO
-  ): Promise<Housing> {
-    return this.housingRepository.create(createHousingDto);
+  async update(
+    id: string,
+    updateHousingDto: UpdateHousingDTO,
+  ): Promise<Housing | null> {
+    const housing = await this.housingRepository.preload({ id, ...updateHousingDto });
+    if (!housing) {
+      return null;
+    }
+    return this.housingRepository.save(housing);
   }
 
   async remove(
@@ -53,16 +64,5 @@ export class HousingService {
       return null;
     }
     return this.housingRepository.remove(housing);
-  }
-
-  async update(
-    id: string,
-    updateHousingDto: UpdateHousingDTO,
-  ): Promise<Housing | null> {
-    const housing = await this.housingRepository.preload({ id, ...updateHousingDto });
-    if (!housing) {
-      return null;
-    }
-    return this.housingRepository.save(housing);
   }
 }

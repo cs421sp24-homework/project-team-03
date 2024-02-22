@@ -10,6 +10,24 @@ import { UpdateHousingDTO } from './update-housing.dto';
 export class HousingController {
   constructor(private readonly housingService: HousingService) {}
 
+  /**
+   * Create a new housing item
+   * @param createHousingDTO 
+   * @returns 
+   */
+  // TODO: Apply auth guard
+  @Post()
+  async create(
+    @Body() createHousingDTO: CreateHousingDTO,
+  ): Promise<HousingResponseDTO> {
+    return this.housingService.create(createHousingDTO);
+  }
+
+  /**
+   * Get all housing items in database
+   * @param query 
+   * @returns 
+   */
   @Get()
   async findAll(
     @Query() query: FindHousingsQueryDTO,
@@ -30,6 +48,11 @@ export class HousingController {
     }
   }
 
+  /**
+   * 
+   * @param id 
+   * @returns 
+   */
   @Get(':id')
   async findOne(
     @Param('id') id: string,
@@ -43,14 +66,30 @@ export class HousingController {
     return housing;
   }
 
+  /**
+   * 
+   * @param id 
+   * @param updateHousingDto 
+   * @returns 
+   */
   //TODO: Apply auth guard
-  @Post()
-  async create(
-    @Body() createHousingDTO: CreateHousingDTO,
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateHousingDto: UpdateHousingDTO,
   ): Promise<HousingResponseDTO> {
-    return this.housingService.create(createHousingDTO);
+      const housing = await this.housingService.update(id, updateHousingDto);
+      if (!housing) {
+        throw new NotFoundException();
+      }
+      return housing;
   }
 
+  /**
+   * 
+   * @param id 
+   * @returns 
+   */
   //TODO: Apply auth guard
   @Delete(':id')
   async remove(
@@ -64,18 +103,5 @@ export class HousingController {
         statusCode: 200,
         message: "Housing deleted successfully",
       }
-  }
-
-  //TODO: Apply auth guard
-  @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateHousingDto: UpdateHousingDTO,
-  ): Promise<HousingResponseDTO> {
-      const housing = await this.housingService.update(id, updateHousingDto);
-      if (!housing) {
-        throw new NotFoundException();
-      }
-      return housing;
   }
 }
