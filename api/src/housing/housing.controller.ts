@@ -1,8 +1,9 @@
-import { Controller, Get, NotFoundException, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, Post, Query } from '@nestjs/common';
 import { HousingService } from './housing.service';
 import { FindHousingsQueryDTO } from './find-housings-query.dto';
 import { FindHousingsResponseDTO } from './find-housings-reponse.dto';
 import { HousingResponseDTO } from './housing-reponse.dto';
+import { CreateHousingDTO } from './create-housing.dto';
 
 @Controller('housings')
 export class HousingController {
@@ -39,5 +40,13 @@ export class HousingController {
     }
 
     return housing;
+  }
+
+  //TODO: Apply auth guard
+  @Post()
+  async create(
+    @Body() createHousingDTO: CreateHousingDTO,
+  ): Promise<HousingResponseDTO> {
+    return this.housingService.create(createHousingDTO);
   }
 }

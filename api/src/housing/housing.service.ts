@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Housing } from './housing.entity';
 import { Repository } from 'typeorm';
+import { CreateHousingDTO } from './create-housing.dto';
 
 @Injectable()
 export class HousingService {
@@ -35,5 +36,11 @@ export class HousingService {
 
   async findOne(id: string): Promise<Housing | null> {
     return this.housingRepository.findOne({ where: {id}, });
+  }
+
+  async create(
+    createHousingDto: CreateHousingDTO
+  ): Promise<Housing> {
+    return this.housingRepository.create(createHousingDto);
   }
 }
