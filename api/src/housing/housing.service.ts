@@ -43,4 +43,14 @@ export class HousingService {
   ): Promise<Housing> {
     return this.housingRepository.create(createHousingDto);
   }
+
+  async remove(
+    id: string
+  ): Promise<Housing | null> {
+    const housing = await this.findOne(id);
+    if (!housing) {
+      return null;
+    }
+    return this.housingRepository.remove(housing);
+  }
 }
