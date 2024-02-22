@@ -9,6 +9,7 @@ export class HousingService {
     @InjectRepository(Housing)
     private housingRepository: Repository<Housing>,
   ) {}
+
   async findAll(
     limit: number,
     offset: number,
