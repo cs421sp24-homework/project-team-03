@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query } from '@nestjs/common';
 import { HousingService } from './housing.service';
 import { FindHousingsQueryDTO } from './find-housings-query.dto';
 import { FindHousingsResponseDTO } from './find-housings-reponse.dto';
 import { HousingResponseDTO } from './housing-reponse.dto';
 import { CreateHousingDTO } from './create-housing.dto';
+import { UpdateHousingDTO } from './update-housing.dto';
 
 @Controller('housings')
 export class HousingController {
@@ -63,5 +64,18 @@ export class HousingController {
         statusCode: 200,
         message: "Housing deleted successfully",
       }
+  }
+
+  //TODO: Apply auth guard
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateHousingDto: UpdateHousingDTO,
+  ): Promise<HousingResponseDTO> {
+      const housing = await this.housingService.update(id, updateHousingDto);
+      if (!housing) {
+        throw new NotFoundException();
+      }
+      return housing;
   }
 }

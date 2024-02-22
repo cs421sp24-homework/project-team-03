@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Housing } from './housing.entity';
 import { Repository } from 'typeorm';
 import { CreateHousingDTO } from './create-housing.dto';
+import { UpdateHousingDTO } from './update-housing.dto';
 
 @Injectable()
 export class HousingService {
@@ -52,5 +53,16 @@ export class HousingService {
       return null;
     }
     return this.housingRepository.remove(housing);
+  }
+
+  async update(
+    id: string,
+    updateHousingDto: UpdateHousingDTO,
+  ): Promise<Housing | null> {
+    const housing = await this.housingRepository.preload({ id, ...updateHousingDto });
+    if (!housing) {
+      return null;
+    }
+    return this.housingRepository.save(housing);
   }
 }
