@@ -1,5 +1,5 @@
 import { HousingItem as HousingItemType } from "@/lib/data";
-import StarRating from "./starRating";
+import StarRating from "./star-rating";
 
 type HousingItemProps = {
     housingItem: HousingItemType;
