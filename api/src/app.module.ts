@@ -11,6 +11,7 @@ import { UserService } from "./user/user.service";
 import { UserController } from "./user/user.controller";
 import { JwtModule } from "@nestjs/jwt";
 import { JwtStrategy } from "./auth/jwt.strategy";
+import { HousingModule } from './housing/housing.module';
 
 @Module({
   imports: [
@@ -41,7 +42,7 @@ import { JwtStrategy } from "./auth/jwt.strategy";
         synchronize: configService.get<string>("NODE_ENV") !== "production",
       }),
       inject: [ConfigService],
-    }),
+    }), HousingModule,
   ],
   controllers: [AppController, UserController],
   providers: [AppService, AuthService, LocalStrategy, JwtStrategy, UserService],
