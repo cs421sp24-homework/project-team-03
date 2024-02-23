@@ -7,7 +7,7 @@ export class CreateUserDTO {
   password: string;
 
   @IsString()
-  @Matches(/@(jhu|jh)\.edu$/, { message: 'Email must end with @jhu.edu or @jh.edu' })
+  @Matches(/@(jhu)\.edu$/, { message: 'Email must end with @jhu.edu' })
   email: string;
 
   @IsString()

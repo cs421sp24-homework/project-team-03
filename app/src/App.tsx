@@ -1,19 +1,34 @@
-import Aside from "./aside";
 import { Toaster } from "./components/ui/toaster";
 import { useStore } from "./lib/store";
-import { useEffect } from "react";
-import {
-  getAuthenticatedUserToken,
-  isTokenExpired,
-  removeAuthenticatedUserToken,
-} from "./lib/auth";
 import { useToast } from "./components/ui/use-toast";
+import { useEffect } from "react";
+import { getAuthenticatedUserToken, isTokenExpired, removeAuthenticatedUserToken } from "./lib/auth";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import MainView from "./views/main-view";
+import ErrorPage from "./views/error-page";
+import User from "./views/user";
 
 function App() {
   const clearUser = useStore((state) => state.clearUser);
   const { toast } = useToast();
 
-    useEffect(() => {
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <MainView />,
+      errorElement: <ErrorPage />,
+    },
+    {
+      // not implemented yet - but when we have the front end for the user page 
+      path: "/users/:jhed",
+      element: <User />,
+      errorElement: <ErrorPage />,
+    },
+  ]);
+  
+
+  useEffect(() => {
     const token = getAuthenticatedUserToken();
     if (token) {
       const isExpired = isTokenExpired(token);
@@ -28,11 +43,10 @@ function App() {
       }
     }
   }, []);
+
   return (
     <div className="flex justify-center min-h-screen">
-       <div className="flex flex-col gap-2 p-4">
-        <Aside />
-       </div>
+      <RouterProvider router={router} />
       <Toaster />
     </div>
   );

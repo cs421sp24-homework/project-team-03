@@ -3,6 +3,31 @@ import { User } from "./types";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
+export const fetchUser = async (
+    email: string
+) : Promise<User> => {
+    const response = await fetch(`${API_URL}/users/${email}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+    
+      const responseJson = await response.json();
+    
+      if (!response.ok) {
+        throw new Error(
+          `Error: ${response.status} - ${
+            responseJson.message || response.statusText
+          }`,
+        );
+      }
+
+      return responseJson;
+    
+};
+
 // Login, store the token, and return the user
 export const login = async (
     email: string,
