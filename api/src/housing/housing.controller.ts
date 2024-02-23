@@ -11,9 +11,10 @@ export class HousingController {
   constructor(private readonly housingService: HousingService) {}
 
   /**
+   * ADMIN ONLY
    * Create a new housing item
-   * @param createHousingDTO 
-   * @returns 
+   * @param { CreateHousingDTO } createHousingDTO - parsed from request Body
+   * @returns { HousingResponseDTO }
    */
   // TODO: Apply auth guard
   @Post()
@@ -24,9 +25,9 @@ export class HousingController {
   }
 
   /**
-   * Get all housing items in database
-   * @param query 
-   * @returns 
+   * Get multiple housing items based on query parameters
+   * @param { FindHousingsQueryDTO } query - parsed from request Query parameters
+   * @returns { FindHousingsResponseDTO }
    */
   @Get()
   async findAll(
@@ -49,9 +50,10 @@ export class HousingController {
   }
 
   /**
+   * Get one housing item by Id
+   * @param { string } id - uuid of housing
+   * @returns { HousingResponseDTO }
    * 
-   * @param id 
-   * @returns 
    */
   @Get(':id')
   async findOne(
@@ -67,10 +69,11 @@ export class HousingController {
   }
 
   /**
-   * 
-   * @param id 
-   * @param updateHousingDto 
-   * @returns 
+   * ADMIN ONLY
+   * Change details of a housing item by Id
+   * @param { string } id - uuid of housing
+   * @param { UpdateHousingDTO } updateHousingDto - parsed from request Body
+   * @returns { HousingResponseDTO }
    */
   //TODO: Apply auth guard
   @Patch(':id')
@@ -86,9 +89,13 @@ export class HousingController {
   }
 
   /**
-   * 
-   * @param id 
-   * @returns 
+   * ADMIN ONLY
+   * Delete a housing item by Id
+   * @param { string } id - uuid
+   * @returns {
+   *    statusCode: number,
+   *    message: string,
+   * }
    */
   //TODO: Apply auth guard
   @Delete(':id')

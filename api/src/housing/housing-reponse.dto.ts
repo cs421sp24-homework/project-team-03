@@ -3,6 +3,6 @@ export class HousingResponseDTO {
   name: string;
   address: string;
   imageURL?: string;
-  rating: number | null;
+  avgRating: number | null;
   reviewCount: number;
 }

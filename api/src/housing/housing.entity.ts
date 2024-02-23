@@ -15,7 +15,7 @@ export class Housing {
   imageURL: string;
 
   @Column({ default: null })
-  rating: number | null;  // calculated from Reviews posted
+  avgRating: number | null;  // calculated from Reviews posted
 
   @Column({ default: 0 })
   reviewCount: number;    // calculated from Reviews posted
