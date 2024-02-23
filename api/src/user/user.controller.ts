@@ -26,8 +26,6 @@ export class UserController {
     ) : Promise<UserResponseDTO> {
         const user = await this.userService.findOne(email);
 
-
-
         if (!user) {
             throw new BadRequestException("User does not exist");
           }
@@ -36,6 +34,8 @@ export class UserController {
         return user;
     }
 
+    // also just for us so that we can clear the database on the back end, unless we make it so that users can delete their own accounts
+    // we can remove before submitting
     @Delete(":email")
     async remove(
      @Param("email") email: string,

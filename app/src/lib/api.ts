@@ -6,12 +6,12 @@ const API_URL = import.meta.env.VITE_API_URL;
 export const fetchUser = async (
     email: string
 ) : Promise<User> => {
+    console.log(email);
     const response = await fetch(`${API_URL}/users/${email}`, {
-        method: "POST",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email }),
       });
     
       const responseJson = await response.json();
@@ -24,7 +24,7 @@ export const fetchUser = async (
         );
       }
 
-      return responseJson;
+      return responseJson.data;
     
 };
 
