@@ -15,7 +15,8 @@ export class HousingService {
   async create(
     createHousingDto: CreateHousingDTO
   ): Promise<Housing> {
-    return this.housingRepository.create(createHousingDto);
+    const housing = this.housingRepository.create(createHousingDto);
+    return this.housingRepository.save(housing);
   }
 
   async findAll(
