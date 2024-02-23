@@ -1,4 +1,4 @@
-import { getAuthenticatedUser, removeAuthenticatedUserToken, storeAuthenticatedUserToken } from "./auth";
+import { getAuthenticatedUser, getAuthenticatedUserToken, removeAuthenticatedUserToken, storeAuthenticatedUserToken } from "./auth";
 import { User } from "./types";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -6,11 +6,12 @@ const API_URL = import.meta.env.VITE_API_URL;
 export const fetchUser = async (
     email: string
 ) : Promise<User> => {
-    console.log(email);
+    const token = getAuthenticatedUserToken();
     const response = await fetch(`${API_URL}/users/${email}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
     
