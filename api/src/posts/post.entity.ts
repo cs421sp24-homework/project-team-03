@@ -1,7 +1,7 @@
 import { User } from "src/user/user.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-type PostType = 'Roommate' | 'Sublet' | 'Housing';
+export type PostType = 'Roommate' | 'Sublet' | 'Housing';
 
 @Entity()
 export class Post {
