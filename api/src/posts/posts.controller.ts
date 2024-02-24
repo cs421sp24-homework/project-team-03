@@ -1,4 +1,4 @@
-import { Body, Controller, Get, NotFoundException, Param, Patch, Post, UseGuards, Delete } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, Patch, Post, UseGuards, Delete, Query, DefaultValuePipe } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { PostResponseDto } from './post-response.dto';
 import { CreatePostDto } from './create-post.dto';
@@ -6,10 +6,24 @@ import { UserId } from 'src/decorators/user-id.decorator';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { UpdatePostDto } from './update-post.dto';
 import { PostOwnershipGuard } from 'src/guards/post-owner.guard';
+import { UserService } from 'src/user/user.service';
+
+type PostResponseWithPagination = {
+    filter?: string;
+    search?: string;
+    data: PostResponseDto[];
+    pagination: {
+        limit: number;
+        offset: number;
+    };
+};
 
 @Controller('posts')
 export class PostsController {
-    constructor(private readonly postsService: PostsService) { }
+    constructor(
+        private readonly postsService: PostsService,
+        private readonly userService: UserService
+    ) { }
 
     @UseGuards(JwtAuthGuard)
     @Post()
@@ -33,12 +47,40 @@ export class PostsController {
     }
 
     @Get()
-    async findAll(): Promise<PostResponseDto[]> {
-        const posts = await this.postsService.findAll();
-        return posts.map((post) => {
-            delete post.userId;
-            return post;
-        });
+    async findAll(
+        @Query("limit", new DefaultValuePipe(10)) limit: number,
+        @Query("offset", new DefaultValuePipe(0)) offset: number,
+        @Query('search') search: string,
+        @Query('email') email?: string,
+    ): Promise<PostResponseWithPagination> {
+        let userId: number | undefined;
+
+        if (email) {
+            const user = await this.userService.findOne(email);
+            if (!user) {
+                throw new NotFoundException(`User with email ${email} not found`);
+            }
+            userId = user.id;
+        }
+
+        const posts = await this.postsService.findAll(
+            limit,
+            offset,
+            search,
+            userId,
+        );
+        return {
+            filter: email,
+            search,
+            pagination: {
+                limit,
+                offset,
+            },
+            data: posts.map((post) => {
+                delete post.userId;
+                return post;
+            }),
+        };
     }
 
     @UseGuards(JwtAuthGuard, PostOwnershipGuard)
