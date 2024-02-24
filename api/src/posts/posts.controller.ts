@@ -1,9 +1,10 @@
-import { Body, Controller, Get, NotFoundException, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, Patch, Post, UseGuards, Delete } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { PostResponseDto } from './post-response.dto';
 import { CreatePostDto } from './create-post.dto';
 import { UserId } from 'src/decorators/user-id.decorator';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { UpdatePostDto } from './update-post.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -38,6 +39,34 @@ export class PostsController {
             return post;
         });
     }
+
+    @Patch(':id')
+    async update(
+        @Param('id') id: string,
+        @Body() updatePostDto: UpdatePostDto,
+    ): Promise<PostResponseDto> {
+        const post = await this.postsService.update(id, updatePostDto);
+        if (!post) {
+            throw new NotFoundException(`Post with ID ${id} not found`);
+        }
+        delete post.userId;
+        return post;
+    }
+
+    @Delete(':id')
+    async remove(
+        @Param('id') id: string,
+    ): Promise<{ statusCode: number; message: string }> {
+        const post = await this.postsService.remove(id);
+        if (!post) {
+            throw new NotFoundException(`Post with ID ${id} not found`);
+        }
+        return {
+            statusCode: 200,
+            message: 'Post deleted successfully',
+        };
+    }
+
 
 
 
