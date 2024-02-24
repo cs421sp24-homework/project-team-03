@@ -1,13 +1,4 @@
-export type HousingItem = {
-    id: string;
-    name: string;
-    address: string;
-    imageURL?: string;
-    rating: number;
-    reviewCount: number;
-    distance: number;
-    price: string;
-}
+import type { HousingItem } from "./types"
 
 export const housingItems: HousingItem[] = [
     {
@@ -15,7 +6,7 @@ export const housingItems: HousingItem[] = [
       name: "The Marylander Apartment Homes",
       address: "3501 St Paul St, Baltimore, MD 21218",
       imageURL: "https://images1.apartments.com/i2/ZiJDyfDpBumQ08URhtmRjKs3p3dVi4G_k-6uocwe5l0/111/the-marylander-apartment-homes-baltimore-md-building-photo.jpg",
-      rating: 3,
+      avgRating: 3,
       reviewCount: 10,
       distance:  0.2,
       price: '$$'
@@ -25,7 +16,7 @@ export const housingItems: HousingItem[] = [
       name: "University One Condominium",
       address: "1 E University Pkwy #110, Baltimore, MD 21218",
       imageURL: "https://img.offcampusimages.com/WMdfztiK-Qcdrn1cXelHn3-FyXE=/660x440/left/top/smart/images/4a1oycohrsw4y3j_rocoolg_gniszl91q8prtypms2c.jpeg",
-      rating: 2,
+      avgRating: 2,
       reviewCount: 20,
       distance: 0.3,
       price: '$'
@@ -35,7 +26,7 @@ export const housingItems: HousingItem[] = [
       name: "St. Paul Courts Apartments",
       address: "3120 St Paul St, Baltimore, MD 21218",
       imageURL: "https://images1.apartments.com/i2/VBGUg5hSulDMsCJqDeJg8E5jfBmGx7gEQHP6IaVxrmw/111/saint-paul-courts-baltimore-md-building.jpg",
-      rating: 4,
+      avgRating: 4,
       reviewCount: 20,
       distance: 0.2,
       price: '$$'
@@ -45,7 +36,7 @@ export const housingItems: HousingItem[] = [
       name: "The Telephone Building",
       address: "220 E 31st St, Baltimore, MD 21218",
       imageURL: "https://images1.apartments.com/i2/CAPTa-6eDPAAcVm7GqFyGvD6tv1beHZoJ-7_L7mbrtQ/111/the-telephone-building-baltimore-md-primary-photo.jpg",
-      rating: 3,
+      avgRating: 3,
       reviewCount: 20,
       distance: 0.3,
       price: '$$$'

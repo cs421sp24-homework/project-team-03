@@ -1,4 +1,4 @@
-import { HousingItem as HousingItemType } from "@/lib/data";
+import { HousingItem as HousingItemType } from "@/lib/types";
 import StarRating from "./star-rating";
 
 type HousingItemProps = {
@@ -20,7 +20,7 @@ const HousingItem = (props: HousingItemProps) => {
                     {housingItem.address}
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center' }}> 
-                    <StarRating rating={housingItem.rating} />
+                    <StarRating rating={housingItem.avgRating} />
                     <span style={{ marginLeft: '0.4rem', fontSize: '15px' }}> | {housingItem.reviewCount} reviews</span>
                 </div>
                 <div style={{paddingTop: '3%'}}>   
