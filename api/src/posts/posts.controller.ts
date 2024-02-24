@@ -50,8 +50,9 @@ export class PostsController {
     async findAll(
         @Query("limit", new DefaultValuePipe(10)) limit: number,
         @Query("offset", new DefaultValuePipe(0)) offset: number,
-        @Query('search') search: string,
-        @Query('email') email?: string,
+        @Query("search") search: string,
+        @Query("email") email?: string,
+        @Query("withUserData") withUserData?: boolean, // <-- Add this line
     ): Promise<PostResponseWithPagination> {
         let userId: number | undefined;
 
@@ -68,7 +69,9 @@ export class PostsController {
             offset,
             search,
             userId,
+            withUserData,
         );
+
         return {
             filter: email,
             search,
@@ -78,6 +81,9 @@ export class PostsController {
             },
             data: posts.map((post) => {
                 delete post.userId;
+                if (post.user) {
+                    delete post.user.password;
+                }
                 return post;
             }),
         };

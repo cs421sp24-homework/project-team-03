@@ -29,33 +29,41 @@ export class PostsService {
         offset: number,
         search?: string,
         userId?: number,
-    ): Promise<Post[]> {
-        const queryBuilder = this.postRepository.createQueryBuilder('posts');
+        withUserData?: boolean, 
+      ): Promise<Post[]> {
+        const queryBuilder = this.postRepository.createQueryBuilder("posts");
+      
+        // Add condition to join user data
+        if (withUserData) {
+          queryBuilder.leftJoinAndSelect("posts.user", "user");
+        }
+      
         let hasWhereCondition = false;
-
+      
         if (search !== undefined) {
-            queryBuilder.where('posts.content ILIKE :search', {
-                search: `%${search}%`,
-            });
-            hasWhereCondition = true;
+          queryBuilder.where("posts.content ILIKE :search", {
+            search: `%${search}%`,
+          });
+          hasWhereCondition = true;
         }
-
+      
         if (userId !== undefined) {
-            if (hasWhereCondition) {
-                queryBuilder.andWhere('posts.userId = :userId', { userId });
-            } else {
-                queryBuilder.where('posts.userId = :userId', { userId });
-                hasWhereCondition = true;
-            }
+          if (hasWhereCondition) {
+            queryBuilder.andWhere("posts.userId = :userId", { userId });
+          } else {
+            queryBuilder.where("posts.userId = :userId", { userId });
+            hasWhereCondition = true;
+          }
         }
-
+      
         queryBuilder.limit(limit);
         queryBuilder.offset(offset);
-
-        queryBuilder.orderBy('posts.timestamp', 'DESC');
-
+      
+        queryBuilder.orderBy("posts.timestamp", "DESC");
+      
         return await queryBuilder.getMany();
-    }
+      }
+      
 
 
     async update(id: string, updatePostDto: UpdatePostDto): Promise<Post | null> {

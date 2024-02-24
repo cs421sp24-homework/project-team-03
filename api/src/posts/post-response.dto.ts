@@ -1,3 +1,4 @@
+import { UserResponseDTO } from "src/user/user-response.dto";
 import { PostType } from "./post.entity";
 
 export class PostResponseDto {
@@ -9,5 +10,6 @@ export class PostResponseDto {
     address: string;
     image?: string;
     type: PostType;
+    user?: UserResponseDTO;
 }
   
