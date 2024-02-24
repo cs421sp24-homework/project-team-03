@@ -5,6 +5,7 @@ import { CreatePostDto } from './create-post.dto';
 import { UserId } from 'src/decorators/user-id.decorator';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { UpdatePostDto } from './update-post.dto';
+import { PostOwnershipGuard } from 'src/guards/post-owner.guard';
 
 @Controller('posts')
 export class PostsController {
@@ -40,6 +41,7 @@ export class PostsController {
         });
     }
 
+    @UseGuards(JwtAuthGuard, PostOwnershipGuard)
     @Patch(':id')
     async update(
         @Param('id') id: string,
@@ -53,6 +55,7 @@ export class PostsController {
         return post;
     }
 
+    @UseGuards(JwtAuthGuard, PostOwnershipGuard)
     @Delete(':id')
     async remove(
         @Param('id') id: string,
