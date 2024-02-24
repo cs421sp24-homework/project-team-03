@@ -4,8 +4,14 @@ import HousingItem from "./housing-item";
 
 const HousingItems = () => {
 
+    /*
+    useEffect(() => {
+        addHousingItemsToBackend();
+    }, []);
+    */
+
     // const { housingItems } = useQueryHousingItems();
-    
+
     return (
         <div className="flex flex-wrap">
             {housingItems.map((housingItem) => (
