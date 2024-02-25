@@ -1,5 +1,5 @@
 import { getAuthenticatedUser, getAuthenticatedUserToken, removeAuthenticatedUserToken, storeAuthenticatedUserToken } from "./auth";
-import { User } from "./types";
+import { PostWithUserData, User } from "./types";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -96,6 +96,26 @@ export const register = async (
       );
     }
   };
+
+// Fetch all posts with user data
+export const fetchPosts = async (): Promise<PostWithUserData[]> => {
+  const response = await fetch(`${API_URL}/posts?withUserData=true`);
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    handleError(response, responseJson.message);
+  }
+
+  return responseJson.data;
+};
   
-  
-  
+const handleError = (response: Response, message?: string) => {
+  if (response.status === 401) {
+    removeAuthenticatedUserToken();
+    throw new Error("Your session has expired. Please login again.");
+  }
+
+  throw new Error(
+    `Error: ${response.status} - ${message || response.statusText}`,
+  );
+};
