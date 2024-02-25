@@ -9,7 +9,7 @@ export type User = {
   export type PostType = "Roommate" | "Sublet" | "Housing";
 
   export type Post = {
-    id: number;
+    id: string;
     title: string;
     content: string;
     cost: number;

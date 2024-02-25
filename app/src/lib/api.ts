@@ -96,7 +96,11 @@ export const register = async (
   };
   
   export const createPost = async (
+    title: string,
     content: string,
+    cost: number,
+    address: string,
+    type: PostType,
     image?: string,
   ): Promise<PostWithUserData> => {
     const user = getAuthenticatedUser();
@@ -109,7 +113,7 @@ export const register = async (
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ content, image }),
+      body: JSON.stringify({ title, content, cost, address, image, type }),
     });
   
     const responseJson = await response.json();
