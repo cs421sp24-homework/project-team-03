@@ -14,6 +14,12 @@ export class Housing {
   @Column({ nullable: true })
   imageURL: string;
 
+  @Column({ nullable: true })
+  distance: number;
+
+  @Column({ default: "$" })
+  price: string;
+
   @Column({ default: null })
   avgRating: number | null;  // calculated from Reviews posted
 

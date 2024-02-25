@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString } from "class-validator";
 
 export class CreateHousingDTO {
   @IsString()
@@ -12,4 +12,13 @@ export class CreateHousingDTO {
   @IsString()
   @IsOptional()
   imageURL?: string;
+
+  @IsNumber()
+  @IsPositive()
+  @IsOptional()
+  distance?: number;
+
+  @IsString()
+  @IsOptional()
+  price?: string;
 }
