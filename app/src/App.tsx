@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainView from "./views/main-view";
 import ErrorPage from "./views/error-page";
 import User from "./views/user";
+// import Feed from "./components/catalog/feed";
 
 function App() {
   const clearUser = useStore((state) => state.clearUser);
