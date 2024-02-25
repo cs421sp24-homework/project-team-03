@@ -2,7 +2,6 @@ import { User } from "./types";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { HousingItem } from "./types";
-import { create } from "zustand";
 
 type State = {
   user: User | null;

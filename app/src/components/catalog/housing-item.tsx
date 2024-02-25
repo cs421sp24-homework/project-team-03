@@ -11,7 +11,7 @@ const HousingItem = (props: HousingItemProps) => {
         <div className="p-5 border border-slate-500" style={{ borderWidth: '2.5px', width: '340px', height: '360px', backgroundColor: 'rgba(0, 0, 0, 0.075)' }}>
             <div>
                 <div className="border border-slate-600" style={{ borderWidth: '1.5px', width: '95%', height: '40%', paddingTop: '' }}>
-                    <img src={housingItem.imageURL}></img>
+                    <img src={housingItem.imageURL} alt="Housing Item"></img>
                 </div>
                 <div style={{fontWeight: 'bold', paddingTop: '3%'}}>
                     {housingItem.name}
