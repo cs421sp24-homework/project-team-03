@@ -15,24 +15,35 @@ import { PlusCircledIcon } from "@radix-ui/react-icons";
 import useMutationPosts from "@/hooks/use-mutations-posts";
 import { useToast } from "@/components/ui/use-toast";
 import { useStore } from "@/lib/store";
+import { useState } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export const AddPostDialog = () => {
+  const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const { addNewPost } = useMutationPosts();
+  const [cost, setCost] = useState(0);
+  const [address, setAddress] = useState("");
+  const [type, setType] = useState(null);
+  const [image, setImage] = useState("");
+  const { makeNewPost } = useMutationPosts();
   const { toast } = useToast();
   const user = useStore((state) => state.user);
 
   const handleSave = async () => {
-    if (!content) {
+    if (!title || !content || !cost || !address || !type) {
       toast({
         variant: "destructive",
         title: "Sorry! Content cannot be empty! 🙁",
-        description: `Please enter the content for your post.`,
+        description: `Please enter the missing fields of the post.`,
       });
       return;
     }
-    await addNewPost(content);
+    await makeNewPost(title, content, cost, address, type, image);
+    setTitle("");
     setContent("");
+    setCost(0);
+    setAddress("");
+
   };
 
   const handleCancel = () => {
@@ -55,6 +66,39 @@ export const AddPostDialog = () => {
               : "Please login to make a post."}
           </DialogDescription>
         </DialogHeader>
+        {user && (
+          <div className="grid gap-4 py-4">
+            {/* Other form fields */}
+            <div className="grid items-center grid-cols-4 gap-4">
+              {/* Checkbox for selecting post type */}
+              <Checkbox
+                id="type"
+                value="looking for roommate"
+                onChange={(e) => {
+                  setType(e.target.value);
+                }}
+              />
+              <label htmlFor="type">Looking for Roommate</label>
+              <Checkbox
+                id="type"
+                value="looking for subletter"
+                onChange={(e) => {
+                  setType(e.target.value);
+                }}
+              />
+              <label htmlFor="type">Looking for Subletter</label>
+              <Checkbox
+                id="type"
+                value="looking for housing"
+                onChange={(e) => {
+                  setType(e.target.value);
+                }}
+              />
+              <label htmlFor="type">Looking for Housing</label>
+            </div>
+            {/* Textarea and other form fields */}
+          </div>
+        )}
         {user && (
           <div className="grid gap-4 py-4">
             <div className="grid items-center grid-cols-4 gap-4">

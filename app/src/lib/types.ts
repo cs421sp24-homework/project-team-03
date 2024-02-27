@@ -6,7 +6,7 @@ export type User = {
     avatar?: string;
   }
 
-  export type PostType = "Roommate" | "Sublet" | "Housing";
+  export type PostType = "Roommate" | "Sublet" | "Housing" | null;
 
   export type Post = {
     id: string;
