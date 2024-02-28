@@ -12,6 +12,7 @@ import { UserController } from './user/user.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { HousingModule } from './housing/housing.module';
+import { PostsModule } from './posts/posts.module';
 
 @Module({
   imports: [
@@ -42,7 +43,7 @@ import { HousingModule } from './housing/housing.module';
       }),
       inject: [ConfigService],
     }),
-    HousingModule,
+    HousingModule, PostsModule,
   ],
   controllers: [AppController, UserController],
   providers: [AppService, AuthService, LocalStrategy, JwtStrategy, UserService],
