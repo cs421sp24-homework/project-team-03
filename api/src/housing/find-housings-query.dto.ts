@@ -1,4 +1,11 @@
-import { IsInt, IsOptional, IsPositive, IsString, Max, Min } from "class-validator";
+import {
+  IsInt,
+  IsOptional,
+  IsPositive,
+  IsString,
+  Max,
+  Min,
+} from 'class-validator';
 
 export class FindHousingsQueryDTO {
   @IsInt()

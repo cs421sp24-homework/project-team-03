@@ -1,11 +1,11 @@
 import Aside from "@/aside";
-import Header from "@/components/header";
+import Feed from "@/components/catalog/feed";
 
 const MainView = () => {
   return (
     <>
-      <Header />
       <Aside />
+      <Feed />
     </>
   );
 };

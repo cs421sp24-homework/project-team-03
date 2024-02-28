@@ -14,17 +14,15 @@ export class Housing {
   @Column({ nullable: true })
   imageURL: string;
 
+  @Column({ default: '$' })
+  price: string;
+
+  @Column('decimal', { precision: 6, scale: 1 })
+  distance: number;
+
   @Column({ default: null })
-  avgRating: number | null;  // calculated from Reviews posted
+  avgRating: number | null; // calculated from Reviews posted
 
   @Column({ default: 0 })
-  reviewCount: number;    // calculated from Reviews posted
-
-  // price
-  // safety
-  // phone number
-  // website url
-
-  // @OneToMany(() => Review, (review) => review.housing)
-  // reviews: Review[];
+  reviewCount: number; // calculated from Reviews posted
 }
