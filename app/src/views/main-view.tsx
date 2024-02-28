@@ -1,7 +1,7 @@
 
 import Aside from "@/components/aside";
-import Feed from "@/components/feed";
 import Sidebar from "@/components/sidebar";
+import Feed from "@/components/catalog/feed";
 
 const MainView = () => {
   return (

@@ -12,9 +12,7 @@ export class HousingService {
     private housingRepository: Repository<Housing>,
   ) {}
 
-  async create(
-    createHousingDto: CreateHousingDTO
-  ): Promise<Housing> {
+  async create(createHousingDto: CreateHousingDTO): Promise<Housing> {
     const housing = this.housingRepository.create(createHousingDto);
     return this.housingRepository.save(housing);
   }
@@ -25,16 +23,16 @@ export class HousingService {
     search?: string,
   ): Promise<Housing[]> {
     const queryBuilder = this.housingRepository.createQueryBuilder('housings');
-    
+
     queryBuilder.limit(limit);
     queryBuilder.offset(offset);
-    queryBuilder.orderBy("housings.name", "ASC");
+    queryBuilder.orderBy('housings.name', 'ASC');
 
     let hasWhereCondition = false;
 
     if (search !== undefined) {
-      queryBuilder.where("housings.name ILIKE :search", {
-        search: `%${search}%`
+      queryBuilder.where('housings.name ILIKE :search', {
+        search: `%${search}%`,
       });
       hasWhereCondition = true;
     }
@@ -43,23 +41,24 @@ export class HousingService {
   }
 
   async findOne(id: string): Promise<Housing | null> {
-    return this.housingRepository.findOne({ where: {id}, });
+    return this.housingRepository.findOne({ where: { id } });
   }
 
   async update(
     id: string,
     updateHousingDto: UpdateHousingDTO,
   ): Promise<Housing | null> {
-    const housing = await this.housingRepository.preload({ id, ...updateHousingDto });
+    const housing = await this.housingRepository.preload({
+      id,
+      ...updateHousingDto,
+    });
     if (!housing) {
       return null;
     }
     return this.housingRepository.save(housing);
   }
 
-  async remove(
-    id: string
-  ): Promise<Housing | null> {
+  async remove(id: string): Promise<Housing | null> {
     const housing = await this.findOne(id);
     if (!housing) {
       return null;

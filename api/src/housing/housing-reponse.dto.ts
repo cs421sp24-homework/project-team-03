@@ -4,5 +4,7 @@ export class HousingResponseDTO {
   address: string;
   imageURL?: string;
   avgRating: number | null;
+  distance: number;
+  price: string;
   reviewCount: number;
 }

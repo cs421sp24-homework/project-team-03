@@ -16,7 +16,7 @@ const PostActions = ({
   userId,
 }: {
   post: Post;
-  userId?: string;
+  userId?: number;
 }) => {
   const { user } = useStore((state) => state);
   const [isOwner, setIsOwner] = useState(false);
