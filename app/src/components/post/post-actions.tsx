@@ -8,46 +8,50 @@ import { Button } from "@/components/ui/button";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { useStore } from "@/lib/store";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import useMutationPosts from "@/hooks/use-mutations-posts";
+import { Post } from "@/lib/types";
 
 const PostActions = ({
-  postId,
+  post,
   userId,
 }: {
-  postId: string;
-  username?: string;
+  post: Post;
+  userId?: string;
 }) => {
   const { user } = useStore((state) => state);
   const [isOwner, setIsOwner] = useState(false);
+  const { removePostById, editPostById } = useMutationPosts();
 
   useEffect(() => {
-    if (user && user.username === username) {
+    if (user && post.userId === userId) {
       setIsOwner(true);
     } else {
       setIsOwner(false);
     }
-  }, [user, username]);
+  }, [user, post.userId, userId]);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm">
-          <DotsHorizontalIcon className="w-5 h-5" />
+        <Button variant="ghost" className="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
+          <DotsHorizontalIcon className="w-4 h-4" />
+          <span className="sr-only">Open menu</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        {isOwner && <DropdownMenuItem>Edit post</DropdownMenuItem>}
+        {isOwner && ( <DropdownMenuItem onClick={() => editPostById}>Edit post</DropdownMenuItem>
+        )}
         {isOwner && (
-          <DropdownMenuItem onClick={() => deletePostById(postId)}>
+          <DropdownMenuItem className="text-red-500" onClick={() => removePostById(post.id)}>
             Delete post
           </DropdownMenuItem>
         )}
-        <DropdownMenuItem>
-          <Link to={`posts/${postId}`}>Go to post</Link>
+        {/* <DropdownMenuItem>
+          <Link to={`posts/${post.id}`}>Go to post</Link>
         </DropdownMenuItem>
         <DropdownMenuItem className="text-red-500">
           Report post
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
       </DropdownMenuContent>
     </DropdownMenu>
   );

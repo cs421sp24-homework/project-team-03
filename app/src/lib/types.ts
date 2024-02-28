@@ -1,5 +1,5 @@
 export type User = {
-    id: number;
+    id: string;
     email: string;
     firstName: string;
     lastName: string;
@@ -15,7 +15,7 @@ export type User = {
     cost: number;
     address: string;
     images?: string[];
-    userId: number;
+    userId: string;
     type: PostType;
   }
 
