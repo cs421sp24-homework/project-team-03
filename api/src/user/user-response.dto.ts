@@ -3,6 +3,7 @@ export class UserResponseDTO {
     email: string;
     firstName: string;
     lastName: string;
+    avatar: string;
     isEmailVerified: boolean;
   }
   
