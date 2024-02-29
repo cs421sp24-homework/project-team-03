@@ -1,17 +1,17 @@
 
 import Aside from "@/components/aside";
+import Feed from "@/components/feed";
 import Sidebar from "@/components/sidebar";
-import Feed from "@/components/catalog/feed";
 
 
-const MainView = () => {
+const PostView = () => {
   return (
     <>
-      <Sidebar isPostsView={false}/>
+      <Sidebar isPostsView={true} />
       <Feed />
       <Aside />
     </>
   );
 };
 
-export default MainView;
+export default PostView;
