@@ -1,11 +1,15 @@
-import Aside from "@/aside";
+
+import Aside from "@/components/aside";
+import Sidebar from "@/components/sidebar";
 import Feed from "@/components/catalog/feed";
+
 
 const MainView = () => {
   return (
     <>
-      <Aside />
+      <Sidebar isPostsView={false}/>
       <Feed />
+      <Aside />
     </>
   );
 };

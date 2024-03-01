@@ -1,19 +1,18 @@
-import { formatTimestamp } from "@/lib/utils";
 
 type PostHeaderProps = {
   name: string; // author's display name
-  timestamp: string; // post's timestamp
+  //timestamp: string; // post's timestamp
 };
 
-const PostHeader = ({ name, timestamp }: PostHeaderProps) => {
+const PostHeader = ({ name }: PostHeaderProps) => {
   return (
     <div className="flex justify-between">
       <div>
         <p className="text-sm font-medium leading-none">{name}</p>
       </div>
-      <p className="text-sm text-muted-foreground">
+      {/* <p className="text-sm text-muted-foreground">
         {formatTimestamp(timestamp)}
-      </p>
+      </p> */}
     </div>
   );
 };

@@ -3,16 +3,15 @@
 // import PostActions from "./post-actions";
 // import { SyntheticEvent, useEffect, useState } from "react";
 // import { useStore } from "@/lib/store";
-import { PostWithUserData } from "@/lib/types";
+import { Post } from "@/lib/types";
+import PostActions from "./post-actions";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 const PostFooter = ({
   post,
-  fullName,
 }: {
-  post: PostWithUserData;
-  fullName?: string;
+  post: Post;
 }) => {
-  const { id: postId} = post;
   // const selectedPostId = useStore((state) => state.selectedPostId);
   // const setSelectedPostId = useStore((state) => state.setSelectedPostId);
   // const clearSelectedPostId = useStore((state) => state.clearSelectedPostId);
@@ -27,18 +26,21 @@ const PostFooter = ({
   // };
 
   return (
-    <div className="flex justify-around mb-4">
+    <div className="flex justify-between mb-8">
       {/* <Button variant="ghost" size="sm" onClick={() => setLikes(likes + 1)}>
         <HeartIcon className="w-5 h-5" />
         {likes > 0 && <sup>{likes}</sup>}
-      </Button>
-      <Button variant="ghost" size="sm" onClick={showComments}>
-        <ChatBubbleIcon className="w-5 h-5" />
-        {comments > 0 && <sup>{comments}</sup>}
-      </Button>
-      <PostActions postId={postId} username={username} /> */}
-      {`${postId}`}
-      {fullName}
+      </Button>*/}
+      <span className="w-5 h-5"> 
+        Cost: ${post.cost}
+      </span>
+      <span className="w-5 h-5"> 
+        Address: {post.address}
+      </span>
+      <span className="w-5 h-5">
+        Type: {post.type}
+      </span>
+      <PostActions post={post} userId={post.userId} />
     </div>
   );
 };

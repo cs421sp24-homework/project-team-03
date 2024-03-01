@@ -3,7 +3,6 @@ import { LogoutDialog } from "@/auth/logout-dialog";
 import { RegisterDialog } from "@/auth/register-dialog";
 import { useStore } from "../lib/store";
 
-
 const Aside = () => {
   const user = useStore((state) => state.user);
 

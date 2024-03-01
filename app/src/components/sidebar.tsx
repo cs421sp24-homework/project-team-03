@@ -1,12 +1,39 @@
-import { HomeIcon } from "@radix-ui/react-icons";
+import { HomeIcon, Pencil2Icon } from "@radix-ui/react-icons";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
+import { AddPostDialog } from "./post/add-post-dialog";
+import { useStore } from "@/lib/store";
+import { useToast } from "./ui/use-toast";
 
-const Sidebar = () => {
+type SideBarProps = {
+  isPostsView: true | false;
+};
+
+function Sidebar({ isPostsView }: SideBarProps) {
   const navigate = useNavigate();
+  const user = useStore((state) => state.user);
+  const { toast } = useToast();
 
   const handleClickHome = () => {
     navigate("/");
+  };
+
+  const handleClickPosts = () => {
+    navigate("/posts");
+  };
+
+  const handleClickAddPost = () => {
+    if (user) {
+      // User is logged in, go to posts page
+      handleClickPosts();
+    } else {
+      // User is not logged in, show message
+      toast({
+        variant: "destructive",
+        title: "Sorry! You have to log in to view posts! 🙁",
+        description: `Please log in to continue.`,
+      });
+    }
   };
   
   return (
@@ -14,8 +41,12 @@ const Sidebar = () => {
       <Button variant={"ghost"} size="sm" onClick={handleClickHome}>
         <HomeIcon className="w-5 h-5" />
       </Button>
+      {!isPostsView && <Button variant={"ghost"} size="sm" onClick={handleClickAddPost}>
+        <Pencil2Icon className="w-5 h-5" />
+      </Button>}
+      {isPostsView && <AddPostDialog />}
     </div>
   );
-};
+}
 
 export default Sidebar;
