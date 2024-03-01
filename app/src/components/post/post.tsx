@@ -21,7 +21,8 @@ const Post = ({ post }: { post: PostWithUserData }) => {
           name={`${firstName} ${lastName}`}
           //timestamp={createdAt}
         />
-        <div className="my-4">{content}</div>
+        {post.title}
+        <div className="my-12">{content}</div>
         <PostFooter post={post} />
       </div>
     </div>
