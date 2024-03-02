@@ -177,13 +177,12 @@ describe('PostsController', () => {
         delete post.userId;
         return post;
       }));
+    });
 
-      it('should throw NotFoundException if user not found for provided email', async () => {
-        jest.spyOn(userService, 'findOne').mockResolvedValue(undefined);
-      
-        await expect(controller.findAll(10, 0, '', 'non-existent-email')).rejects.toThrow(NotFoundException);
-      });
-      
+    it('should throw NotFoundException if user not found for provided email', async () => {
+      jest.spyOn(userService, 'findOne').mockResolvedValue(undefined);
+    
+      await expect(controller.findAll(10, 0, '', 'non-existent-email')).rejects.toThrow(NotFoundException);
     });
 
   // Test for update

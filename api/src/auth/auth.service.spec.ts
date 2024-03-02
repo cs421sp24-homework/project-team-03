@@ -95,7 +95,11 @@ describe('AuthService', () => {
           };
       const expectedPayload = {
         email: exampleUser.email,
-        id: exampleUser.id, // assuming the JWT standard which uses 'sub' for the subject claim
+        id: exampleUser.id,
+        firstName: exampleUser.firstName,
+        lastName: exampleUser.lastName,
+        avatar: exampleUser.avatar,
+        isEmailVerified: exampleUser.isEmailVerified,
       };
   
       // Arrange: Spy on jwtService.sign and mock its implementation

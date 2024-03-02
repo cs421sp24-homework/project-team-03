@@ -179,25 +179,25 @@ describe('HousingService', () => {
     it('should remove and return a housing entity', async () => {
       housingRepository.findOne = jest.fn().mockResolvedValue(resultHousing);
       housingRepository.remove = jest.fn().mockResolvedValue(resultHousing);
-
+  
       const result = await service.remove(id);
-
-      expect(housingRepository.findOne).toHaveBeenCalledWith(id);
+  
+      expect(housingRepository.findOne).toHaveBeenCalledWith({ where: { id } });
       expect(housingRepository.remove).toHaveBeenCalledWith(resultHousing);
       expect(result).toEqual(resultHousing);
     });
-
+  
     it('should return null if no housing entity is found', async () => {
-
       housingRepository.findOne = jest.fn().mockResolvedValue(null);
-
+  
       const result = await service.remove(id);
-
-      expect(housingRepository.findOne).toHaveBeenCalledWith(id);
+  
+      expect(housingRepository.findOne).toHaveBeenCalledWith({ where: { id } });
       expect(result).toBeNull();
     });
-
+  
     // Additional test cases if necessary
   });
+  
 
 });
