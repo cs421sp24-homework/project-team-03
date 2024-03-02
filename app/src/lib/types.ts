@@ -14,7 +14,7 @@ export type User = {
     content: string;
     cost: number;
     address: string;
-    images?: string[];
+    images?: string; //Make it an array later
     userId: number;
     type: PostType;
   }
