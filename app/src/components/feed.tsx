@@ -1,6 +1,5 @@
 import Posts from "./post/posts";
 import SearchInput from "./catalog/search-input";
-import Filter from "./catalog/filter";
 
 const Feed = () => {
   return (
@@ -12,7 +11,7 @@ const Feed = () => {
         <div style={{ paddingRight: '2%'}}>
           <SearchInput/>
         </div>
-        <Filter/>
+        {/* //<Filter/> */}
       </div>
       <div style={{ borderBottom: '2px solid black', width: '100%', paddingTop: '2%'}}></div> {/* Line underneath Filter */}
       <Posts />

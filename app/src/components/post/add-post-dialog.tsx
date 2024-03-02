@@ -32,11 +32,19 @@ export const AddPostDialog = () => {
   const user = useStore((state) => state.user);
 
   const handleSave = async () => {
-    if (!title || !content || !cost || !address || !type) {
+    if (!title || !content || !address || !type) {
       toast({
         variant: "destructive",
-        title: "Sorry! Content cannot be empty! 🙁",
+        title: "Sorry! All fields (except Image URL) must be completed! 🙁",
         description: `Please enter the missing fields of the post.`,
+      });
+      return;
+    }
+    if (cost === 0 || cost < 0) {
+      toast({
+        variant: "destructive",
+        title: "Sorry! The cost must be a valid number! 🙁",
+        description: `Please enter an integer, greater than 0`,
       });
       return;
     }
@@ -68,7 +76,7 @@ export const AddPostDialog = () => {
           <DialogTitle>Add Post</DialogTitle>
           <DialogDescription>
             {user
-              ? "Provide the content of your post here."
+              ? "Provide the information of your post here."
               : "Please login to make a post."}
           </DialogDescription>
         </DialogHeader>
@@ -127,7 +135,7 @@ export const AddPostDialog = () => {
             </div>
           </div>
         )}
-        {user && (
+        {/* {user && (
           <div className="grid gap-4 py-4">
             <div className="grid items-center grid-cols-4 gap-4">
               <Label htmlFor="image">Image URL (Optional)</Label>
@@ -144,11 +152,13 @@ export const AddPostDialog = () => {
               />
             </div>
           </div>
-        )}
+        )} */}
         {user && (
           <div className="grid gap-4 py-4">
             <div className="grid items-center grid-cols-4 gap-4">
-              <Label htmlFor="cost">Cost</Label>
+              <Label htmlFor="cost">Cost 
+                <div>(Please enter an integer)</div>
+              </Label>
               <Input
                 type="number"
                 onChange={(e) => setCost(Number(e.target.value))}
