@@ -21,6 +21,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Run SQL commands
+        env:
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          SQL_FILE_PATH: ./housing.sql
+        run: |
+          psql $POSTGRES_URL -f $SQL_FILE_PATH
       - name: Detect package manager
         id: detect-package-manager
         run: |
@@ -43,7 +49,6 @@ jobs:
             echo "Unable to determine package manager"
             exit 1
           fi
-
       - name: Install pnpm
         if: steps.detect-package-manager.outputs.manager == 'pnpm'
         run: npm install -g pnpm
@@ -70,6 +75,9 @@ jobs:
       - name: Install app dependencies
         run: cd app && ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
 
+      - name: Install api dependencies
+        run: cd api && ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+
       - name: Build with Vite
         run: cd app && ${{ steps.detect-package-manager.outputs.manager }} run build
 
@@ -77,18 +85,16 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           path: ./app/dist
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run tests
-        run: cd api && pnpm run test
-  
+
+      - name: Run test
+        run: cd ./api && pnpm run test
+
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: [build, test]
+    needs: build
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
