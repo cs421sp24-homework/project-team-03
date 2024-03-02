@@ -17,7 +17,7 @@ function App() {
 
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: "/project-team-03/",
       element: <MainView />,
       errorElement: <ErrorPage />,
     },

@@ -1,7 +1,7 @@
-import { useStore } from "../lib/store";
-import { RegisterDialog } from "../auth/register-dialog";
-import { LogoutDialog } from "@/auth/logout-dialog";
 import { LoginDialog } from "@/auth/login-dialog";
+import { LogoutDialog } from "@/auth/logout-dialog";
+import { RegisterDialog } from "@/auth/register-dialog";
+import { useStore } from "../lib/store";
 
 const Aside = () => {
   const user = useStore((state) => state.user);
