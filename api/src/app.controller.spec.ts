@@ -10,7 +10,7 @@ describe('AppController', () => {
       controllers: [AppController],
       providers: [AppService],
     }).compile();
-
+    //set up the app controller
     appController = app.get<AppController>(AppController);
   });
 
