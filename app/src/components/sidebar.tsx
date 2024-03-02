@@ -19,7 +19,7 @@ function Sidebar({ isPostsView }: SideBarProps) {
   };
 
   const handleClickPosts = () => {
-    navigate("/posts");
+    navigate("/project-team-03/posts");
   };
 
   const handleClickAddPost = () => {

@@ -27,7 +27,7 @@ const Post = ({ post }: { post: PostWithUserData }) => {
         {postImage && (
           <div>
             <h2>Preview:</h2>
-            <img src={postImage[0]} alt="Preview" />
+            <img src={postImage} alt="Preview" />
           </div>
         )}
         <div className="my-12">{content}</div>

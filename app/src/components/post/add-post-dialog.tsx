@@ -130,7 +130,7 @@ export const AddPostDialog = () => {
               <Label htmlFor="image">Image URL (Optional)</Label>
               <Textarea
                 id="image"
-                value={image[0]}
+                value={image}
                 className="col-span-4 h-0"
                 style={{ resize: 'none' }}
                 placeholder="Type your URL here."
