@@ -23,8 +23,8 @@ export class Post {
     @Column()
     address: string;
 
-    @Column({ type: 'json', nullable: true })
-    images: string[];
+    @Column({ nullable: true })
+    images: string;
 
     @ManyToOne(() => User, (user) => user.posts)
     @JoinColumn({ name: 'userId' })

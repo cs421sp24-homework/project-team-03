@@ -22,14 +22,12 @@ const Post = ({ post }: { post: PostWithUserData }) => {
           name={`${firstName} ${lastName}`}
           //timestamp={createdAt}
         />
-        {post.title}
-        {/* Display the image */}
         {postImage && (
           <div>
             <h2>Preview:</h2>
             <img src={postImage} alt="Preview" />
           </div>
-        )}
+        )} Image: {postImage}
         <div className="my-12">{content}</div>
         <PostFooter post={post} />
       </div>

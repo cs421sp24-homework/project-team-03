@@ -50,7 +50,11 @@ export const AddPostDialog = () => {
   };
 
   const handleCancel = () => {
+    setImage("");
+    setTitle("");
     setContent("");
+    setCost(0);
+    setAddress("");
   };
 
   return (
@@ -136,6 +140,7 @@ export const AddPostDialog = () => {
                 placeholder="Type your URL here."
                 onChange={(e) => {
                   setImage(e.target.value);
+                  console.log(e.target.value)
                 }}
               />
             </div>
