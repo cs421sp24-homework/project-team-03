@@ -11,7 +11,7 @@ const PostView = () => {
   const navigate = useNavigate();
 
   if (!user) {
-    navigate("/");
+    navigate("/project-team-03");
   }
 
   return (

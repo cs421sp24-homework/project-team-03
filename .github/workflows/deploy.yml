@@ -21,6 +21,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Run SQL commands
+        env:
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          SQL_FILE_PATH: ./housing.sql
+        run: |
+          psql $POSTGRES_URL -f $SQL_FILE_PATH
+
       - name: Detect package manager
         id: detect-package-manager
         run: |
