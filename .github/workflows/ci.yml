@@ -55,5 +55,5 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
 
-      - name: Run unit tests
-        run: cd api && ${{ steps.detect-package-manager.outputs.test-runner }} test
+      - name: Run tests
+  run: cd api && pnpm run test
