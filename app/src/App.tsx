@@ -23,12 +23,12 @@ function App() {
     },
     {
       // not implemented yet - but when we have the front end for the user page 
-      path: "/users/:jhed",
+      path: "/project-team-03/users/:jhed",
       element: <User />,
       errorElement: <ErrorPage />,
     },
     {
-      path: "/posts",
+      path: "/project-team-03/posts",
       element: <PostView />,
       errorElement: <ErrorPage />
     }
