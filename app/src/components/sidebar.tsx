@@ -15,7 +15,7 @@ function Sidebar({ isPostsView }: SideBarProps) {
   const { toast } = useToast();
 
   const handleClickHome = () => {
-    navigate("/");
+    navigate("/project-team-03/");
   };
 
   const handleClickPosts = () => {

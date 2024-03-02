@@ -20,7 +20,7 @@ const PostActions = ({
 }) => {
   const { user } = useStore((state) => state);
   const [isOwner, setIsOwner] = useState(false);
-  const { removePostById, editPostById } = useMutationPosts();
+  const { removePostById } = useMutationPosts();
 
   useEffect(() => {
     if (user && post.userId === userId) {
@@ -39,8 +39,8 @@ const PostActions = ({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        {isOwner && ( <DropdownMenuItem onClick={() => editPostById}>Edit post</DropdownMenuItem>
-        )}
+        {/* {isOwner && ( <DropdownMenuItem onClick={() => editPostById}>Edit post</DropdownMenuItem>
+        )} */}
         {isOwner && (
           <DropdownMenuItem className="text-red-500" onClick={() => removePostById(post.id)}>
             Delete post

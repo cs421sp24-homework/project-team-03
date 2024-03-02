@@ -41,6 +41,7 @@ export const AddPostDialog = () => {
       return;
     }
     await makeNewPost(title, content, cost, address, type, image);
+    setImage("");
     setTitle("");
     setContent("");
     setCost(0);
@@ -129,7 +130,7 @@ export const AddPostDialog = () => {
               <Label htmlFor="image">Image URL (Optional)</Label>
               <Textarea
                 id="image"
-                value={image}
+                value={image[0]}
                 className="col-span-4 h-0"
                 style={{ resize: 'none' }}
                 placeholder="Type your URL here."

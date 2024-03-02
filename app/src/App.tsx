@@ -28,7 +28,7 @@ function App() {
       errorElement: <ErrorPage />,
     },
     {
-      path: "/posts",
+      path: "/project-team-03/posts",
       element: <PostView />,
       errorElement: <ErrorPage />
     }

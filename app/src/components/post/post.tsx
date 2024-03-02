@@ -10,6 +10,7 @@ const Post = ({ post }: { post: PostWithUserData }) => {
   const avatar = user?.avatar;
   const firstName = user?.firstName;
   const lastName = user?.lastName;
+  const postImage = post?.images;
 
   return (
     <div className="flex border-b border-slate-400">
@@ -22,6 +23,13 @@ const Post = ({ post }: { post: PostWithUserData }) => {
           //timestamp={createdAt}
         />
         {post.title}
+        {/* Display the image */}
+        {postImage && (
+          <div>
+            <h2>Preview:</h2>
+            <img src={postImage[0]} alt="Preview" />
+          </div>
+        )}
         <div className="my-12">{content}</div>
         <PostFooter post={post} />
       </div>
