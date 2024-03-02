@@ -1,7 +1,7 @@
 import { getAuthenticatedUser, getAuthenticatedUserToken, removeAuthenticatedUserToken, storeAuthenticatedUserToken } from "./auth";
 import { PostType, PostWithUserData, User, HousingItem } from "./types";
 
-const API_URL = 'https://project-team-03-1adv.onrender.com';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const fetchUser = async (
   email: string
