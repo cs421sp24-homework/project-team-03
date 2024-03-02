@@ -82,13 +82,6 @@ jobs:
     steps:
       - name: Run tests
         run: cd api && pnpm run test
-
-      - name: Run SQL commands
-        env:
-          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
-          SQL_FILE_PATH: ./housing.sql
-        run: |
-          psql $POSTGRES_URL -f $SQL_FILE_PATH
   
   deploy:
     environment:
