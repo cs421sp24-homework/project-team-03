@@ -1,11 +1,12 @@
 export type User = {
+    id: number;
     email: string;
     firstName: string;
     lastName: string;
     avatar?: string;
   }
 
-  export type PostType = "Roommate" | "Sublet" | "Housing";
+  export type PostType = "Roommate" | "Sublet" | "Housing" | null;
 
   export type Post = {
     id: string;

@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainView from "./views/main-view";
 import ErrorPage from "./views/error-page";
 import User from "./views/user";
+import PostView from "./views/post-view";
 // import Feed from "./components/catalog/feed";
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
 
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: "/project-team-03/",
       element: <MainView />,
       errorElement: <ErrorPage />,
     },
@@ -26,6 +27,11 @@ function App() {
       element: <User />,
       errorElement: <ErrorPage />,
     },
+    {
+      path: "/posts",
+      element: <PostView />,
+      errorElement: <ErrorPage />
+    }
   ]);
   
 
