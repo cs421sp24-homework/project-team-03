@@ -46,7 +46,6 @@ export class PostsController {
         return post;
     }
 
-    @UseGuards(JwtAuthGuard)
     @Get()
     async findAll(
         @Query("limit", new DefaultValuePipe(10)) limit: number,
