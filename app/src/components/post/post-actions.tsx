@@ -32,12 +32,14 @@ const PostActions = ({
 
   return (
     <DropdownMenu>
+      {isOwner && (
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
           <DotsHorizontalIcon className="w-4 h-4" />
           <span className="sr-only">Open menu</span>
-        </Button>
+        </Button> 
       </DropdownMenuTrigger>
+      )}
       <DropdownMenuContent>
         {/* {isOwner && ( <DropdownMenuItem onClick={() => editPostById}>Edit post</DropdownMenuItem>
         )} */}
@@ -54,6 +56,7 @@ const PostActions = ({
         </DropdownMenuItem> */}
       </DropdownMenuContent>
     </DropdownMenu>
+    
   );
 };
 
