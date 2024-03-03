@@ -8,6 +8,7 @@ import MainView from "./views/main-view";
 import ErrorPage from "./views/error-page";
 import User from "./views/user";
 import PostView from "./views/post-view";
+import HousingView from "./views/housing-view";
 // import Feed from "./components/catalog/feed";
 
 function App() {
@@ -22,7 +23,6 @@ function App() {
       errorElement: <ErrorPage />,
     },
     {
-      // not implemented yet - but when we have the front end for the user page 
       path: "/project-team-03/users/:jhed",
       element: <User />,
       errorElement: <ErrorPage />,
@@ -30,6 +30,11 @@ function App() {
     {
       path: "/project-team-03/posts",
       element: <PostView />,
+      errorElement: <ErrorPage />
+    },
+    {
+      path: "/project-team-03/housings/:id",
+      element: <HousingView />,
       errorElement: <ErrorPage />
     }
   ]);

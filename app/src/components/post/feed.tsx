@@ -1,5 +1,5 @@
-import Posts from "./post/posts";
-import SearchInput from "./catalog/search-input";
+import Posts from "./posts";
+import SearchInput from "../catalog/search-input";
 
 const Feed = () => {
   return (

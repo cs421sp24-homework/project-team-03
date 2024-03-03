@@ -37,12 +37,20 @@ export const useStore = create<State & Action>()(
   immer((set, get) => ({
     ...initialState,
 
+    user: (() => {
+      const storedUser = localStorage.getItem("user");
+      return storedUser ? JSON.parse(storedUser) : null;
+    })(),
+
   setUser: (user) => {
+    localStorage.setItem("user", JSON.stringify(user));
     set({ user });
   },
 
-  clearUser: () => set({ user: null }),
-
+  clearUser: () => {
+    localStorage.removeItem("user"); // Remove user from localStorage
+    set({ user: null });
+  },
     setHousingItems: (housingItems) => set({ housingItems }),
 
     addHousingItem: (housingItem) => {

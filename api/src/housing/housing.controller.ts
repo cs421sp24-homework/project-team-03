@@ -26,7 +26,6 @@ export class HousingController {
    * @param { CreateHousingDTO } createHousingDTO - parsed from request Body
    * @returns { HousingResponseDTO }
    */
-  // TODO: Apply auth guard
   @Post()
   async create(
     @Body() createHousingDTO: CreateHousingDTO,
@@ -79,7 +78,6 @@ export class HousingController {
    * @param { UpdateHousingDTO } updateHousingDto - parsed from request Body
    * @returns { HousingResponseDTO }
    */
-  //TODO: Apply auth guard
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -101,7 +99,6 @@ export class HousingController {
    *    message: string,
    * }
    */
-  //TODO: Apply auth guard
   @Delete(':id')
   async remove(
     @Param('id') id: string,
