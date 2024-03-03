@@ -7,7 +7,6 @@ import type { PostWithUserData } from "@/lib/types";
 const Post = ({ post }: { post: PostWithUserData }) => {
   const { content, user } = post;
 
-  // The code below uses Optional Chaining (?.) and Nullish Coalescing (??)
   const avatar = user?.avatar;
   const firstName = user?.firstName;
   const lastName = user?.lastName;
