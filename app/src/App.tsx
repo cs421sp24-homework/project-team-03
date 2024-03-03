@@ -22,7 +22,6 @@ function App() {
       errorElement: <ErrorPage />,
     },
     {
-      // not implemented yet - but when we have the front end for the user page 
       path: "/project-team-03/users/:jhed",
       element: <User />,
       errorElement: <ErrorPage />,

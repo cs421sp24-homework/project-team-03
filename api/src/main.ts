@@ -12,7 +12,6 @@ async function bootstrap() {
     },
   });
 
-  console.log(process.env.CLIENT_URL);
   
   app.useGlobalPipes(
     new ValidationPipe({
