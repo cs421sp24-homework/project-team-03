@@ -1,3 +1,5 @@
+import Aside from "@/components/aside";
+import Sidebar from "@/components/sidebar";
 import { fetchUser } from "@/lib/api";
 import { User as UserType} from "@/lib/types";
 import { useState, useEffect } from "react";
@@ -26,13 +28,15 @@ function User() {
   }
 
   return (
-    <div>
+    <><Sidebar isPostsView={false}/><div>
       <h2>User details for {jhed}</h2>
       <p>First Name: {user.firstName}</p>
       <p>Last Name: {user.lastName}</p>
       <p>Email: {user.email}</p>
       <p>Avatar: {user.avatar}</p>
     </div>
+    <Aside />
+    </>
   );
 }
 
