@@ -42,7 +42,7 @@ describe('PostsController', () => {
     timestamp: new Date(), // Current timestamp
     cost: 500, // Example cost in your preferred currency
     address: '123 Main Street, City, Country',
-    images: ['http://example.com/image1.jpg', 'http://example.com/image2.jpg'], // Array of image URLs
+    images: 'http://example.com/image1.jpg', // Array of image URLs
     user: mockUser, // Associated User entity
     userId: mockUser.id, // ID of the associated user
     type: 'Roommate', // PostType, e.g., 'Roommate', 'Sublet', or 'Housing'
