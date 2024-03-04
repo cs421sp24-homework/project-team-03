@@ -61,7 +61,7 @@ describe('PostsService', () => {
     timestamp: new Date(), // Current date and time
     cost: 1200,
     address: '123 Main Street, CityTown',
-    images: ['http://example.com/image1.jpg', 'http://example.com/image2.jpg'], // Array of image URLs, can be empty
+    images: 'http://example.com/image1.jpg', // Array of image URLs, can be empty
     user: mockUser, // This should be a mock User entity
     userId: 1, // Mock user ID
     type: 'Housing' // Must be 'Roommate', 'Sublet', or 'Housing'
@@ -161,7 +161,7 @@ describe('PostsService', () => {
       resultPost.cost = updatePostDto.cost ?? resultPost.cost;
       resultPost.address = updatePostDto.address ?? resultPost.address;
       // Assuming image is now a single string rather than an array
-      resultPost.images = updatePostDto.image ? [updatePostDto.image] : resultPost.images;
+      resultPost.images = updatePostDto.image ? updatePostDto.image : resultPost.images;
       resultPost.type = updatePostDto.type ?? resultPost.type;
   
       jest.spyOn(repository, 'preload').mockResolvedValue(resultPost);
