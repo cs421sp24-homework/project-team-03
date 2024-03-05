@@ -16,7 +16,7 @@ const Post = ({ post }: { post: PostWithUserData }) => {
     <div className="border border-slate-500" style={{ borderWidth: '2.5px', width: '340px', height: '360px', backgroundColor: 'rgb( 244, 241, 232 )' }}>
       <div className="flex">
         <div className="p-4">
-          <Link to={`/project-team-03/users/${jhed}`}>
+          <Link to={`/users/${jhed}`}>
             <PostAvatar imageUrl={avatar} displayName={`${firstName} ${lastName}`} />
           </Link>
         </div>

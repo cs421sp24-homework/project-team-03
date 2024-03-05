@@ -15,8 +15,12 @@ const Feed = () => {
         </div>
         <Filter/>
       </div>
-      <Map />
-      <HousingItems />
+      <div className="map-container" style={{ width: '100%', height: '57vh', overflow: 'hidden' }}>
+        <Map/>
+      </div>
+      <div className="housing-items-container" style={{ height: '57vh', overflowY: 'auto' }}>
+        <HousingItems/>
+      </div>
     </div>
   );
 };
