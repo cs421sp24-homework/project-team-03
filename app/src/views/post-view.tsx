@@ -13,7 +13,7 @@ const PostView = () => {
 
   useEffect(() => {
     if (!user) {
-      navigate("/project-team-03/");
+      navigate("/");
     }
   }, [user, navigate]);
 
