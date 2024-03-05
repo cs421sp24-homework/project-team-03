@@ -12,6 +12,7 @@ export type User = {
     id: string;
     title: string;
     content: string;
+    timestamp?: string;
     cost: number;
     address: string;
     images?: string; //Make it an array later

@@ -5,7 +5,7 @@ import PostFooter from "./post-footer";
 import type { PostWithUserData } from "@/lib/types";
 
 const Post = ({ post }: { post: PostWithUserData }) => {
-  const { content, user } = post;
+  const { title, content, user } = post;
 
   const avatar = user?.avatar;
   const firstName = user?.firstName;
@@ -13,23 +13,22 @@ const Post = ({ post }: { post: PostWithUserData }) => {
   const jhed = user?.email.split("@")[0]; // Extract jhed from email
 
   return (
-    <div className="flex border-b border-slate-400">
-      <div className="p-4">
-        <Link to={`/project-team-03/users/${jhed}`}>
-          <PostAvatar imageUrl={avatar} displayName={`${firstName} ${lastName}`} />
-        </Link>
-      </div>
-      <div className="w-full pt-4 pr-4">
-        <PostHeader
-          name={`${firstName} ${lastName}`}
-          //timestamp={createdAt}
-        />
-        {/* <div>
-          <h2>Preview: {images} </h2>
-          <img src={images} alt="Preview" />
-        </div> */}
-        <div className="my-12">{content}</div>
-        <PostFooter post={post} user={user} />
+    <div className="border border-slate-500" style={{ borderWidth: '2.5px', width: '340px', height: '360px', backgroundColor: 'rgb( 244, 241, 232 )' }}>
+      <div className="flex">
+        <div className="p-4">
+          <Link to={`/project-team-03/users/${jhed}`}>
+            <PostAvatar imageUrl={avatar} displayName={`${firstName} ${lastName}`} />
+          </Link>
+        </div>
+        <div className="w-full pt-7 pr-4">
+          <PostHeader
+            name={`${firstName} ${lastName}`}
+            timestamp={post.timestamp}
+          />
+          <div className="my-4 font-bold underline">{title}</div>
+          <div className="my-4">{content}</div>
+          <PostFooter post={post} user={user} />
+        </div>
       </div>
     </div>
   );

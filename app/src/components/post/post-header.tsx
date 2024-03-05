@@ -1,18 +1,19 @@
 
 type PostHeaderProps = {
   name: string; // author's display name
-  //timestamp: string; // post's timestamp
+  timestamp?: string; // post's timestamp
 };
 
-const PostHeader = ({ name }: PostHeaderProps) => {
+const PostHeader = ({ name, timestamp }: PostHeaderProps) => {
+  const formattedTimestamp = timestamp ? new Date(timestamp).toLocaleString() : '';
   return (
-    <div className="flex justify-between">
+    <div className="flex flex-col">
       <div>
-        <p className="text-sm font-medium leading-none">{name}</p>
+        <p className="text-md font-medium leading-none">{name}</p>
       </div>
-      {/* <p className="text-sm text-muted-foreground">
-        {formatTimestamp(timestamp)}
-      </p> */}
+      <p className="text-sm text-muted-foreground">
+        {formattedTimestamp}
+      </p>
     </div>
   );
 };
