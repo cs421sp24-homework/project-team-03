@@ -1,3 +1,4 @@
+import { Housing } from 'src/housing/housing.entity';
 import { User } from 'src/user/user.entity';
 import {
   Column,
@@ -8,15 +9,10 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-export type PostType = 'Roommate' | 'Sublet' | 'Housing';
-
 @Entity()
-export class Post {
+export class Review {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column()
-  title: string;
 
   @Column()
   content: string;
@@ -24,22 +20,22 @@ export class Post {
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   timestamp: Date;
 
-  @Column()
-  cost: number;
+  @Column({ default: 0 })
+  upvoteCount: number;
 
-  @Column()
-  address: string;
-
-  @Column({ nullable: true })
-  images: string;
-
-  @ManyToOne(() => User, (user) => user.posts)
+  // many reviews written by a single user
+  @ManyToOne(() => User, (user) => user.reviews)
   @JoinColumn({ name: 'userId' })
   user: User;
 
   @Column()
   userId: number;
 
+  // many reviews for a single housing
+  @ManyToOne(() => Housing, (housing) => housing.reviews)
+  @JoinColumn({ name: 'housingId' })
+  housing: Housing;
+
   @Column()
-  type: PostType;
+  housingId: number;
 }
