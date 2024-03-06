@@ -9,11 +9,13 @@ import ErrorPage from "./views/error-page";
 import User from "./views/user";
 import PostView from "./views/post-view";
 import HousingView from "./views/housing-view";
-// import Feed from "./components/catalog/feed";
+import { LoadScript } from '@react-google-maps/api';
 
 function App() {
   const clearUser = useStore((state) => state.clearUser);
   const { toast } = useToast();
+  const MAP_API_KEY = "AIzaSyAu9JTvSmCucLYTHPSX9ryl0RXSPbPbWLQ"; 
+
 
 
   // const router = createHashRouter([
@@ -59,12 +61,14 @@ function App() {
   return (
     <div className="flex justify-center min-h-screen">
       <HashRouter>
+      <LoadScript googleMapsApiKey={MAP_API_KEY}>
         <Routes>
           <Route path="/" element={<MainView />} errorElement={<ErrorPage />} />
           <Route path="/posts/" element={<PostView />} />
           <Route path= "/users/:jhed" element= {<User />} errorElement={<ErrorPage />} />
           <Route path="/housings/:id" element={<HousingView />} errorElement={<ErrorPage />} />
         </Routes>
+        </LoadScript>
       </HashRouter>
       <Toaster />
     </div>
