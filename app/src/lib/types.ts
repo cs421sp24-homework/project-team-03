@@ -32,5 +32,7 @@ export type HousingItem = {
   reviewCount: number;
   distance: number;
   price: string;
+  latitude?: number;
+  longitude?: number;
 };
 
