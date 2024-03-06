@@ -9,7 +9,7 @@ const HousingItems = () => {
         <div className="flex flex-wrap">
             {housingItems.map((housingItem) => (
                 <div key={housingItem.id} style={{ paddingLeft: '8%', paddingRight: '1%', paddingTop: '5%', paddingBottom: '2%' }}>
-                    <Link to={`/project-team-03/housings/${housingItem.id}`}>
+                    <Link to={`/housings/${housingItem.id}`}>
                         <HousingItem housingItem={housingItem} />
                     </Link>
                 </div>

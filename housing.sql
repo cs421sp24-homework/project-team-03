@@ -1,14 +1,3 @@
-CREATE TABLE public.housing (
-    id UUID PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    address VARCHAR(255) NOT NULL,
-    imageURL VARCHAR(255),
-    price VARCHAR(50),
-    distance FLOAT,
-    avgRating FLOAT,
-    reviewCount INTEGER
-);
-
 insert into public.housing (id, name, address, imageURL, price, distance, avgRating, reviewCount)
 values  ('a78aca8d-249b-46e5-8601-1ad61160f954', 'The Marylander Apartment Homes', '3501 St Paul St, Baltimore, MD 21218', 'https://images1.apartments.com/i2/ZiJDyfDpBumQ08URhtmRjKs3p3dVi4G_k-6uocwe5l0/111/the-marylander-apartment-homes-baltimore-md-building-photo.jpg', '$$', 0.4, null, 0),
         ('23d5c330-ae33-47d5-ae6e-7df67baa56a0', 'University One Condominium', '1 E University Pkwy #110, Baltimore, MD 21218', 'https://img.offcampusimages.com/WMdfztiK-Qcdrn1cXelHn3-FyXE=/660x440/left/top/smart/images/4a1oycohrsw4y3j_rocoolg_gniszl91q8prtypms2c.jpeg', '$', 0.3, null, 0),
