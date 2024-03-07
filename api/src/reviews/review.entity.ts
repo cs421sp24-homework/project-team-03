@@ -1,6 +1,7 @@
 import { Housing } from 'src/housing/housing.entity';
 import { User } from 'src/user/user.entity';
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -20,6 +21,9 @@ export class Review {
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   timestamp: Date;
 
+  @Column({ default: null })
+  rating: number;
+
   @Column({ default: 0 })
   upvoteCount: number;
 
@@ -37,5 +41,13 @@ export class Review {
   housing: Housing;
 
   @Column()
-  housingId: number;
+  housingId: string;
+
+  // ensures rating is never negative
+  @BeforeInsert()
+  ensureRatingNonNegative() {
+    if (this.rating < 0) {
+      this.rating = 0; // set rating to 0 if negative
+    }
+  }
 }
