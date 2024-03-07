@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { fetchHousingItems } from "@/lib/api";
 import { useToast } from "@/components/ui/use-toast";
 import { useStore } from "@/lib/store";
+import { getAddressCoordinates } from "../lib/map";
 
 function useQueryHousingItems() {
   const { toast } = useToast();
@@ -39,25 +40,5 @@ function useQueryHousingItems() {
 
   return { housingItems };
 }
-
-const getAddressCoordinates = async (address: string) => {
-  const MAP_API_KEY = 'AIzaSyAu9JTvSmCucLYTHPSX9ryl0RXSPbPbWLQ';
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${MAP_API_KEY}`;
-
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    
-    if (data.results && data.results.length > 0) {
-      const location = data.results[0].geometry.location;
-      return { lat: location.lat, lng: location.lng };
-    } else {
-      throw new Error('No results found');
-    }
-  } catch (error) {
-    console.error('Error geocoding address:', error);
-    return null;
-  }
-};
 
 export default useQueryHousingItems;

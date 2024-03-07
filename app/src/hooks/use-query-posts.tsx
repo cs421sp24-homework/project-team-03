@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { fetchPosts } from "@/lib/api";
 import { useStore } from "@/lib/store";
 import { useToast } from "@/components/ui/use-toast";
+import { getAddressCoordinates } from "@/lib/map";
 
 function useQueryPosts() {
   const { toast } = useToast();
@@ -11,6 +12,16 @@ function useQueryPosts() {
   const loadPosts = async () => {
     try {
       const fetchedPosts = await fetchPosts();
+
+      for (const item of fetchedPosts) {
+        const { address } = item;
+        const coordinates = await getAddressCoordinates(address);
+        if (coordinates) {
+          item.latitude = coordinates.lat;
+          item.longitude = coordinates.lng;
+        }
+      }
+
       setPosts(fetchedPosts);
     } catch (error) {
       toast({
