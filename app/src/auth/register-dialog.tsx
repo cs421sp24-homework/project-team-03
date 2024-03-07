@@ -131,7 +131,7 @@ export const RegisterDialog = () => {
             </Button>
           </DialogClose>
           <DialogClose asChild>
-            <Button type="submit" onClick={handleSave}>
+            <Button id ="save" type="submit" onClick={handleSave}>
               Save
             </Button>
           </DialogClose>
