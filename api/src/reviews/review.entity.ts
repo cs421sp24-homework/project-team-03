@@ -36,7 +36,9 @@ export class Review {
   userId: number;
 
   // many reviews for a single housing
-  @ManyToOne(() => Housing, (housing) => housing.reviews)
+  @ManyToOne(() => Housing, (housing) => housing.reviews, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'housingId' })
   housing: Housing;
 

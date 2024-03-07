@@ -41,10 +41,7 @@ export class HousingService {
   }
 
   async findOne(id: string): Promise<Housing | null> {
-    return this.housingRepository.findOne({
-      where: { id },
-      relations: ['reviews'],
-    });
+    return this.housingRepository.findOne({ where: { id } });
   }
 
   async update(
@@ -69,7 +66,7 @@ export class HousingService {
     return this.housingRepository.remove(housing);
   }
 
-  async updateAvgReview(
+  async updateAvgReviewAfterCreate(
     newRating: number,
     id: string,
   ): Promise<Housing | null> {
@@ -85,6 +82,24 @@ export class HousingService {
 
     reviewSum = reviewSum + newRating;
     housing.reviewCount = housing.reviewCount + 1;
+    housing.avgRating = reviewSum / housing.reviewCount;
+    await this.housingRepository.save(housing);
+    return housing;
+  }
+
+  async updateAvgReviewAfterDelete(
+    deletedRating: number,
+    id: string,
+  ): Promise<Housing | null> {
+    const housing = await this.findOne(id);
+    if (!housing) {
+      return null;
+    }
+
+    let reviewSum = housing.avgRating * housing.reviewCount;
+
+    reviewSum = reviewSum - deletedRating;
+    housing.reviewCount = housing.reviewCount - 1;
     housing.avgRating = reviewSum / housing.reviewCount;
     await this.housingRepository.save(housing);
     return housing;
