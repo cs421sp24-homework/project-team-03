@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { HousingItem } from "@/lib/types";
 import useQueryHousingItems from "@/hooks/use-query-housing-items";
 
-const MapContainer = () => {
+const HousingMapContainer = () => {
   const { housingItems } = useQueryHousingItems();
   const navigate = useNavigate();
 
@@ -31,4 +31,4 @@ const MapContainer = () => {
   );
 };
 
-export default MapContainer;
+export default HousingMapContainer;

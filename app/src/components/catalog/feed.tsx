@@ -2,7 +2,7 @@ import Filter from "./filter";
 import Header from "./header";
 import HousingItems from "./housing-items";
 import SearchInput from "./search-input";
-import MapContainer from "../map/map-container";
+import MapContainer from "../map/housing-map-container";
 
 const Feed = () => {
   
