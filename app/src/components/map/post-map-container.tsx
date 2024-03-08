@@ -1,9 +1,17 @@
-import { GoogleMap, Marker } from "@react-google-maps/api";
+import { GoogleMap, Marker, InfoWindowF } from "@react-google-maps/api";
 import { PostWithUserData } from "@/lib/types";
 import useQueryPosts from "@/hooks/use-query-posts";
+import React, { useState } from "react";
+import PostInfoWindow from "../post/post-info-window";
 
 const PostMapContainer = () => {
   const { posts } = useQueryPosts();
+  const [selectedPost, setSelectedPost] = useState<PostWithUserData | null>(null);
+
+  const handleMarkerClick = (post: PostWithUserData) => {
+    setSelectedPost(post === selectedPost ? null : post);
+  };
+
 
   return (
     <GoogleMap
@@ -11,15 +19,27 @@ const PostMapContainer = () => {
       center={{ lat: 39.330420, lng: -76.618050 }}
       zoom={13}
     >
-      {posts.map((item: PostWithUserData, index: number) => (
-        item.latitude !== undefined &&
-        item.longitude !== undefined && (
+    {posts.map((item: PostWithUserData, index: number) => (
+      item.latitude !== undefined &&
+      item.longitude !== undefined && (
+        <React.Fragment key={index}>
           <Marker
-            key={index}
             position={{ lat: item.latitude, lng: item.longitude }}
+            onClick={() => handleMarkerClick(item)}
           />
-        )
-      ))}
+          {selectedPost === item && (
+          <InfoWindowF
+            onCloseClick={() => setSelectedPost(null)}
+            position={{ lat: item.latitude, lng: item.longitude }}
+          >
+            <div>
+              <PostInfoWindow post={item}/>
+            </div>
+          </InfoWindowF>
+          )}
+        </React.Fragment>
+      )
+    ))}
     </GoogleMap>
   );
 };
