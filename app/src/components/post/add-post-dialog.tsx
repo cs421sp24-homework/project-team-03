@@ -38,6 +38,7 @@ export const AddPostDialog = () => {
         title: "Sorry! All fields (except Image URL) must be completed! 🙁",
         description: `Please enter the missing fields of the post.`,
       });
+      handleCancel()
       return;
     }
     if (cost === 0 || cost < 0) {
@@ -46,6 +47,7 @@ export const AddPostDialog = () => {
         title: "Sorry! The cost must be a valid number! 🙁",
         description: `Please enter an integer, greater than 0`,
       });
+      handleCancel()
       return;
     }
     await makeNewPost(title, content, cost, address, type, image);
@@ -108,7 +110,7 @@ export const AddPostDialog = () => {
               <Textarea
                 id="title"
                 value={title}
-                className="col-span-4 h-0"
+                className="h-0 col-span-4"
                 style={{ resize: 'none' }}
                 placeholder="Type your title here."
                 onChange={(e) => {
@@ -142,7 +144,7 @@ export const AddPostDialog = () => {
               <Textarea
                 id="image"
                 value={image}
-                className="col-span-4 h-0"
+                className="h-0 col-span-4"
                 style={{ resize: 'none' }}
                 placeholder="Type your URL here."
                 onChange={(e) => {

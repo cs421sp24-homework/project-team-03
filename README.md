@@ -65,3 +65,11 @@ Populate Housing Catalog (follow instruction only when running app locally!)
 Please refer to this video if you're having trouble with DataGrip:
 
 https://drive.google.com/file/d/1OOWeng-A5xdPBd20GfNWG1vAfQJu-Ouf/view?usp=sharing
+
+
+## Notes
+- Please wait around a minute to get the backend up when viewing deployed app. 
+Render slows down with inactivity and needs time to boot back up. 
+- Markers will not show up on LOCAL unless page is refreshed after the inital page load. 
+However, they work completely fine on the deployed app. 
+
