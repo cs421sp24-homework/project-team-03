@@ -92,10 +92,6 @@ export class ReviewsController {
       withUserData,
     );
 
-    if (!reviews) {
-      throw new NotFoundException(`Housing with ID ${housingId} not found`);
-    }
-
     return {
       limit,
       offset,

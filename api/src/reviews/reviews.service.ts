@@ -18,10 +18,6 @@ export class ReviewsService {
     housingId: string,
     userId: number,
   ): Promise<Review | null> {
-    const housing = this.housingService.findOne(housingId);
-    if (!housing) {
-      return null;
-    }
     const review = await this.reviewRepository.create({
       ...createReviewDto,
       housingId,
@@ -67,16 +63,12 @@ export class ReviewsService {
     search?: string,
     withUserData?: boolean,
   ): Promise<Review[] | null> {
-    const housing = this.housingService.findOne(housingId);
-    if (!housing) {
-      return null;
-    }
     let query = this.reviewRepository
       .createQueryBuilder('review')
       .where('review.housingId = :housingId', { housingId })
       .orderBy('review.timestamp', 'DESC')
-      .take(limit)
-      .skip(offset);
+      .limit(limit)
+      .offset(offset);
 
     if (search) {
       query = query.andWhere('review.content ILIKE :search', {
