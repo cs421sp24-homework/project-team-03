@@ -36,9 +36,6 @@ export class ReviewsController {
       housingId,
       userId,
     );
-    if (!review) {
-      throw new NotFoundException(`Housing with ID ${housingId} not found`);
-    }
     delete review.userId;
     return review;
   }
