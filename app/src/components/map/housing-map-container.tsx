@@ -1,19 +1,20 @@
 import { GoogleMap, InfoWindowF, Marker } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
-import { HousingItem } from "@/lib/types";
+import { HousingItem as HousingItemType } from "@/lib/types";
 import useQueryHousingItems from "@/hooks/use-query-housing-items";
 import { useState } from "react";
+import HousingInfoWindow from "../catalog/housing-info-window";
 
 const HousingMapContainer = () => {
   const { housingItems } = useQueryHousingItems();
   const navigate = useNavigate();
-  const [hoveredHousing, setHoveredHousing] = useState<HousingItem | null>(null);
+  const [hoveredHousing, setHoveredHousing] = useState<HousingItemType | null>(null);
 
-  const handleMarkerClick = (item: HousingItem) => {
+  const handleMarkerClick = (item: HousingItemType) => {
     navigate(`/housings/${item.id}`);
   };
 
-  const handleMarkerHover = (item: HousingItem) => {
+  const handleMarkerHover = (item: HousingItemType) => {
     setHoveredHousing(item);
   }
 
@@ -24,7 +25,7 @@ const HousingMapContainer = () => {
       zoom={13}
       onMouseOver={(e)=>console.log(e)}
     >
-      {housingItems.map((item: HousingItem, index: number) => (
+      {housingItems.map((item: HousingItemType, index: number) => (
         item.latitude !== undefined &&
         item.longitude !== undefined && (
             <Marker
@@ -36,9 +37,7 @@ const HousingMapContainer = () => {
             >
               {hoveredHousing === item &&
                 <InfoWindowF> 
-                  <div>
-                    {item.name}
-                  </div>
+                  <HousingInfoWindow housingItem={item} />
                 </InfoWindowF>
               }
             </Marker>
