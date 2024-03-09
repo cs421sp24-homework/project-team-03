@@ -23,7 +23,7 @@ const HousingMapContainer = () => {
       mapContainerStyle={{ height: "400px", width: "800px" }}
       center={{ lat: 39.330420, lng: -76.618050 }}
       zoom={13}
-      onMouseOver={(e)=>console.log(e)}
+      options={{controlSize: 25}}
     >
       {housingItems.map((item: HousingItemType, index: number) => (
         item.latitude !== undefined &&
@@ -33,10 +33,10 @@ const HousingMapContainer = () => {
               position={{ lat: item.latitude, lng: item.longitude }}
               onClick={() => handleMarkerClick(item)}
               onMouseOver={() => handleMarkerHover(item)}
-              onMouseOut={() => setHoveredHousing(null)}
+              // onMouseOut={() => setHoveredHousing(null)}
             >
               {hoveredHousing === item &&
-                <InfoWindowF> 
+                <InfoWindowF > 
                   <HousingInfoWindow housingItem={item} />
                 </InfoWindowF>
               }
