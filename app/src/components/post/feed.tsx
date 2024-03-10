@@ -14,7 +14,7 @@ const Feed = () => {
         </div>
         {/* //<Filter/> */}
       </div>
-      <div className="map-container" style={{ width: '100%', height: '57vh', overflow: 'hidden' }}>
+      <div className="map-container flex justify-center pt-4" style={{ width: '100%', height: '57vh', overflow: 'hidden' }}>
         < PostMapContainer/>
       </div>
       <div style={{ borderBottom: '2px solid black', width: '100%', paddingTop: '2%'}}></div> {/* Line underneath Filter */}
