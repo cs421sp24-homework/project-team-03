@@ -50,42 +50,45 @@ describe('PostsService', () => {
     verificationToken: 'verificationToken123', // Mock verification token, can be null
 
     // Mock posts array, can be empty or contain multiple Post entities
-    posts: [
-    ],
+    posts: [],
+    reviews: [],
   };
 
   const resultPost: Post = {
     id: 'uuid-id', // Mock UUID
     title: 'Spacious 2 Bedroom Apartment',
-    content: 'A lovely two-bedroom apartment in the heart of the city, close to amenities. Fully furnished and ready to move in.',
+    content:
+      'A lovely two-bedroom apartment in the heart of the city, close to amenities. Fully furnished and ready to move in.',
     timestamp: new Date(), // Current date and time
     cost: 1200,
     address: '123 Main Street, CityTown',
     images: 'http://example.com/image1.jpg', // Array of image URLs, can be empty
     user: mockUser, // This should be a mock User entity
     userId: 1, // Mock user ID
-    type: 'Housing' // Must be 'Roommate', 'Sublet', or 'Housing'
+    type: 'Housing', // Must be 'Roommate', 'Sublet', or 'Housing'
   };
 
   describe('create a post', () => {
-  
     it('should create a new post', async () => {
       const createPostDto: CreatePostDto = {
         title: 'Spacious 2 Bedroom Apartment',
-        content: 'A lovely two-bedroom apartment in the heart of the city, close to amenities. Fully furnished and ready to move in.',
+        content:
+          'A lovely two-bedroom apartment in the heart of the city, close to amenities. Fully furnished and ready to move in.',
         cost: 1200,
         address: '123 Main Street, CityTown',
         image: 'http://example.com/apartment.jpg', // This field is optional
-        type: 'Housing' // Must be one of ['Roommate', 'Sublet', 'Housing']
-    };    
+        type: 'Housing', // Must be one of ['Roommate', 'Sublet', 'Housing']
+      };
       const userId = 1;
-    
 
       jest.spyOn(repository, 'create').mockReturnValue(resultPost);
       jest.spyOn(repository, 'save').mockResolvedValue(resultPost);
 
       expect(await service.create(createPostDto, userId)).toEqual(resultPost);
-      expect(repository.create).toHaveBeenCalledWith({...createPostDto, userId});
+      expect(repository.create).toHaveBeenCalledWith({
+        ...createPostDto,
+        userId,
+      });
       expect(repository.save).toHaveBeenCalledWith(resultPost);
     });
   });
@@ -93,9 +96,9 @@ describe('PostsService', () => {
   describe('findOne', () => {
     it('should return a single post', async () => {
       const postId = 'uuid-id';
-  
+
       jest.spyOn(repository, 'findOneBy').mockResolvedValue(resultPost);
-  
+
       expect(await service.findOne(postId)).toEqual(resultPost);
       expect(repository.findOneBy).toHaveBeenCalledWith({ id: postId });
     });
@@ -125,16 +128,28 @@ describe('PostsService', () => {
 
       repository.createQueryBuilder = jest.fn().mockReturnValue(queryBuilder);
 
-      const result = await service.findAll(limit, offset, search, userId, withUserData);
+      const result = await service.findAll(
+        limit,
+        offset,
+        search,
+        userId,
+        withUserData,
+      );
 
       expect(repository.createQueryBuilder).toHaveBeenCalledWith('posts');
       expect(queryBuilder.limit).toHaveBeenCalledWith(limit);
       expect(queryBuilder.offset).toHaveBeenCalledWith(offset);
-      expect(queryBuilder.orderBy).toHaveBeenCalledWith('posts.timestamp', 'DESC');
+      expect(queryBuilder.orderBy).toHaveBeenCalledWith(
+        'posts.timestamp',
+        'DESC',
+      );
       if (search !== undefined) {
-        expect(queryBuilder.where).toHaveBeenCalledWith('posts.content ILIKE :search', {
-          search: `%${search}%`,
-        });
+        expect(queryBuilder.where).toHaveBeenCalledWith(
+          'posts.content ILIKE :search',
+          {
+            search: `%${search}%`,
+          },
+        );
       }
       // Add conditions for userId and withUserData if necessary
       expect(queryBuilder.getMany).toHaveBeenCalled();
@@ -151,8 +166,8 @@ describe('PostsService', () => {
       cost: 1500,
       address: '321 Updated Address Lane',
       image: 'http://example.com/updated-image.jpg',
-      type: 'Sublet'
-  };
+      type: 'Sublet',
+    };
     it('should update a post', async () => {
       const postId = 'uuid-id';
       // Assuming resultPost is already defined as shown previously
@@ -161,38 +176,42 @@ describe('PostsService', () => {
       resultPost.cost = updatePostDto.cost ?? resultPost.cost;
       resultPost.address = updatePostDto.address ?? resultPost.address;
       // Assuming image is now a single string rather than an array
-      resultPost.images = updatePostDto.image ? updatePostDto.image : resultPost.images;
+      resultPost.images = updatePostDto.image
+        ? updatePostDto.image
+        : resultPost.images;
       resultPost.type = updatePostDto.type ?? resultPost.type;
-  
+
       jest.spyOn(repository, 'preload').mockResolvedValue(resultPost);
       jest.spyOn(repository, 'save').mockResolvedValue(resultPost);
-  
+
       expect(await service.update(postId, updatePostDto)).toEqual(resultPost);
-      expect(repository.preload).toHaveBeenCalledWith({ id: postId, ...updatePostDto });
+      expect(repository.preload).toHaveBeenCalledWith({
+        id: postId,
+        ...updatePostDto,
+      });
       expect(repository.save).toHaveBeenCalledWith(resultPost);
     });
-  
+
     it('should return null if post does not exist', async () => {
       jest.spyOn(repository, 'preload').mockResolvedValue(null);
-  
+
       const result = await service.update('invalid-id', updatePostDto);
-  
+
       expect(result).toBeNull();
     });
   });
 
-  
   describe('remove', () => {
     it('should remove a post', async () => {
       const postId = 'uuid-id';
       jest.spyOn(service, 'findOne').mockResolvedValue(resultPost);
       jest.spyOn(repository, 'remove').mockResolvedValue(resultPost);
-  
+
       expect(await service.remove(postId)).toEqual(resultPost);
       expect(service.findOne).toHaveBeenCalledWith(postId);
       expect(repository.remove).toHaveBeenCalledWith(resultPost);
     });
-  
+
     it('should return null if post does not exist', async () => {
       jest.spyOn(service, 'findOne').mockResolvedValue(null);
       const result = await service.remove('invalid-id');
@@ -200,5 +219,3 @@ describe('PostsService', () => {
     });
   });
 });
-
-

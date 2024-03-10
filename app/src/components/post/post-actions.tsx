@@ -5,7 +5,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { useStore } from "@/lib/store";
 import { useEffect, useState } from "react";
 import useMutationPosts from "@/hooks/use-mutations-posts";
@@ -35,7 +35,7 @@ const PostActions = ({
       {isOwner && (
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
-          <DotsHorizontalIcon className="w-4 h-4" />
+          <DotsVerticalIcon className="w-4 h-4" />
           <span className="sr-only">Open menu</span>
         </Button> 
       </DropdownMenuTrigger>

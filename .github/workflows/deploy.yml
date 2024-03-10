@@ -85,9 +85,8 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           path: ./app/dist
-
-     - name: Run test
-       run: cd ./api && pnpm run test
+      - name: Run test
+        run: cd ./api && pnpm run test
 
   deploy:
     environment:

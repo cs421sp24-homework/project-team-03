@@ -12,11 +12,14 @@ export type User = {
     id: string;
     title: string;
     content: string;
+    timestamp?: string;
     cost: number;
     address: string;
     images?: string; //Make it an array later
     userId: number;
     type: PostType;
+    latitude?: number;
+    longitude?: number;
   }
 
   export type PostWithUserData = Post & {user?: User};
@@ -31,5 +34,18 @@ export type HousingItem = {
   reviewCount: number;
   distance: number;
   price: string;
+  latitude?: number;
+  longitude?: number;
+};
+
+export type ReviewWithUserData = Review & {user: User};
+
+export type Review = {
+  id: string;
+  content: string;
+  timestamp: string;
+  rating: number;
+  upvoteCount: number;
+  housingId: string;
 };
 

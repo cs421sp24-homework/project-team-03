@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Review } from 'src/reviews/review.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Housing {
@@ -20,9 +21,13 @@ export class Housing {
   @Column('decimal', { precision: 6, scale: 1 })
   distance: number;
 
-  @Column({ default: null })
+  @Column('decimal', { default: null, precision: 2, scale: 1 })
   avgRating: number | null; // calculated from Reviews posted
 
   @Column({ default: 0 })
   reviewCount: number; // calculated from Reviews posted
+
+  // NEW - housing can have multiple reviews
+  @OneToMany(() => Review, (review) => review.housing)
+  reviews: Review[];
 }
