@@ -3,6 +3,7 @@ import { fetchHousingItems } from "@/lib/api";
 import { useToast } from "@/components/ui/use-toast";
 import { useStore } from "@/lib/store";
 import { getAddressCoordinates } from "../lib/map";
+import useInterval from "./use-intervals";
 
 function useQueryHousingItems() {
   const { toast } = useToast();
@@ -33,6 +34,10 @@ function useQueryHousingItems() {
             });
         }
     };
+
+    useInterval(() => {
+      loadHousingItems();
+    }, 300);
 
   useEffect(() => {
     loadHousingItems();

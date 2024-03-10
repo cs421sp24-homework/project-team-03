@@ -2,6 +2,7 @@
 	"name": "oose-project",
 	"scripts": {
 		"docker:up": "pnpm --filter oose-project-api run docker:up",
+		"docker:down": "pnpm --filter oose-project-api run docker:down",
 		"start:api": "pnpm --filter oose-project-api run start:dev",
 		"start:app": "pnpm --filter oose-project-app run dev",
 		"start:all": "concurrently \"pnpm run start:app\" \"pnpm run start:api\"",

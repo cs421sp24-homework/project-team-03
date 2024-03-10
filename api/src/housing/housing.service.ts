@@ -65,4 +65,43 @@ export class HousingService {
     }
     return this.housingRepository.remove(housing);
   }
+
+  async updateAvgReviewAfterCreate(
+    newRating: number,
+    id: string,
+  ): Promise<Housing | null> {
+    const housing = await this.findOne(id);
+    if (!housing) {
+      return null;
+    }
+
+    let reviewSum = 0;
+    if (newRating > -1) {
+      reviewSum = housing.avgRating * housing.reviewCount;
+    }
+
+    reviewSum = reviewSum + newRating;
+    housing.reviewCount = housing.reviewCount + 1;
+    housing.avgRating = reviewSum / housing.reviewCount;
+    await this.housingRepository.save(housing);
+    return housing;
+  }
+
+  async updateAvgReviewAfterDelete(
+    deletedRating: number,
+    id: string,
+  ): Promise<Housing | null> {
+    const housing = await this.findOne(id);
+    if (!housing) {
+      return null;
+    }
+
+    let reviewSum = housing.avgRating * housing.reviewCount;
+
+    reviewSum = reviewSum - deletedRating;
+    housing.reviewCount = housing.reviewCount - 1;
+    housing.avgRating = reviewSum / housing.reviewCount;
+    await this.housingRepository.save(housing);
+    return housing;
+  }
 }
