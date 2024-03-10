@@ -16,10 +16,6 @@ const ReviewFooter = ({ review }: { review: ReviewWithUserData }) => {
           <Button variant={"ghost"} className="hover:bg-blue-100">
               Yes<ArrowUpIcon className="ml-1 h-5 w-5" /> {`(${upvoteCount})`}
           </Button>
-          <span className="mx-1 text-gray-500">|</span>
-          {/* <Button variant={"ghost"} className="hover:bg-blue-100">
-              No <ArrowDownIcon className="ml-1 h-5 w-5" />
-          </Button> */}
         </div>
         <div>
           {(user.id === userLogged?.id) && (

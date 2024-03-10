@@ -19,7 +19,6 @@ import { FindReviewsResponseDTO } from './find-reviews-response.dto';
 import { ReviewOwnershipGuard } from 'src/guards/review-owner.guard';
 import { HousingExistsGuard } from 'src/guards/housing-exists.guard';
 
-
 @Controller('housings/:housingId/reviews')
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
