@@ -8,5 +8,8 @@ describe('template spec', () => {
     cy.get('#firstName').type("1234567");
     cy.get('#lastName').type("1234567");
     cy.contains('Save').click();
+    cy.contains('Registration Successful')
+      .should('be.visible') // Asserts that the element is visible
+      .and('contain', 'Registration Successful'); // Chained assertion
   })
 })
