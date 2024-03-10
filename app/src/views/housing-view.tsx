@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import { fetchHousingItem } from "@/lib/api"; // Assuming you have a fetchHousingItem function
 import type { HousingItem } from "@/lib/types"; // Import the HousingItem type
 import HousingItemWithReviews from "@/components/review/housing-item-with-review";
-import { reviews } from "@/lib/data";
 
 const HousingView = () => {
   const { id } = useParams(); // Get the housing ID from the URL
@@ -36,7 +35,7 @@ const HousingView = () => {
   return (
     <>
       <Sidebar isPostsView={false}/>
-      <HousingItemWithReviews housingItem={housingItem} reviews={reviews} />
+      <HousingItemWithReviews housingItem={housingItem} />
       <Aside />
     </>
   );

@@ -267,7 +267,8 @@ export const createHousingItem = async (
     content: string,
     rating: number,
     housingId: string
-  ): Promise<Review> => {
+  ): Promise<ReviewWithUserData> => {
+    const user = getAuthenticatedUser();
     const token = getAuthenticatedUserToken();
     
     const response = await fetch(`${API_URL}/housings/${housingId}/reviews`, {
@@ -286,7 +287,10 @@ export const createHousingItem = async (
       );
     }
   
-    return responseJson.data;
+    return {
+      ...responseJson.data,
+      user: user,
+    };
   };
   
   export const fetchReviews = async (housingId: string): Promise<ReviewWithUserData[]> => {

@@ -8,27 +8,21 @@ import {
   import { DotsVerticalIcon } from "@radix-ui/react-icons";
   import { useStore } from "@/lib/store";
   import { useEffect, useState } from "react";
-  import {Review } from "@/lib/types";
+  import {ReviewWithUserData } from "@/lib/types";
 import useMutationReviews from "@/hooks/use-mutations-reviews";
   
-  const ReviewActions = ({
-    review,
-    userId,
-  }: {
-    review: Review;
-    userId?: number;
-  }) => {
+  const ReviewActions = ({ review }: { review: ReviewWithUserData }) => {
     const { user } = useStore((state) => state);
     const [isOwner, setIsOwner] = useState(true);
     const { removeReviewById } = useMutationReviews();
     
     useEffect(() => {
-      if (user && review.userId === userId) {
+      if (user && review.user.id === user.id) {
         setIsOwner(true);
       } else {
         setIsOwner(false);
       }
-    }, [user, review.userId, userId]);
+    }, [user, review.user.id, user?.id]);
     
   
     return (

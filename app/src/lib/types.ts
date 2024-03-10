@@ -38,7 +38,7 @@ export type HousingItem = {
   longitude?: number;
 };
 
-export type ReviewWithUserData = Review & {user?: User};
+export type ReviewWithUserData = Review & {user: User};
 
 export type Review = {
   id: string;
@@ -46,7 +46,6 @@ export type Review = {
   timestamp: string;
   rating: number;
   upvoteCount: number;
-  userId: number;
   housingId: string;
 };
 

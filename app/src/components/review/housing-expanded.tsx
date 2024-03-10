@@ -6,41 +6,6 @@ type HousingItemProps = {
     housingItem: HousingItemType;
 }
 
-// const HousingExpanded = (props: HousingItemProps) => {
-//     const { housingItem} = props;
-//     const additionalImages = [housingItem.imageURL, housingItem.imageURL]
-//     return (
-//         <div className="p-6 max-w-7xl mx-auto border border-slate-300 shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out bg-white rounded-lg">
-//             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-//                 <div className="lg:col-span-2">
-//                     <Carousel showStatus={false} infiniteLoop={true} dynamicHeight={true}>
-//                         <div>
-//                             <img src={housingItem.imageURL} alt="Main Housing" />
-//                         </div>
-//                         {additionalImages.map((imgUrl, index) => (
-//                             <div key={index}>
-//                                 <img src={imgUrl} alt={`Additional Housing ${index}`} />
-//                             </div>
-//                         ))}
-//                     </Carousel>
-//                 </div>
-//                 <div className="flex flex-col justify-between space-y-4">
-//                     <div className="text-lg font-bold">{housingItem.name}</div>
-//                     <div>{housingItem.address}</div>
-//                     <div className="flex items-center">
-//                         <StarRating rating={housingItem.avgRating} />
-//                         <span className="ml-2">{housingItem.reviewCount} reviews</span>
-//                     </div>
-//                     <div className="font-bold">{housingItem.price}</div>
-//                     <div>{housingItem.distance} miles from JHU Homewood</div>
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default HousingExpanded;
-
 const HousingExpanded = (props: HousingItemProps) => {
     const { housingItem} = props;
     const additionalImages = [housingItem.imageURL, housingItem.imageURL]

@@ -1,4 +1,4 @@
-import { PostWithUserData, Review, User } from "./types";
+import { PostWithUserData, Review, ReviewWithUserData, User } from "./types";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { HousingItem } from "./types";
@@ -8,7 +8,8 @@ type State = {
   housingItems: HousingItem[];
   posts: PostWithUserData[];
   selectedPostId: string | null;
-  reviews: Review[];
+  reviews: ReviewWithUserData[];
+  selectedHousingId: string | null;
   // Add more state variables
 };
 
@@ -20,11 +21,13 @@ type Action = {
   setPosts: (posts: PostWithUserData[]) => void;
   setSelectedPostId: (id: string) => void;
   clearSelectedPostId: () => void;
+  setSelectedHousingId: (id: string) => void;
+  clearSelectedHousingId: () => void;
   addPosts: (post: PostWithUserData) => void;
   setEditPosts: (post: PostWithUserData) => void;
   removePost: (id: string) => void;
-  setReviews: (reviews: Review[]) => void;
-  addReview: (review: Review) => void;
+  setReviews: (reviews: ReviewWithUserData[]) => void;
+  addReview: (review: ReviewWithUserData) => void;
   removeReview: (id: string) => void;
   // Add more actions
 };
@@ -36,6 +39,7 @@ const initialState: State = {
   housingItems: [],
   selectedPostId: null,
   reviews: [],
+  selectedHousingId: null,
 };
 
 export const useStore = create<State & Action>()(
@@ -69,6 +73,10 @@ export const useStore = create<State & Action>()(
 
   clearSelectedPostId: () => set({ selectedPostId: null }),
 
+  setSelectedHousingId: (id) => set({ selectedPostId: id }),
+
+  clearSelectedHousingId: () => set({ selectedPostId: null }),
+
   addPosts: (post) => {
     const newPosts = [...get().posts, post];
     set({ posts: newPosts });
@@ -90,14 +98,12 @@ export const useStore = create<State & Action>()(
   setReviews: (reviews) => set({ reviews }),
     
   addReview: (review) => {
-    set((state) => {
-      state.reviews.push(review);
-    });
+    const newReviews = [...get().reviews, review];
+    set({ reviews: newReviews });
   },
 
   removeReview: (id) => {
-    set((state) => {
-      state.reviews = state.reviews.filter((review) => review.id !== id);
-    });
+      const newReviews = get().reviews.filter((review) => review.id !== id);
+      set({ reviews: newReviews });
   },
 })));

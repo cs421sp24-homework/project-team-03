@@ -1,16 +1,11 @@
-import { Review, User } from "@/lib/types";
+import { ReviewWithUserData } from "@/lib/types";
 import { useStore } from "@/lib/store";
 import { ArrowUpIcon } from "@radix-ui/react-icons";
 import { Button } from "../ui/button";
 import ReviewActions from "./review-actions";
 
-const ReviewFooter = ({
-  review,
-  user,
-}: {
-  review: Review;
-  user?: User;
-}) => {
+const ReviewFooter = ({ review }: { review: ReviewWithUserData }) => {
+    const {user} = review;
     const userLogged = useStore((state) => state.user);
     const {upvoteCount} = review;
   
@@ -27,9 +22,9 @@ const ReviewFooter = ({
           </Button> */}
         </div>
         <div>
-          {(user?.id === userLogged?.id) && (
+          {(user.id === userLogged?.id) && (
           <div className="ml-auto">
-          <ReviewActions review={review} userId={review.userId} />
+          <ReviewActions review={review} />
           </div>
         )}
         </div>

@@ -1,7 +1,10 @@
-import { reviews } from "@/lib/data";
+import useQueryReviews from "@/hooks/use-query-reviews";
 import Review from "./review";
+import { reviews } from "@/lib/data";
+import { useStore } from "@/lib/store";
 
-const Reviews = () => {
+const Reviews = ({ housingId }: { housingId: string }) => {
+    const { reviews } = useQueryReviews(housingId);
   return (
     <div>
       {reviews.map((review) => (

@@ -33,7 +33,7 @@ const Review = ({ review }: { review: ReviewWithUserData }) => {
             {content}
           </p>
         </div>
-        <ReviewFooter review={review} user={user}/>
+        <ReviewFooter review={review}/>
       </div>
     );
   };

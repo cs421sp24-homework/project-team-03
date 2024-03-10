@@ -3,7 +3,7 @@ import { fetchReviews } from "@/lib/api";
 import { useToast } from "@/components/ui/use-toast";
 import { useStore } from "@/lib/store";
 
-function useQueryReviews(housingId: string) {
+function useQueryReviews(housingId : string) {
   const { toast } = useToast();
   const reviews = useStore((state) => state.reviews);
   const setReviews = useStore((state) => state.setReviews);
@@ -25,7 +25,7 @@ function useQueryReviews(housingId: string) {
 
   useEffect(() => {
     loadReviews();
-  }, [housingId]);
+  }, []);
 
   return { reviews };
 }
