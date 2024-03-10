@@ -4,7 +4,7 @@
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
-  "homepage":".",
+  "homepage": ".",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -21,6 +21,7 @@
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.5",
+    "@react-google-maps/api": "^2.19.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "dayjs": "^1.11.10",

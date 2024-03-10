@@ -18,6 +18,8 @@ export type User = {
     images?: string; //Make it an array later
     userId: number;
     type: PostType;
+    latitude?: number;
+    longitude?: number;
   }
 
   export type PostWithUserData = Post & {user?: User};
@@ -32,5 +34,7 @@ export type HousingItem = {
   reviewCount: number;
   distance: number;
   price: string;
+  latitude?: number;
+  longitude?: number;
 };
 

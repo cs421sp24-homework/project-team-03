@@ -2,7 +2,7 @@ import Filter from "./filter";
 import Header from "./header";
 import HousingItems from "./housing-items";
 import SearchInput from "./search-input";
-import Map from "./map";
+import MapContainer from "../map/housing-map-container";
 
 const Feed = () => {
   
@@ -15,8 +15,8 @@ const Feed = () => {
         </div>
         <Filter/>
       </div>
-      <div className="map-container" style={{ width: '100%', height: '57vh', overflow: 'hidden' }}>
-        <Map/>
+      <div className="map-container flex justify-center pt-4" style={{ width: '100%', height: '57vh', overflow: 'hidden' }}>
+        <MapContainer />
       </div>
       <div className="housing-items-container" style={{ height: '57vh', overflowY: 'auto' }}>
         <HousingItems/>
