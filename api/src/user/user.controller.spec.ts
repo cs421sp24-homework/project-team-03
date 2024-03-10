@@ -9,6 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import { CreateUserDTO } from './create-user.dto';
 import { UserResponseDTO } from './user-response.dto';
 import { UserLoginDTO } from './user-login.dto';
+import { UpdateUserDTO } from './update-user.dto';
 
 describe('UserController', () => {
   let controller: UserController;
@@ -28,6 +29,7 @@ describe('UserController', () => {
     verificationToken: 'someRandomToken123', // Can be null as well
     posts: [],
     reviews: [],
+    bio: "Hello",
   };
 
   const USER_REPO_TOKEN = getRepositoryToken(User);
@@ -128,4 +130,16 @@ describe('UserController', () => {
     jest.spyOn(authService, 'login').mockResolvedValueOnce(response);
     expect(await controller.login(userDto)).toEqual(response);
   });
+
+  //Test for edit user
+  it('should update a user', async () => {
+    const updateUserDto = new UpdateUserDTO(); // Fill in with appropriate mock data
+    jest.spyOn(userService, 'update').mockResolvedValue(exampleUser);
+
+    const result = await controller.update(1, updateUserDto);
+
+    expect(userService.update).toHaveBeenCalledWith(1, updateUserDto);
+    expect(result).toEqual(exampleUser);
+  });
+
 });

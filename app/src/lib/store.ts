@@ -29,6 +29,7 @@ type Action = {
   removeReview: (id: string) => void;
   setSelectedHousing: (housing: HousingItem) => void;
   clearSelectedHousing: () => void;
+  setEditUser: (user: User) => void;
   // Add more actions
 };
 
@@ -106,4 +107,9 @@ export const useStore = create<State & Action>()(
       const newReviews = get().reviews.filter((review) => review.id !== id);
       set({ reviews: newReviews });
   },
+
+  setEditUser: (user) => {
+    set({ user });
+  },
+  
 })));
