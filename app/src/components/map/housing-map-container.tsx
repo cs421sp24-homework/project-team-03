@@ -10,6 +10,8 @@ const HousingMapContainer = () => {
   const navigate = useNavigate();
   const [hoveredHousing, setHoveredHousing] = useState<HousingItemType | null>(null);
 
+  console.log(housingItems);
+
   const handleMarkerClick = (item: HousingItemType) => {
     navigate(`/housings/${item.id}`);
   };
