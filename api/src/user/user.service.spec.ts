@@ -23,6 +23,7 @@ describe('UserService', () => {
     isEmailVerified: false,
     verificationToken: 'someRandomVerificationToken', // Can also be null
     posts: [], // Assuming this user has no posts initially; you can add mock posts if needed
+    reviews: []
   };
   
   const userDto: CreateUserDTO = {

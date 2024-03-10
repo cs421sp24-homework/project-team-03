@@ -21,6 +21,7 @@ describe('HousingService', () => {
     distance: 10.0, // decimal value with precision 6 and scale 1
     avgRating: null, // default value is null, represents calculated field
     reviewCount: 0, // default value is 0, represents calculated field
+    reviews: [],
   };
 
   beforeEach(async () => {
