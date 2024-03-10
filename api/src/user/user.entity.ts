@@ -1,6 +1,7 @@
 import { Post } from 'src/posts/post.entity';
+import { Review } from 'src/reviews/review.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
- 
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -10,7 +11,7 @@ export class User {
   password: string;
 
   @Column({ unique: true })
-  email: string; 
+  email: string;
 
   @Column({ nullable: true })
   avatar: string;
@@ -22,15 +23,17 @@ export class User {
   lastName: string;
 
   @Column({ default: false })
-  isEmailVerified: boolean; 
+  isEmailVerified: boolean;
 
   @Column({ nullable: true })
-  verificationToken: string
+  verificationToken: string;
 
-  // need to add posts
   @OneToMany(() => Post, (post) => post.user)
   posts: Post[];
 
+  // NEW - user can have multiple reviews
+  @OneToMany(() => Review, (review) => review.user)
+  reviews: Review[];
   @Column({ nullable: true })
   bio: string;
 

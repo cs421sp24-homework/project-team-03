@@ -34,7 +34,7 @@ describe('PostsController', () => {
     verificationToken: null,
     posts: [],
   };
-  
+
   const mockPost: Post = {
     id: 'uuid-1234', // Mock UUID
     title: 'Spacious Room Available',
@@ -47,7 +47,6 @@ describe('PostsController', () => {
     userId: mockUser.id, // ID of the associated user
     type: 'Roommate', // PostType, e.g., 'Roommate', 'Sublet', or 'Housing'
   };
-  
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -65,16 +64,16 @@ describe('PostsController', () => {
             remove: jest.fn(),
           },
         },
-        UserService, 
+        UserService,
         {
           provide: USER_REPO_TOKEN,
           useValue: {
-            create:  jest.fn(),
-            remove:  jest.fn(),
+            create: jest.fn(),
+            remove: jest.fn(),
             findOneBy: jest.fn(),
             save: jest.fn(),
-            find: jest.fn()
-          }
+            find: jest.fn(),
+          },
         },
         AuthService,
         JwtService,
@@ -82,9 +81,9 @@ describe('PostsController', () => {
           provide: USER_REPO_TOKEN,
           useValue: {
             validateUser: jest.fn(),
-            login: jest.fn()
-          }
-        }
+            login: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -115,7 +114,10 @@ describe('PostsController', () => {
 
     const result = await controller.create(createPostDto, mockUser.id);
 
-    expect(postsService.create).toHaveBeenCalledWith(createPostDto, mockUser.id);
+    expect(postsService.create).toHaveBeenCalledWith(
+      createPostDto,
+      mockUser.id,
+    );
     expect(result).toEqual(mockPost);
   });
 
@@ -131,10 +133,11 @@ describe('PostsController', () => {
 
   it('should throw NotFoundException if post not found', async () => {
     jest.spyOn(postsService, 'findOne').mockResolvedValue(undefined);
-  
-    await expect(controller.findOne('non-existent-id')).rejects.toThrow(NotFoundException);
+
+    await expect(controller.findOne('non-existent-id')).rejects.toThrow(
+      NotFoundException,
+    );
   });
-  
 
   // Test for findAll
   it('should retrieve all posts with pagination', async () => {
@@ -143,7 +146,13 @@ describe('PostsController', () => {
 
     const result = await controller.findAll(10, 0, '', '');
 
-    expect(postsService.findAll).toHaveBeenCalledWith(10, 0, '', undefined, undefined);
+    expect(postsService.findAll).toHaveBeenCalledWith(
+      10,
+      0,
+      '',
+      undefined,
+      undefined,
+    );
     expect(result.data).toEqual(mockPosts);
     expect(result.pagination).toEqual({ limit: 10, offset: 0 });
   });
@@ -156,11 +165,19 @@ describe('PostsController', () => {
 
       const result = await controller.findAll(10, 0, '', undefined, false);
 
-      expect(postsService.findAll).toHaveBeenCalledWith(10, 0, '', undefined, false);
-      expect(result.data).toEqual(mockPosts.map(post => {
-        delete post.userId;
-        return post;
-      }));
+      expect(postsService.findAll).toHaveBeenCalledWith(
+        10,
+        0,
+        '',
+        undefined,
+        false,
+      );
+      expect(result.data).toEqual(
+        mockPosts.map((post) => {
+          delete post.userId;
+          return post;
+        }),
+      );
     });
 
     it('should retrieve posts with email filter', async () => {
@@ -172,55 +189,69 @@ describe('PostsController', () => {
       const result = await controller.findAll(10, 0, '', userEmail, false);
 
       expect(userService.findOne).toHaveBeenCalledWith(userEmail);
-      expect(postsService.findAll).toHaveBeenCalledWith(10, 0, '', mockUser.id, false);
-      expect(result.data).toEqual(mockPosts.map(post => {
-        delete post.userId;
-        return post;
-      }));
+      expect(postsService.findAll).toHaveBeenCalledWith(
+        10,
+        0,
+        '',
+        mockUser.id,
+        false,
+      );
+      expect(result.data).toEqual(
+        mockPosts.map((post) => {
+          delete post.userId;
+          return post;
+        }),
+      );
     });
 
     it('should throw NotFoundException if user not found for provided email', async () => {
       jest.spyOn(userService, 'findOne').mockResolvedValue(undefined);
-    
-      await expect(controller.findAll(10, 0, '', 'non-existent-email')).rejects.toThrow(NotFoundException);
+
+      await expect(
+        controller.findAll(10, 0, '', 'non-existent-email'),
+      ).rejects.toThrow(NotFoundException);
     });
 
-  // Test for update
-  it('should update a post', async () => {
-    const updatePostDto = new UpdatePostDto(); // Fill in with appropriate mock data
-    jest.spyOn(postsService, 'update').mockResolvedValue(mockPost);
+    // Test for update
+    it('should update a post', async () => {
+      const updatePostDto = new UpdatePostDto(); // Fill in with appropriate mock data
+      jest.spyOn(postsService, 'update').mockResolvedValue(mockPost);
 
-    const result = await controller.update('1', updatePostDto);
+      const result = await controller.update('1', updatePostDto);
 
-    expect(postsService.update).toHaveBeenCalledWith('1', updatePostDto);
-    expect(result).toEqual(mockPost);
+      expect(postsService.update).toHaveBeenCalledWith('1', updatePostDto);
+      expect(result).toEqual(mockPost);
+    });
+
+    it('should throw NotFoundException if post to update not found', async () => {
+      jest.spyOn(postsService, 'update').mockResolvedValue(undefined);
+
+      await expect(
+        controller.update('non-existent-id', new UpdatePostDto()),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    // Test for remove
+    it('should delete a post', async () => {
+      jest.spyOn(postsService, 'remove').mockResolvedValue(mockPost);
+
+      const result = await controller.remove('1');
+
+      expect(postsService.remove).toHaveBeenCalledWith('1');
+      expect(result).toEqual({
+        statusCode: 200,
+        message: 'Post deleted successfully',
+      });
+    });
+
+    it('should throw NotFoundException if post to delete not found', async () => {
+      jest.spyOn(postsService, 'remove').mockResolvedValue(undefined);
+
+      await expect(controller.remove('non-existent-id')).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+
+    // Add more tests as necessary for different scenarios
   });
-
-  it('should throw NotFoundException if post to update not found', async () => {
-    jest.spyOn(postsService, 'update').mockResolvedValue(undefined);
-  
-    await expect(controller.update('non-existent-id', new UpdatePostDto())).rejects.toThrow(NotFoundException);
-  });
-  
-
-  // Test for remove
-  it('should delete a post', async () => {
-    jest.spyOn(postsService, 'remove').mockResolvedValue(mockPost);
-
-    const result = await controller.remove('1');
-
-    expect(postsService.remove).toHaveBeenCalledWith('1');
-    expect(result).toEqual({ statusCode: 200, message: 'Post deleted successfully' });
-  });
-
-  it('should throw NotFoundException if post to delete not found', async () => {
-    jest.spyOn(postsService, 'remove').mockResolvedValue(undefined);
-  
-    await expect(controller.remove('non-existent-id')).rejects.toThrow(NotFoundException);
-  });
-  
-
-  // Add more tests as necessary for different scenarios
-
-});
 });
