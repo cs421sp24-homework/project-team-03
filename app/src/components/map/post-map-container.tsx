@@ -17,6 +17,7 @@ const PostMapContainer = () => {
     <GoogleMap
       mapContainerStyle={{ height: "400px", width: "800px" }}
       center={{ lat: 39.330420, lng: -76.618050 }}
+      options={{ controlSize: 25 }}
       zoom={13}
     >
     {posts.map((item: PostWithUserData, index: number) => (
