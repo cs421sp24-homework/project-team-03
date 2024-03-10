@@ -6,6 +6,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateUserDTO } from './create-user.dto';
 import { BadRequestException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { UpdateUserDTO } from './update-user.dto';
 
 describe('UserService', () => {
   let userService: UserService;
@@ -23,7 +24,8 @@ describe('UserService', () => {
     isEmailVerified: false,
     verificationToken: 'someRandomVerificationToken', // Can also be null
     posts: [], // Assuming this user has no posts initially; you can add mock posts if needed
-    reviews: []
+    reviews: [],
+    bio: null,
   };
   
   const userDto: CreateUserDTO = {
@@ -46,6 +48,7 @@ describe('UserService', () => {
             create:  jest.fn(),
             remove:  jest.fn(),
             findOneBy: jest.fn(),
+            preload: jest.fn(),
             save: jest.fn(),
             find: jest.fn()
           }
@@ -113,7 +116,39 @@ describe('UserService', () => {
     });
   });
   
+  describe('update', () => {
+    const updateUserDto: UpdateUserDTO = {
+      firstName: 'Jane',
+      lastName: 'Love',
+      avatar: 'http://example.com/avatar2.jpg',
+      bio: "Hello",
+    };
+    it('should update a user', async () => {
+      const userId = 1;
+      // Assuming mockUser is already defined as shown previously
+      mockUser.firstName = updateUserDto.firstName ?? mockUser.firstName;
+      mockUser.lastName = updateUserDto.lastName ?? mockUser.lastName;
+      mockUser.avatar = updateUserDto.avatar ?? mockUser.avatar;
+      mockUser.bio = updateUserDto.bio ?? mockUser.bio;
+
+      jest.spyOn(userRepository, 'preload').mockResolvedValue(mockUser);
+      jest.spyOn(userRepository, 'save').mockResolvedValue(mockUser);
+
+      const result = await userService.update(userId, updateUserDto);
+
+      expect(result).toEqual(mockUser);
+      expect(userRepository.preload).toHaveBeenCalledWith({ id: userId, ...updateUserDto });
+      expect(userRepository.save).toHaveBeenCalledWith(mockUser);
+    });
+
   
-  
+    it('should return null if user does not exist', async () => {
+      jest.spyOn(userRepository, 'preload').mockResolvedValue(null);
+
+      const result = await userService.update(0, updateUserDto);
+
+      expect(result).toBeNull();
+    });
+  });
   
 });

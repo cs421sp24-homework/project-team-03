@@ -20,16 +20,19 @@ const Post = ({ post }: { post: PostWithUserData }) => {
             <PostAvatar imageUrl={avatar} displayName={`${firstName} ${lastName}`} />
           </Link>
         </div>
-        <div className="w-full pt-7 pr-4">
+        <div className="w-full pt-7 pr-1">
           <PostHeader
             name={`${firstName} ${lastName}`}
             timestamp={post.timestamp}
           />
-          <div className="my-4 font-bold underline">{title}</div>
-          <div className="my-4">{content}</div>
-          <PostFooter post={post} user={user} />
         </div>
       </div>
+      <div className=" pl-8 pr-8">
+        <div className="my-4 font-bold underline">{title}</div>
+        <div className="my-4">{content}</div>
+        <PostFooter post={post} user={user} />
+      </div>
+
     </div>
   );
 };

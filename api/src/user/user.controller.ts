@@ -1,10 +1,11 @@
-import { Controller, Post, Body, UnauthorizedException, Get, Delete, Param, UseGuards, BadRequestException } from '@nestjs/common';
+import { Controller, Post, Body, UnauthorizedException, Get, Delete, Param, UseGuards, BadRequestException, NotFoundException, Patch } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDTO } from './create-user.dto';
 import { AuthService } from 'src/auth/auth.service';
 import { UserResponseDTO } from './user-response.dto';
 import { UserLoginDTO } from './user-login.dto';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { UpdateUserDTO } from './update-user.dto';
 
 @Controller('users')
 export class UserController {
@@ -66,5 +67,20 @@ export class UserController {
             throw new UnauthorizedException('Invalid credentials');
         }
         return this.authService.login(user);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Patch(':id')
+    async update(
+        @Param('id') id: number,
+        @Body() updateUserDto: UpdateUserDTO,
+    ): Promise<UserResponseDTO> {
+        const user = await this.userService.update(id, updateUserDto);
+        if (!user) {
+            throw new NotFoundException(`User with ID ${id} not found`);
+        }
+        
+        delete user.password;
+        return user;
     }
 }

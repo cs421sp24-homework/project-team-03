@@ -5,5 +5,6 @@ export class UserResponseDTO {
     lastName: string;
     avatar: string;
     isEmailVerified: boolean;
+    bio: string;
   }
   

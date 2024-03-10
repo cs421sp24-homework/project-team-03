@@ -4,6 +4,7 @@ export type User = {
     firstName: string;
     lastName: string;
     avatar?: string;
+    bio?: string;
   }
 
   export type PostType = "Roommate" | "Sublet" | "Housing" | null;

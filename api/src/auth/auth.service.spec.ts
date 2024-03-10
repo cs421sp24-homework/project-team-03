@@ -56,6 +56,7 @@ describe('AuthService', () => {
         verificationToken: 'some-verification-token', // Optional, can be null
         posts: [], // Array of Post entities, can be empty if not testing related functionality
         reviews: [],
+        bio: null,
       };
 
     it('should return a user object if validation is successful', async () => {
@@ -94,7 +95,8 @@ describe('AuthService', () => {
             isEmailVerified: false,
             verificationToken: 'some-verification-token', // Optional, can be null
             posts: [], // Array of Post entities, can be empty if not testing related functionality
-            reviews: []
+            reviews: [],
+            bio: null,
           };
       const expectedPayload = {
         email: exampleUser.email,
@@ -103,6 +105,7 @@ describe('AuthService', () => {
         lastName: exampleUser.lastName,
         avatar: exampleUser.avatar,
         isEmailVerified: exampleUser.isEmailVerified,
+        bio: exampleUser.bio,
       };
   
       // Arrange: Spy on jwtService.sign and mock its implementation

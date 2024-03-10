@@ -325,3 +325,33 @@ export const createHousingItem = async (
   
     // Assuming no content is returned for a DELETE operation
   };
+
+  export const editUser = async (
+    id: number,
+    firstName?: string,
+    lastName?: string,
+    avatar?: string,
+    bio?: string,
+  ): Promise<User> => {
+    const token = getAuthenticatedUserToken();
+    const response = await fetch(`${API_URL}/users/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ firstName, lastName, avatar, bio }),
+    });
+  
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText
+        }`,
+      );
+    }
+  
+    return responseJson.data;
+  
+  };
