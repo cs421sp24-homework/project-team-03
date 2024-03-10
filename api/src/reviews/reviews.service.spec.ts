@@ -75,6 +75,7 @@ describe('ReviewsService', () => {
     verificationToken: 'verificationToken123',
     posts: [],
     reviews: [],
+    bio: null,
   };
 
   const mockHousing: Housing = {

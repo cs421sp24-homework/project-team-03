@@ -33,6 +33,7 @@ export class AuthService {
           lastName: user.lastName, 
           avatar: user.avatar,
           isEmailVerified: user.isEmailVerified, 
+          bio: user.bio,
         };
         return {
           access_token: this.jwtService.sign(payload),

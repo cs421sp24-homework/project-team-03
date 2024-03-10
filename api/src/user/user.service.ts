@@ -47,7 +47,7 @@ export class UserService {
   
   async update(id: number, updateUserDto: UpdateUserDTO ): Promise<User | null> {
     const user = await this.userRepository.preload({ id, ...updateUserDto });
-    if (!User) {
+    if (!user) {
       return null;
     }
     return this.userRepository.save(user);
