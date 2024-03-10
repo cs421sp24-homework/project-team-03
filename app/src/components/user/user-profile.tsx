@@ -25,10 +25,12 @@ export const UserProfile = ({ user }: { user: User }) => {
     };
 
     const handleCancelEdit = () => {
-        setFirstName(user.firstName);
-        setLastName(user.lastName);
-        setBio(user.bio); 
-        setAvatar(user.avatar);
+        if (loggedUser) {
+            setFirstName(loggedUser.firstName);
+            setLastName(loggedUser.lastName);
+            setBio(loggedUser.bio); 
+            setAvatar(loggedUser.avatar);   
+        }
         setIsEditing(false);
     };
 
