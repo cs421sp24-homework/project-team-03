@@ -27,6 +27,7 @@ describe('UserController', () => {
     isEmailVerified: false,
     verificationToken: 'someRandomToken123', // Can be null as well
     posts: [],
+    reviews: [],
   };
 
   const USER_REPO_TOKEN = getRepositoryToken(User);

@@ -51,6 +51,7 @@ describe('PostsService', () => {
 
     // Mock posts array, can be empty or contain multiple Post entities
     posts: [],
+    reviews: [],
   };
 
   const resultPost: Post = {

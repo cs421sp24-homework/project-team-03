@@ -33,6 +33,7 @@ describe('PostsController', () => {
     isEmailVerified: true,
     verificationToken: null,
     posts: [],
+    reviews: []
   };
 
   const mockPost: Post = {
