@@ -1,5 +1,5 @@
 import { getAuthenticatedUser, getAuthenticatedUserToken, removeAuthenticatedUserToken, storeAuthenticatedUserToken } from "./auth";
-import { PostType, PostWithUserData, User, HousingItem, Review, ReviewWithUserData } from "./types";
+import { PostType, PostWithUserData, User, HousingItem, ReviewWithUserData } from "./types";
 
 const API_URL = import.meta.env.VITE_API_URL;
 

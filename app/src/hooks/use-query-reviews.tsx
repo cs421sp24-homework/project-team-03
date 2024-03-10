@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { fetchReviews } from "@/lib/api";
 import { useToast } from "@/components/ui/use-toast";
 import { useStore } from "@/lib/store";
+import useInterval from "./use-intervals";
 
 function useQueryReviews(housingId : string) {
   const { toast } = useToast();
@@ -22,6 +23,10 @@ function useQueryReviews(housingId : string) {
       });
     }
   };
+
+  useInterval(() => {
+    loadReviews();
+  }, 300);
 
   useEffect(() => {
     loadReviews();

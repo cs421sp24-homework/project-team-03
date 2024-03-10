@@ -1,4 +1,4 @@
-import type { HousingItem, Review, ReviewWithUserData, User } from "./types"
+import type { HousingItem, ReviewWithUserData, User } from "./types"
 
 export const housingItems: HousingItem[] = [
     {
