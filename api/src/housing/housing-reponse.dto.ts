@@ -9,6 +9,8 @@ export class HousingResponseDTO {
   distance: number;
   price: string;
   reviewCount: number;
+  latitude: number;
+  longitude: number;
 
   // NEW
   reviews: Review[];

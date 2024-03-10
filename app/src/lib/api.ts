@@ -209,7 +209,14 @@ export const register = async (
         );
     }
 
-    return responseJson.data;
+    const housingItems = responseJson.data.map((item: HousingItem) => ({
+      ...item,
+      latitude: typeof item.latitude === 'number' ? item.latitude : parseFloat(item.latitude || '0'),
+      longitude: typeof item.longitude === 'number' ? item.longitude : parseFloat(item.longitude || '0'), 
+  }));
+  
+
+    return housingItems;
 };
 
   // Fetch one housing item
