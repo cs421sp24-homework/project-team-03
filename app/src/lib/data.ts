@@ -1,4 +1,4 @@
-import type { HousingItem } from "./types"
+import type { HousingItem, Review } from "./types"
 
 export const housingItems: HousingItem[] = [
     {
@@ -42,3 +42,52 @@ export const housingItems: HousingItem[] = [
       price: '$$$'
     },
 ]
+
+
+export const reviews: Review[] = [
+  {
+    id: 'uuid-1234',
+    content: 'Great place to live! Close to campus and very clean.',
+    timestamp: '2024-03-08T12:00:00Z',
+    rating: 5,
+    upvoteCount: 15,
+    userId: 1,
+    housingId: 'housing-uuid-1234'
+  },
+  {
+    id: 'uuid-5678',
+    content: 'Reasonable price for the location, but the walls are thin.',
+    timestamp: '2024-03-09T08:30:00Z',
+    rating: 3,
+    upvoteCount: 5,
+    userId: 2,
+    housingId: 'housing-uuid-5678'
+  },
+  {
+    id: 'uuid-9012',
+    content: 'The staff is friendly and maintenance is quick to respond to issues.',
+    timestamp: '2024-03-07T16:45:00Z',
+    rating: 4,
+    upvoteCount: 10,
+    userId: 3,
+    housingId: 'housing-uuid-9012'
+  },
+  {
+    id: 'uuid-3456',
+    content: 'Not satisfied with the amenities offered. The gym is too small.',
+    timestamp: '2024-03-10T10:15:00Z',
+    rating: 2,
+    upvoteCount: 2,
+    userId: 4,
+    housingId: 'housing-uuid-3456'
+  },
+  {
+    id: 'uuid-7890',
+    content: 'Fantastic location right by the park, with modern appliances and fixtures.',
+    timestamp: '2024-03-06T19:30:00Z',
+    rating: 5,
+    upvoteCount: 20,
+    userId: 5,
+    housingId: 'housing-uuid-7890'
+  }
+];

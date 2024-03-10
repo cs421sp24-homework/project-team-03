@@ -1,5 +1,5 @@
 import { getAuthenticatedUser, getAuthenticatedUserToken, removeAuthenticatedUserToken, storeAuthenticatedUserToken } from "./auth";
-import { PostType, PostWithUserData, User, HousingItem } from "./types";
+import { PostType, PostWithUserData, User, HousingItem, Review, ReviewWithUserData } from "./types";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -259,8 +259,63 @@ export const createHousingItem = async (
       );
     }
   
-    // originally, ...responseJson.data
-    return {
-      ...responseJson
-    };
+    return responseJson.data;
+  };
+
+  //reviews ----
+  export const createReview = async (
+    content: string,
+    rating: number,
+    housingId: string
+  ): Promise<Review> => {
+    const token = getAuthenticatedUserToken();
+    
+    const response = await fetch(`${API_URL}/housings/${housingId}/reviews`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ content, rating }),
+    });
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  
+    return responseJson.data;
+  };
+  
+  export const fetchReviews = async (housingId: string): Promise<ReviewWithUserData[]> => {
+    const response = await fetch(`${API_URL}/housings/${housingId}/reviews?withUserData=true`);
+    const responseJson = await response.json();
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+    return responseJson.data; // Assuming the server responds with an array of reviews
+  };
+  
+  export const deleteReview = async (housingId: string, id: string): Promise<void> => {
+    const token = getAuthenticatedUserToken();
+  
+    const response = await fetch(`${API_URL}/housings/${housingId}/reviews/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  
+    if (!response.ok) {
+      const responseJson = await response.json();
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  
+    // Assuming no content is returned for a DELETE operation
   };
