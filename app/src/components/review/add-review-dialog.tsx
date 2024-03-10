@@ -90,9 +90,11 @@ export const AddReviewDialog = ({ housingId }: { housingId: string }) => {
               <DialogClose asChild>
                 <Button variant={"secondary"} onClick={handleCancel}>Cancel</Button>
               </DialogClose>
-              <Button type="submit" onClick={handleSave}>
-                Submit
-              </Button>
+              <DialogClose asChild>
+                <Button type="submit" onClick={handleSave}>
+                  Submit
+                </Button>
+              </DialogClose>
             </>
           )}
         </DialogFooter>

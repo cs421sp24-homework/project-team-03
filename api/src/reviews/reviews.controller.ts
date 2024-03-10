@@ -19,12 +19,13 @@ import { FindReviewsResponseDTO } from './find-reviews-response.dto';
 import { ReviewOwnershipGuard } from 'src/guards/review-owner.guard';
 import { HousingExistsGuard } from 'src/guards/housing-exists.guard';
 
-@UseGuards(JwtAuthGuard)
+
 @Controller('housings/:housingId/reviews')
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
   @UseGuards(HousingExistsGuard)
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(
     @Body() createReviewDto: CreateReviewDto,
@@ -56,6 +57,7 @@ export class ReviewsController {
   }
 
   @UseGuards(ReviewOwnershipGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':reviewId')
   async remove(
     @Param('reviewId') reviewId: string,
