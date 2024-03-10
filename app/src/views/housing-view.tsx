@@ -1,10 +1,10 @@
 import Aside from "@/components/aside";
 import Sidebar from "@/components/sidebar";
-import HousingItemComponent from "@/components/catalog/housing-item";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchHousingItem } from "@/lib/api"; // Assuming you have a fetchHousingItem function
 import type { HousingItem } from "@/lib/types"; // Import the HousingItem type
+import HousingItemWithReviews from "@/components/review/housing-item-with-review";
 
 const HousingView = () => {
   const { id } = useParams(); // Get the housing ID from the URL
@@ -35,7 +35,7 @@ const HousingView = () => {
   return (
     <>
       <Sidebar isPostsView={false}/>
-      <HousingItemComponent housingItem={housingItem} />
+      <HousingItemWithReviews housingItem={housingItem} />
       <Aside />
     </>
   );
