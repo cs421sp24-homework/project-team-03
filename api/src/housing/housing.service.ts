@@ -18,44 +18,56 @@ export class HousingService {
   }
 
   async findAllWithFilters(
-    limit: number,
-    offset: number,
-    minAvgRating: number | null,
-    minReviewCount: number | null,
-    maxDistance: number | null,
-    maxPrice: string | null,
+    limit?: number | null,
+    offset?: number | null,
+    minAvgRating?: number | null,
+    minReviewCount?: number | null,
+    maxDistance?: number | null,
+    maxPrice?: string | null,
   ): Promise<Housing[]> {
     const queryBuilder = this.housingRepository.createQueryBuilder('housings');
+
     const priceLevels = {
       $: 1,
       $$: 2,
       $$$: 3,
     };
 
-    queryBuilder.limit(limit);
-    queryBuilder.offset(offset);
+    if (limit !== undefined && limit !== null) {
+      queryBuilder.limit(limit);
+    }
+
+    if (offset !== undefined && offset !== null) {
+      queryBuilder.offset(offset);
+    }
+
     queryBuilder.orderBy('housings.name', 'ASC');
 
-    if (minAvgRating !== null) {
+    if (minAvgRating !== undefined && minAvgRating !== null) {
       queryBuilder.andWhere('housings.avgRating >= :minAvgRating', {
         minAvgRating,
       });
     }
-    if (minReviewCount !== null) {
+
+    if (minReviewCount !== undefined && minReviewCount !== null) {
       queryBuilder.andWhere('housings.reviewCount >= :minReviewCount', {
         minReviewCount,
       });
     }
-    if (maxDistance !== null) {
+
+    if (maxDistance !== undefined && maxDistance !== null) {
       queryBuilder.andWhere('housings.distance <= :maxDistance', {
         maxDistance,
       });
     }
-    if (maxPrice !== null) {
+
+    if (maxPrice !== undefined && maxPrice !== null) {
       const priceLevel = priceLevels[maxPrice];
-      queryBuilder.andWhere('LENGTH(housings.price) >= :priceLevel', {
-        priceLevel,
-      });
+      if (priceLevel !== undefined) {
+        queryBuilder.andWhere('LENGTH(housings.price) <= :priceLevel', {
+          priceLevel,
+        });
+      }
     }
 
     return queryBuilder.getMany();

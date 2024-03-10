@@ -10,7 +10,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { HousingService } from './housing.service';
-import { FindHousingsQueryDTO } from './find-housings-query.dto';
+import {
+  FindHousingsQueryDTO,
+  FindHousingsQueryFilterDTO,
+} from './find-housings-query.dto';
 import {
   FindHousingsFilteredResponseDTO,
   FindHousingsResponseDTO,
@@ -38,13 +41,17 @@ export class HousingController {
 
   @Get('filtered')
   async findAllWithFilters(
-    @Query('limit') limit: number,
-    @Query('offset') offset: number,
-    @Query('minAvgRating') minAvgRating: number | null,
-    @Query('minReviewCount') minReviewCount: number | null,
-    @Query('maxDistance') maxDistance: number | null,
-    @Query('maxPrice') maxPrice: string | null,
+    @Query() query: FindHousingsQueryFilterDTO,
   ): Promise<FindHousingsFilteredResponseDTO> {
+    const {
+      limit,
+      offset,
+      minAvgRating,
+      minReviewCount,
+      maxDistance,
+      maxPrice,
+    } = query;
+
     const housings = await this.housingService.findAllWithFilters(
       limit,
       offset,

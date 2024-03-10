@@ -1,4 +1,4 @@
-import { HousingResponseDTO } from "./housing-reponse.dto";
+import { HousingResponseDTO } from './housing-reponse.dto';
 
 export class FindHousingsResponseDTO {
   limit: number;

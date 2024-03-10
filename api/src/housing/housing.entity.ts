@@ -20,7 +20,7 @@ export class Housing {
   @Column('decimal', { precision: 6, scale: 1 })
   distance: number;
 
-  @Column({ default: null })
+  @Column({ default: 0 })
   avgRating: number | null; // calculated from Reviews posted
 
   @Column({ default: 0 })

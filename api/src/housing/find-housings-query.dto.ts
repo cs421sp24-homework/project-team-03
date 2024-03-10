@@ -1,5 +1,6 @@
 import {
   IsInt,
+  IsNumber,
   IsOptional,
   IsPositive,
   IsString,
@@ -13,7 +14,7 @@ export class FindHousingsQueryDTO {
   @Min(1)
   @Max(50)
   @IsOptional()
-  limit: number = 10;
+  limit: number = 50;
 
   @IsInt()
   @Min(0)
@@ -23,4 +24,35 @@ export class FindHousingsQueryDTO {
   @IsString()
   @IsOptional()
   search?: string;
+}
+
+export class FindHousingsQueryFilterDTO {
+  @IsInt()
+  @IsPositive()
+  @Min(1)
+  @Max(50)
+  @IsOptional()
+  limit: number = 50;
+
+  @IsInt()
+  @Min(0)
+  @IsOptional()
+  offset: number = 0;
+
+  @IsInt()
+  @IsOptional()
+  minAvgRating: number = 0;
+
+  @IsInt()
+  @IsOptional()
+  minReviewCount: number = 0;
+
+  @IsNumber()
+  @IsPositive()
+  @IsOptional()
+  maxDistance: number = 10;
+
+  @IsString()
+  @IsOptional()
+  maxPrice?: string = '$';
 }
