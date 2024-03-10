@@ -1,4 +1,4 @@
-import { login, logout, register } from "@/lib/api";
+import { editUser, login, logout, register } from "@/lib/api";
 import { useStore } from "@/lib/store";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect } from "react";
@@ -7,7 +7,8 @@ import { getAuthenticatedUser } from "@/lib/auth";
 function useMutationUser() {
   const { toast } = useToast();
   const setUser = useStore((state) => state.setUser);
-    const clearUser = useStore((state) => state.clearUser);
+  const clearUser = useStore((state) => state.clearUser);
+  const setEditUser = useStore((state) => state.setEditUser);
 
   const loginUser = async (email: string, password: string) => {
     try {
@@ -66,6 +67,27 @@ function useMutationUser() {
     }
   };
 
+  const editUsers = async (
+    id: number,
+    firstName?: string,
+    lastName?: string,
+    avatar?: string,
+    bio?: string,
+  ) => {
+    try {
+      const editedUser = await editUser( id, firstName, lastName, avatar, bio);
+      setEditUser(editedUser);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Failed to edit profile",
+        description:
+          (error as Error).message ||
+          "There was an error editing your profile. Please try again later.",
+      });
+    }
+  };
+
 
     useEffect(() => {
     try {
@@ -76,7 +98,7 @@ function useMutationUser() {
     }
   }, []);
 
-  return { loginUser, logoutUser, registerUser };
+  return { loginUser, logoutUser, registerUser, editUsers };
 }
 
 export default useMutationUser;

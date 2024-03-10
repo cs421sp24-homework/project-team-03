@@ -22,6 +22,7 @@ type Action = {
   addPosts: (post: PostWithUserData) => void;
   setEditPosts: (post: PostWithUserData) => void;
   removePost: (id: string) => void;
+  setEditUser: (user: User) => void;
   // Add more actions
 };
 
@@ -81,4 +82,9 @@ export const useStore = create<State & Action>()(
     const newPosts = get().posts.filter((post) => post.id !== id);
     set({ posts: newPosts });
   },
+
+  setEditUser: (user) => {
+    set({ user });
+  },
+  
 })));
