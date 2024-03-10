@@ -194,11 +194,62 @@ export const register = async (
     const responseJson = await response.json();
     return responseJson.data;
   };
-  
-  // Fetch all housing items
-  export const fetchHousingItems = async (): Promise<HousingItem[]> => {
+
+  // Fetch all housing items with filters
+  export const fetchHousingItemsWithFilters = async (
+    minAvgRating?: number,
+    minReviewCount?: number,
+    maxDistance?: number,
+    maxPrice?: string,
+    search?: string,
+  ): Promise<HousingItem[]> => {
     const API_URL = import.meta.env.VITE_API_URL;
-    const response = await fetch(`${API_URL}/housings?limit=50`)
+    const queryParams = new URLSearchParams();
+
+    if (minAvgRating !== null && minAvgRating !== undefined) {
+      queryParams.append('minAvgRating', minAvgRating.toString());
+    }
+  
+    if (minReviewCount !== null && minReviewCount !== undefined) {
+      queryParams.append('minReviewCount', minReviewCount.toString());
+    }
+  
+    if (maxDistance !== null && maxDistance !== undefined) {
+      queryParams.append('maxDistance', maxDistance.toString());
+    }
+  
+    if (maxPrice !== null && maxPrice !== undefined) {
+      queryParams.append('maxPrice', maxPrice);
+    }
+
+    const url = `${API_URL}/housings/filtered?${queryParams}`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} - ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.data;
+  };
+
+  // Fetch all housing items
+  export const fetchHousingItems = async (search?: string): Promise<HousingItem[]> => {
+    const API_URL = import.meta.env.VITE_API_URL;
+    const queryParams = new URLSearchParams({
+      limit: '50', // Default limit
+    });
+
+    // Add the search parameter to the query if it's provided
+    if (search) {
+      queryParams.append('search', search);
+    }
+
+    // Construct the final URL with query parameters
+    const url = `${API_URL}/housings?${queryParams.toString()}`;
+  
+    // Fetch housing items using the constructed URL
+    const response = await fetch(url);
     const responseJson = await response.json();
 
     if (!response.ok) {

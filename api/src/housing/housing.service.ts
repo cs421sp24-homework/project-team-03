@@ -17,6 +17,50 @@ export class HousingService {
     return this.housingRepository.save(housing);
   }
 
+  async findAllWithFilters(
+    limit: number,
+    offset: number,
+    minAvgRating: number | null,
+    minReviewCount: number | null,
+    maxDistance: number | null,
+    maxPrice: string | null,
+  ): Promise<Housing[]> {
+    const queryBuilder = this.housingRepository.createQueryBuilder('housings');
+    const priceLevels = {
+      $: 1,
+      $$: 2,
+      $$$: 3,
+    };
+
+    queryBuilder.limit(limit);
+    queryBuilder.offset(offset);
+    queryBuilder.orderBy('housings.name', 'ASC');
+
+    if (minAvgRating !== null) {
+      queryBuilder.andWhere('housings.avgRating >= :minAvgRating', {
+        minAvgRating,
+      });
+    }
+    if (minReviewCount !== null) {
+      queryBuilder.andWhere('housings.reviewCount >= :minReviewCount', {
+        minReviewCount,
+      });
+    }
+    if (maxDistance !== null) {
+      queryBuilder.andWhere('housings.distance <= :maxDistance', {
+        maxDistance,
+      });
+    }
+    if (maxPrice !== null) {
+      const priceLevel = priceLevels[maxPrice];
+      queryBuilder.andWhere('LENGTH(housings.price) >= :priceLevel', {
+        priceLevel,
+      });
+    }
+
+    return queryBuilder.getMany();
+  }
+
   async findAll(
     limit: number,
     offset: number,

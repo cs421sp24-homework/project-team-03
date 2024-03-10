@@ -1,63 +1,156 @@
 import { Button } from "@/components/catalog/button";
-
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/catalog/dropdown-menu";
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { fetchHousingItemsWithFilters, fetchHousingItems } from "@/lib/api";
+import { Label } from "@radix-ui/react-label";
 import { useState } from "react";
+import { useStore } from "@/lib/store";
+import { useToast } from "../ui/use-toast";
 
 const DeckActions = () => {
-  const [isEditDialogOpen, setEditDialogOpen] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [reviewCount, setReviewCount] = useState(0);
+  const [distance, setDistance] = useState(0);
+  const [price, setPrice] = useState("");
+  const setHousingItems = useStore((state) => state.setHousingItems);
+  const { toast } = useToast();
+
+  const handleSave = async () => {
+    // Condition where no filters are applied but submitted
+    if (rating === 0 && reviewCount === 0 && distance === 0 && price === "") {
+      fetchHousingItems();
+      return;
+    }
+    try {
+      const newhousingItems = await fetchHousingItemsWithFilters(
+        rating !== 0 ? rating : undefined, // Pass null if rating is 0
+        reviewCount !== 0 ? reviewCount : undefined, // Pass null if reviewCount is 0
+        distance !== 0 ? distance : undefined, // Pass null if distance is 0
+        price !== "" ? price : undefined // Pass null if price is empty string
+      );
+      setHousingItems(newhousingItems);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Failed to load the housing items",
+        description:
+        (error as Error).message ||
+        "There was an error loading the filtered housing items. Please try again later.",
+    });
+    }
+  };
+
+  const handleCancel = () => {
+    setRating(0);
+    setReviewCount(0);
+    setDistance(0);
+    setPrice("");
+  };
 
   return (
-    <DropdownMenu open={isEditDialogOpen} onOpenChange={setEditDialogOpen}>
-      <DropdownMenuTrigger asChild>
-        <Button
-          className="flex h-8 w-20 p-0 data-[state=open]:bg-muted"
-        >
-          Filters
-          <span className="sr-only">Open menu</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[160px]">
-      <DropdownMenuItem>
-            Highest Rating
-        </DropdownMenuItem>
-        <div className="border-t border-gray-300" style={{ borderWidth: '1px'}}></div>
-        <DropdownMenuItem className="text-blue-500">
-            Lowest Price
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          className="text-blue-500"
-        >
-          Highest Price
-        </DropdownMenuItem>
-        <div className="border-t border-gray-300" style={{ borderWidth: '1px'}}></div>
-        <DropdownMenuItem className="text-orange-500">
-            Lowest Distance
-        </DropdownMenuItem>
-        <DropdownMenuItem className="text-orange-500">
-            Highest Distance
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button aria-label={"Filter"} variant="default" size="sm">
+            Filter
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[525px]" style={{ maxHeight: '600px', overflowY: 'auto' }}>
+          <DialogHeader>
+            <DialogTitle>Filter Options</DialogTitle>
+            <DialogDescription>
+              Adjust filters as needed.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid items-center grid-cols-4 gap-4">
+              <Label htmlFor="rating" className="col-span-2">Average Rating <span style={{ color: 'gold' }}>&#9733;</span></Label>
+              <input
+                type="range"
+                id="rating"
+                value={rating}
+                onChange={(e) => {
+                  setRating(parseInt(e.target.value, 10));
+                }}
+                min="0"
+                max="5"
+                step="1"
+                list="ratingMarkers"
+                className="h-8 col-span-4"
+              />
+              <datalist id="ratingMarkers"> {/* Define the datalist */}
+                <option value="0" label="0"></option>
+                <option value="1" label="1"></option>
+                <option value="2" label="2"></option>
+                <option value="3" label="3"></option>
+                <option value="4" label="4"></option>
+                <option value="5" label="5"></option>
+              </datalist>
+            </div>
+            <div className="grid items-center grid-cols-4 gap-4">
+              <Label htmlFor="reviewCount">Distance (Miles)</Label>
+              <input
+                type="number"
+                id="reviewCount"
+                value={distance}
+                onChange={(e) => {
+                  setDistance(parseInt(e.target.value, 10));
+                }}
+                min="0"
+                className="h-8 col-span-4 px-2 border rounded-md"
+              />
+            </div>
+            <div className="grid items-center grid-cols-4 gap-4">
+              <Label htmlFor="reviewCount">Review Count</Label>
+              <input
+                type="number"
+                id="reviewCount"
+                value={reviewCount}
+                onChange={(e) => {
+                  setReviewCount(parseInt(e.target.value, 10));
+                }}
+                min="0"
+                className="h-8 col-span-4 px-2 border rounded-md"
+              />
+            </div>
+            {/* Other form fields */}
+            <div className="grid items-center grid-cols-4 gap-4">
+              <Label htmlFor="type">Price</Label>
+              <select
+                id="type"
+                className="col-span-4"
+                onChange={(e) => {
+                  setPrice(e.target.value);
+                }}
+              >
+                <option value="">Select a price range...</option>
+                <option value="$">&lt;1100 ($/month)</option>
+                <option value="$$">900-1100 ($/month)</option>
+                <option value="$$$">&gt;1600 ($/month)</option>
+              </select>
+            </div>
+            {/* Textarea and other form fields */}
+          </div>
+          <DialogClose asChild>
+            <DialogFooter>
+              <Button onClick={handleSave}>
+                  Submit
+                </Button>
+              <Button variant={"secondary"} type="reset" onClick={handleCancel}>Close</Button>
+            </DialogFooter>
+          </DialogClose>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 
 export default DeckActions;
-
-// <DotsVerticalIcon className="w-4 h-4" />
-
-/*
-     <DropdownMenuTrigger asChild>
-        <Button
-          className="flex h-8 w-20 p-0 data-[state=open]:bg-muted"
-          onClick={() => setEditDialogOpen(true)}
-        >
-          Filters
-          <span className="sr-only">Open menu</span>
-        </Button>
-      </DropdownMenuTrigger>
-*/

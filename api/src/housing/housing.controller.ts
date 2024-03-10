@@ -11,7 +11,10 @@ import {
 } from '@nestjs/common';
 import { HousingService } from './housing.service';
 import { FindHousingsQueryDTO } from './find-housings-query.dto';
-import { FindHousingsResponseDTO } from './find-housings-reponse.dto';
+import {
+  FindHousingsFilteredResponseDTO,
+  FindHousingsResponseDTO,
+} from './find-housings-reponse.dto';
 import { HousingResponseDTO } from './housing-reponse.dto';
 import { CreateHousingDTO } from './create-housing.dto';
 import { UpdateHousingDTO } from './update-housing.dto';
@@ -31,6 +34,34 @@ export class HousingController {
     @Body() createHousingDTO: CreateHousingDTO,
   ): Promise<HousingResponseDTO> {
     return this.housingService.create(createHousingDTO);
+  }
+
+  @Get('filtered')
+  async findAllWithFilters(
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
+    @Query('minAvgRating') minAvgRating: number | null,
+    @Query('minReviewCount') minReviewCount: number | null,
+    @Query('maxDistance') maxDistance: number | null,
+    @Query('maxPrice') maxPrice: string | null,
+  ): Promise<FindHousingsFilteredResponseDTO> {
+    const housings = await this.housingService.findAllWithFilters(
+      limit,
+      offset,
+      minAvgRating,
+      minReviewCount,
+      maxDistance,
+      maxPrice,
+    );
+    return {
+      limit,
+      offset,
+      minAvgRating,
+      minReviewCount,
+      maxDistance,
+      maxPrice,
+      data: housings.map((housing) => housing as HousingResponseDTO),
+    };
   }
 
   /**
