@@ -63,6 +63,14 @@ const DeckActions = () => {
             Filter
           </Button>
         </DialogTrigger>
+        <Button
+            aria-label={"Reset"}
+            variant="default"
+            size="sm"
+            style={{ backgroundColor: '#c62828', color: 'white', marginLeft: '10px' }} 
+          >
+            Reset
+          </Button>
         <DialogContent className="sm:max-w-[525px]" style={{ maxHeight: '600px', overflowY: 'auto' }}>
           <DialogHeader>
             <DialogTitle>Filter Options</DialogTitle>
@@ -96,15 +104,16 @@ const DeckActions = () => {
               </datalist>
             </div>
             <div className="grid items-center grid-cols-4 gap-4">
-              <Label htmlFor="reviewCount">Distance (Miles)</Label>
+              <Label htmlFor="distance">Distance (Miles)</Label>
               <input
                 type="number"
-                id="reviewCount"
+                id="distance"
                 value={distance}
                 onChange={(e) => {
-                  setDistance(parseInt(e.target.value, 10));
+                  setDistance(Number(e.target.value));
                 }}
                 min="0"
+                step="0.1"
                 className="h-8 col-span-4 px-2 border rounded-md"
               />
             </div>
@@ -132,9 +141,9 @@ const DeckActions = () => {
                 }}
               >
                 <option value="">Select a price range...</option>
-                <option value="$">&lt;1100 ($/month)</option>
-                <option value="$$">900-1100 ($/month)</option>
-                <option value="$$$">&gt;1600 ($/month)</option>
+                <option value="$">&lt;1200 ($/month)</option>
+                <option value="$$">1200-1500 ($/month)</option>
+                <option value="$$$">&gt;1500 ($/month)</option>
               </select>
             </div>
             {/* Textarea and other form fields */}

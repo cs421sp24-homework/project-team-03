@@ -48,7 +48,6 @@ export class FindHousingsQueryFilterDTO {
   minReviewCount: number = 0;
 
   @IsNumber()
-  @IsPositive()
   @IsOptional()
   maxDistance: number = 10;
 

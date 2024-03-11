@@ -201,7 +201,6 @@ export const register = async (
     minReviewCount?: number,
     maxDistance?: number,
     maxPrice?: string,
-    search?: string,
   ): Promise<HousingItem[]> => {
     const API_URL = import.meta.env.VITE_API_URL;
     const queryParams = new URLSearchParams();
