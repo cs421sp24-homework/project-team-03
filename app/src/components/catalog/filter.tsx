@@ -55,6 +55,20 @@ const DeckActions = () => {
     setPrice("");
   };
 
+  const handleResetClick = () => {
+    // Call the API method when the button is clicked
+    fetchHousingItems()
+        .then(response => {
+            // Handle the response if necessary
+            setHousingItems(response);
+            console.log(response);
+        })
+        .catch(error => {
+            // Handle errors if necessary
+            console.error('Error fetching housing items:', error);
+        });
+};
+
   return (
     <>
       <Dialog>
@@ -68,6 +82,7 @@ const DeckActions = () => {
             variant="default"
             size="sm"
             style={{ backgroundColor: '#c62828', color: 'white', marginLeft: '10px' }} 
+            onClick={handleResetClick}
           >
             Reset
           </Button>

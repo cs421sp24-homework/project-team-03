@@ -189,8 +189,17 @@ export const register = async (
   };
 
   // Fetch all posts with user data
-  export const fetchPosts = async (): Promise<PostWithUserData[]> => {
-    const response = await fetch(`${API_URL}/posts?withUserData=true`);
+  export const fetchPosts = async (search?: string): Promise<PostWithUserData[]> => {
+    let url = `${API_URL}/posts?withUserData=true`;
+
+    // Add the search parameter to the URL if it's provided
+    if (search) {
+        // Encode the search string to ensure it's properly formatted in the URL
+        const encodedSearch = encodeURIComponent(search);
+        url += `&search=${encodedSearch}`;
+    }
+
+    const response = await fetch(url);
     const responseJson = await response.json();
     return responseJson.data;
   };

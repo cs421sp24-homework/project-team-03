@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
-import { Input } from './input';
-import { fetchHousingItems } from '@/lib/api';
+import { fetchPosts } from '@/lib/api';
 import { useStore } from '@/lib/store';
+import { Input } from '../ui/input';
 
 const SearchInput = () => {
     const [searchValue, setSearchValue] = useState('');
-    const setHousingItems = useStore((state) => state.setHousingItems);
+    const setPosts = useStore((state) => state.setPosts);
 
     useEffect(() => {
         // Define an async function to fetch search results
         const fetchSearchResults = async () => {
             try {
                 // Fetch housing items based on the search value
-                const searchResults = await fetchHousingItems(searchValue);
-                setHousingItems(searchResults);
+                const searchResults = await fetchPosts(searchValue);
+                setPosts(searchResults);
             } catch (error) {
                 console.error('Error fetching housing items:', error);
             }
@@ -21,7 +21,7 @@ const SearchInput = () => {
 
         // Call the function to fetch search results whenever searchValue changes
         fetchSearchResults();
-    }, [searchValue, setHousingItems]); // Run the effect whenever searchValue changes
+    }, [searchValue, setPosts]); // Run the effect whenever searchValue changes
 
 
     return (
