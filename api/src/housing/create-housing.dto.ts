@@ -9,6 +9,14 @@ export class CreateHousingDTO {
   @IsNotEmpty()
   address: string;
 
+  @IsNumber()
+  @IsNotEmpty()
+  latitude: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  longitude: number;
+
   @IsString()
   @IsOptional()
   imageURL?: string;

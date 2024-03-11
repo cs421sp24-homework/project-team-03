@@ -12,6 +12,12 @@ export class Housing {
   @Column()
   address: string;
 
+  @Column('decimal', { precision: 10, scale: 6 })
+  latitude: number;
+
+  @Column('decimal', { precision: 10, scale: 6 })
+  longitude: number;
+
   @Column({ nullable: true })
   imageURL: string;
 

@@ -10,6 +10,8 @@ const HousingMapContainer = () => {
   const navigate = useNavigate();
   const [hoveredHousing, setHoveredHousing] = useState<HousingItemType | null>(null);
 
+  
+
   const handleMarkerClick = (item: HousingItemType) => {
     navigate(`/housings/${item.id}`);
   };
@@ -26,6 +28,7 @@ const HousingMapContainer = () => {
       options={{controlSize: 25}}
     >
       {housingItems.map((item: HousingItemType, index: number) => (
+  
         item.latitude !== undefined &&
         item.longitude !== undefined && (
             <Marker

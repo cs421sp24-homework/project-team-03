@@ -1,5 +1,5 @@
 export const getAddressCoordinates = async (address: string) => {
-    const MAP_API_KEY = 'AIzaSyAu9JTvSmCucLYTHPSX9ryl0RXSPbPbWLQ';
+    const MAP_API_KEY = 'AIzaSyD3WSswaxt-32s42qTRaXfvOVsKONzPZzg';
     const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${MAP_API_KEY}`;
   
     try {
