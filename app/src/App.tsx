@@ -14,7 +14,7 @@ import { LoadScript } from '@react-google-maps/api';
 function App() {
   const clearUser = useStore((state) => state.clearUser);
   const { toast } = useToast();
-  const MAP_API_KEY = "AIzaSyAu9JTvSmCucLYTHPSX9ryl0RXSPbPbWLQ"; 
+  const MAP_API_KEY = "AIzaSyD3WSswaxt-32s42qTRaXfvOVsKONzPZzg"; 
 
 
 
