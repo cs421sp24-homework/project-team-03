@@ -16,11 +16,14 @@ describe('HousingService', () => {
     id: 'uuid-id', // Mocked UUID 
     name: 'Sample Housing',
     address: '123 Main St',
+    latitude: 0,
+    longitude: 0,
     imageURL: 'http://example.com/image.jpg', // nullable
     price: '1000$', // default value is '$', but typically this would be set to a specific price
     distance: 10.0, // decimal value with precision 6 and scale 1
     avgRating: null, // default value is null, represents calculated field
     reviewCount: 0, // default value is 0, represents calculated field
+    reviews: [],
   };
 
   beforeEach(async () => {
@@ -56,6 +59,8 @@ describe('HousingService', () => {
     const createHousingDto: CreateHousingDTO = {
       name: 'Sample Housing',
       address: '123 Main St',
+      latitude: 0,
+      longitude: 0,
       imageURL: 'http://example.com/image.jpg', // optional
       distance: 10, // optional, positive number
       price: '1000$', // optional

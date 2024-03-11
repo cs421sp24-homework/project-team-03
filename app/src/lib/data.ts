@@ -1,4 +1,4 @@
-import type { HousingItem } from "./types"
+import type { HousingItem, ReviewWithUserData, User } from "./types"
 
 export const housingItems: HousingItem[] = [
     {
@@ -42,3 +42,72 @@ export const housingItems: HousingItem[] = [
       price: '$$$'
     },
 ]
+
+const mockUsers: User[] = [
+  { id: 1, email: "user1@example.com", firstName: "Alice", lastName: "Smith" },
+  { id: 2, email: "user2@example.com", firstName: "Bob", lastName: "Brown" },
+  { id: 3, email: "user3@example.com", firstName: "Carol", lastName: "Johnson" },
+  // ... add more mock users as needed
+];
+
+
+
+export const reviews: ReviewWithUserData[] = [
+  // ... existing reviews
+
+  {
+    id: 'uuid-9012',
+    content: 'The staff is friendly and maintenance is quick to respond to issues.',
+    timestamp: '2024-03-07T16:45:00Z',
+    rating: 4,
+    upvoteCount: 10,
+    housingId: '23d5c330-ae33-47d5-ae6e-7df67baa56a0',
+    user: mockUsers[2]
+  },
+  {
+    id: 'uuid-3456',
+    content: 'Not satisfied with the amenities offered. The gym is too small.',
+    timestamp: '2024-03-10T10:15:00Z',
+    rating: 2,
+    upvoteCount: 2,
+    housingId: 'housing-uuid-3456',
+    user: mockUsers[0] // Assuming repeating users is fine
+  },
+  {
+    id: 'uuid-7890',
+    content: 'Fantastic location right by the park, with modern appliances and fixtures.',
+    timestamp: '2024-03-06T19:30:00Z',
+    rating: 5,
+    upvoteCount: 20,
+    housingId: 'housing-uuid-7890',
+    user: mockUsers[1] // Assuming repeating users is fine
+  },
+  // Additional reviews
+  {
+    id: 'uuid-1011',
+    content: 'Quiet neighborhood and spacious rooms, but a bit far from the city center.',
+    timestamp: '2024-03-11T09:20:00Z',
+    rating: 3,
+    upvoteCount: 7,
+    housingId: 'housing-uuid-1011',
+    user: mockUsers[2] // Reusing a user for example
+  },
+  {
+    id: 'uuid-1112',
+    content: 'Newly renovated, but parking is always a hassle.',
+    timestamp: '2024-03-05T14:50:00Z',
+    rating: 3,
+    upvoteCount: 6,
+    housingId: 'housing-uuid-1112',
+    user: mockUsers[0] // Reusing a user for example
+  },
+  {
+    id: 'uuid-1213',
+    content: 'Excellent view from my apartment, and the building is pet-friendly!',
+    timestamp: '2024-03-04T20:00:00Z',
+    rating: 5,
+    upvoteCount: 12,
+    housingId: 'housing-uuid-1213',
+    user: mockUsers[1] // Reusing a user for example
+  }
+];

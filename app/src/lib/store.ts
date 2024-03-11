@@ -1,4 +1,4 @@
-import { PostWithUserData, User } from "./types";
+import { PostWithUserData, ReviewWithUserData, User } from "./types";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { HousingItem } from "./types";
@@ -8,6 +8,8 @@ type State = {
   housingItems: HousingItem[];
   posts: PostWithUserData[];
   selectedPostId: string | null;
+  reviews: ReviewWithUserData[];
+  selectedHousing: HousingItem | null;
   // Add more state variables
 };
 
@@ -22,6 +24,12 @@ type Action = {
   addPosts: (post: PostWithUserData) => void;
   setEditPosts: (post: PostWithUserData) => void;
   removePost: (id: string) => void;
+  setReviews: (reviews: ReviewWithUserData[]) => void;
+  addReview: (review: ReviewWithUserData) => void;
+  removeReview: (id: string) => void;
+  setSelectedHousing: (housing: HousingItem) => void;
+  clearSelectedHousing: () => void;
+  setEditUser: (user: User) => void;
   // Add more actions
 };
 
@@ -31,6 +39,8 @@ const initialState: State = {
   user: null,
   housingItems: [],
   selectedPostId: null,
+  reviews: [],
+  selectedHousing: null,
 };
 
 export const useStore = create<State & Action>()(
@@ -64,6 +74,10 @@ export const useStore = create<State & Action>()(
 
   clearSelectedPostId: () => set({ selectedPostId: null }),
 
+  setSelectedHousing: (housing) => set({ selectedHousing: housing }),
+
+  clearSelectedHousing: () => set({ selectedHousing: null }),
+
   addPosts: (post) => {
     const newPosts = [...get().posts, post];
     set({ posts: newPosts });
@@ -81,4 +95,21 @@ export const useStore = create<State & Action>()(
     const newPosts = get().posts.filter((post) => post.id !== id);
     set({ posts: newPosts });
   },
+
+  setReviews: (reviews) => set({ reviews }),
+    
+  addReview: (review) => {
+    const newReviews = [...get().reviews, review];
+    set({ reviews: newReviews });
+  },
+
+  removeReview: (id) => {
+      const newReviews = get().reviews.filter((review) => review.id !== id);
+      set({ reviews: newReviews });
+  },
+
+  setEditUser: (user) => {
+    set({ user });
+  },
+  
 })));

@@ -5,8 +5,8 @@ type StarRatingProps = {
 const StarRating = (props: StarRatingProps) => {
     const { rating } = props;
     const totalStars = 5;
-    const filledStars = rating;
-    // const filledStars = Math.round(rating * totalStars / 100);
+    // .4 and below rounds down, .5 and above rounds up
+    const filledStars = Math.floor(rating) + (rating % 1 >= 0.5 ? 1 : 0);
 
     return (
         <div>

@@ -4,6 +4,7 @@ export type User = {
     firstName: string;
     lastName: string;
     avatar?: string;
+    bio?: string;
   }
 
   export type PostType = "Roommate" | "Sublet" | "Housing" | null;
@@ -36,5 +37,16 @@ export type HousingItem = {
   price: string;
   latitude?: number;
   longitude?: number;
+};
+
+export type ReviewWithUserData = Review & {user: User};
+
+export type Review = {
+  id: string;
+  content: string;
+  timestamp: string;
+  rating: number;
+  upvoteCount: number;
+  housingId: string;
 };
 

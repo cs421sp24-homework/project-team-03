@@ -55,7 +55,10 @@ describe('AuthService', () => {
         isEmailVerified: false,
         verificationToken: 'some-verification-token', // Optional, can be null
         posts: [], // Array of Post entities, can be empty if not testing related functionality
+        reviews: [],
+        bio: null,
       };
+
     it('should return a user object if validation is successful', async () => {
         const user = { id: 1, email: 'test@jhu.edu', password: 'hashedpassword' };
         jest.spyOn(userService, 'findOne').mockResolvedValue(exampleUser);
@@ -92,6 +95,8 @@ describe('AuthService', () => {
             isEmailVerified: false,
             verificationToken: 'some-verification-token', // Optional, can be null
             posts: [], // Array of Post entities, can be empty if not testing related functionality
+            reviews: [],
+            bio: null,
           };
       const expectedPayload = {
         email: exampleUser.email,
@@ -100,6 +105,7 @@ describe('AuthService', () => {
         lastName: exampleUser.lastName,
         avatar: exampleUser.avatar,
         isEmailVerified: exampleUser.isEmailVerified,
+        bio: exampleUser.bio,
       };
   
       // Arrange: Spy on jwtService.sign and mock its implementation

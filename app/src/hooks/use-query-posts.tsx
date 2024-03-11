@@ -13,6 +13,7 @@ function useQueryPosts() {
     try {
       const fetchedPosts = await fetchPosts();
 
+      // Convert Post address field to coordinates using Google Map API
       for (const item of fetchedPosts) {
         const { address } = item;
         const coordinates = await getAddressCoordinates(address);

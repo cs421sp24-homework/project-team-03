@@ -1,3 +1,5 @@
+import { Review } from 'src/reviews/review.entity';
+
 export class HousingResponseDTO {
   id: string;
   name: string;
@@ -7,4 +9,9 @@ export class HousingResponseDTO {
   distance: number;
   price: string;
   reviewCount: number;
+  latitude: number;
+  longitude: number;
+
+  // NEW
+  reviews: Review[];
 }
