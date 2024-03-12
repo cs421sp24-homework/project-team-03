@@ -154,4 +154,13 @@ describe('test post functionality', () => {
         cy.contains(randomCost).should('not.exist');
         cy.contains(randomAddress).should('not.exist');
     })
+
+    it('If a user logs out, they should be redirected to home page', () => {
+        cy.loginUser(randomEmail, randomPassword);
+        cy.get('#see-posts').click();
+        cy.get('#logout').click();
+        cy.get('#logout-btn').click();
+        cy.contains('Community Posts').should('not.exist');
+        cy.contains('Off-Campus Housing').should('be.visible');
+    })
 })

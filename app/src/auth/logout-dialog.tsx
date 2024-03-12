@@ -25,7 +25,7 @@ export const LogoutDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button aria-label={"Click to login"} variant="destructive">
+        <Button id="logout" aria-label={"Click to login"} variant="destructive">
           Logout
         </Button>
       </DialogTrigger>
@@ -43,7 +43,7 @@ export const LogoutDialog = () => {
             </Button>
           </DialogClose>
           <DialogClose asChild>
-            <Button type="submit" onClick={handleLogout}>
+            <Button id="logout-btn" type="submit" onClick={handleLogout}>
               Logout
             </Button>
           </DialogClose>

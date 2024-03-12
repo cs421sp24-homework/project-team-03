@@ -6,6 +6,7 @@ import { User as UserType } from "@/lib/types";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
+
 function User() {
   const { jhed } = useParams();
   const email = `${jhed}@jhu.edu`; // Construct the email from the jhed parameter
