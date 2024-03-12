@@ -21,12 +21,16 @@ describe('user register + login', () => {
   let randomName;
   let randomEmail;
   let randomPassword;
+  let incorrectEmail;
+  let incorrectPassword;
 
   before(() => {
     // Generate the credentials before all tests run
     randomName = generateRandomName();
     randomEmail = randomName + "@jhu.edu";
     randomPassword = generateRandomPassword(10);
+    incorrectPassword = generateRandomPassword(7);
+    incorrectEmail = randomName + "@gmail.com";
   });
 
   beforeEach(() => {
@@ -35,28 +39,32 @@ describe('user register + login', () => {
       .should('be.visible');
   });
 
-  it('allows a user to register with proper credentials', function() {
-    //click the register button
-    cy.get(':nth-child(4) > .border').click();
-    // enter in information into register dialog
-    cy.get('#email').type(randomEmail);
-    cy.get('#password').type(randomPassword);
-    cy.get('#firstName').type(randomName);
-    cy.get('#lastName').type(randomName);
-    cy.contains('Save').click();
+  it('user registration fails with a password less than 8 characters', () => {
+    cy.registerUser(randomEmail, incorrectPassword, randomName, randomName);
+    //assert that a failure registration toast pops up
+    cy.get('#toast', { timeout: 1000 })
+      .should('exist')
+      .contains(/failed to register/i);
+  });
+
+  it('user registration fails with a non @jhu.edu email', () => {
+    cy.registerUser(incorrectEmail, randomPassword, randomName, randomName);
+    //assert that a failure registration toast pops up
+    cy.get('#toast', { timeout: 1000 })
+      .should('exist')
+      .contains(/failed to register/i);
+  });
+
+  it('allows a user to register with proper credentials', () => {
+    cy.registerUser(randomEmail, randomPassword, randomName, randomName);
     //assert that a successful registration toast pops up
     cy.get('#toast', { timeout: 1000 })
       .should('exist')
       .contains(/registration successful/i);
   });
 
-  it('allows a user to log in with proper credentials', function(){
-      //click the login button 
-    cy.get(':nth-child(4) > .bg-primary').click();
-    // Enter login credentials
-    cy.get('#email').type(randomEmail);
-    cy.get('#password').type(randomPassword);
-    cy.get('#login').click();
+  it('allows a user to log in with proper credentials', () => {
+    cy.loginUser(randomEmail, randomPassword);
     //assert that the red 'logout' button pops up
     cy.get(':nth-child(4) > .inline-flex').should('be.visible');
   });
