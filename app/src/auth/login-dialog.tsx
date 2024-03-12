@@ -93,7 +93,7 @@ export const LoginDialog = () => {
             </Button>
           </DialogClose>
           <DialogClose asChild>
-            <Button type="submit" onClick={handleLogin}>
+            <Button id='login' type="submit" onClick={handleLogin}>
               Login
             </Button>
           </DialogClose>

@@ -46,6 +46,7 @@ const Toast = React.forwardRef<
   return (
     <ToastPrimitives.Root
       ref={ref}
+      id="toast" //for cypress reasons
       className={cn(toastVariants({ variant }), className)}
       {...props}
     />
