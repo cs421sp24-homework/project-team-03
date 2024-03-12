@@ -24,7 +24,6 @@ import { PostType } from './post.entity';
 type PostResponseWithPagination = {
   filter?: string;
   search?: string;
-  type?: PostType;
   data: PostResponseDto[];
   pagination: {
     limit: number;
@@ -68,6 +67,7 @@ export class PostsController {
     @Query('email') email?: string,
     @Query('withUserData') withUserData?: boolean,
     @Query('type') type?: PostType,
+    @Query('cost', new DefaultValuePipe(10000)) cost?: number,
   ): Promise<PostResponseWithPagination> {
     let userId: number | undefined;
 
@@ -86,6 +86,7 @@ export class PostsController {
       userId,
       withUserData,
       type,
+      cost,
     );
 
     return {
@@ -95,6 +96,7 @@ export class PostsController {
         limit,
         offset,
       },
+
       data: posts.map((post) => {
         delete post.userId;
         if (post.user) {

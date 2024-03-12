@@ -9,13 +9,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { fetchHousingItems, fetchPosts } from "@/lib/api";
+import { fetchPosts } from "@/lib/api";
 import { Label } from "@radix-ui/react-label";
 import { useState } from "react";
 import { useStore } from "@/lib/store";
 
 const Filters = () => {
   const [type, setType] = useState("");
+  const [maxCost, setMaxCost] = useState("");
   const setPosts = useStore((state) => state.setPosts);
 
   const handleSave = async () => {
@@ -23,21 +24,25 @@ const Filters = () => {
       // Construct query string based on filter options
       let query = '';
       if (type) {
-        query += `type=${type}`;
+        query += `&type=${type}`;
+      }
+      if (maxCost) {
+        query += `&cost=${maxCost}`;
       }
 
-      // Fetch housing items with the constructed query
+      // Fetch posts with the constructed query
       const postItems = await fetchPosts(query);
 
-      // Update housing items in the store
+      // Update posts in the store
       setPosts(postItems);
     } catch (error) {
-      console.error('Error fetching housing items:', error);
+      console.error('Error fetching posts:', error);
     }
   };
 
   const handleCancel = () => {
     setType("");
+    setMaxCost("");
   };
 
   return (
@@ -71,6 +76,20 @@ const Filters = () => {
                 <option value="Sublet">Sublet</option>
                 <option value="Housing">Housing</option>
               </select>
+            </div>
+            <div className="grid items-center grid-cols-4 gap-4">
+              <Label htmlFor="maxCost" className="col-span-2">Max Cost</Label>
+              <input
+                type="number"
+                id="maxCost"
+                value={maxCost}
+                onChange={(e) => {
+                  setMaxCost(Number(e.target.value));
+                }}
+                min="0"
+                step="0.01"
+                className="h-8 col-span-4 px-2 border rounded-md"
+              />
             </div>
           </div>
           <DialogClose asChild>

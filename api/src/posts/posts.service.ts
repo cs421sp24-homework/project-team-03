@@ -31,6 +31,7 @@ export class PostsService {
     userId?: number,
     withUserData?: boolean,
     type?: PostType,
+    cost?: number,
   ): Promise<Post[]> {
     const queryBuilder = this.postRepository.createQueryBuilder('posts');
 
@@ -62,6 +63,15 @@ export class PostsService {
         queryBuilder.andWhere('posts.type = :type', { type });
       } else {
         queryBuilder.where('posts.type = :type', { type });
+        hasWhereCondition = true;
+      }
+    }
+
+    if (cost !== undefined) {
+      if (hasWhereCondition) {
+        queryBuilder.andWhere('posts.cost <= :cost', { cost });
+      } else {
+        queryBuilder.where('posts.cost <= :cost', { cost });
         hasWhereCondition = true;
       }
     }

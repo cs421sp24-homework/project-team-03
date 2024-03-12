@@ -192,7 +192,7 @@ export const register = async (
   export const fetchPosts = async (query?: string): Promise<PostWithUserData[]> => {
     let url = `${API_URL}/posts?withUserData=true`;
     if (query) {
-      url += `&${query}`;
+      url += `${query}`;
     }  
     const response = await fetch(url);
     const responseJson = await response.json();
