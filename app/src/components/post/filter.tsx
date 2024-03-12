@@ -84,7 +84,7 @@ const Filters = () => {
                 id="maxCost"
                 value={maxCost}
                 onChange={(e) => {
-                  setMaxCost(Number(e.target.value));
+                  setMaxCost((e.target.value));
                 }}
                 min="0"
                 step="0.01"
