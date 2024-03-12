@@ -21,6 +21,8 @@ export class HousingService {
     limit: number,
     offset: number,
     search?: string,
+    maxDistance?: number,
+    price?: string,
   ): Promise<Housing[]> {
     const queryBuilder = this.housingRepository.createQueryBuilder('housings');
 
@@ -35,6 +37,31 @@ export class HousingService {
         search: `%${search}%`,
       });
       hasWhereCondition = true;
+    }
+
+    // for the max distance
+    if (maxDistance !== undefined) {
+      if (hasWhereCondition) {
+        queryBuilder.andWhere('housings.distance <= :maxDistance', {
+          maxDistance,
+        });
+      } else {
+        queryBuilder.where('housings.distance <= :maxDistance', {
+          maxDistance,
+        });
+      }
+    }
+
+    if (price !== undefined) {
+      if (hasWhereCondition) {
+        queryBuilder.andWhere('housings.price <= :price', {
+          price,
+        });
+      } else {
+        queryBuilder.where('housings.price <= :price', {
+          price,
+        });
+      }
     }
 
     return queryBuilder.getMany();

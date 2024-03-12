@@ -42,14 +42,16 @@ export class HousingController {
   async findAll(
     @Query() query: FindHousingsQueryDTO,
   ): Promise<FindHousingsResponseDTO> {
-    const { limit, offset, search } = query;
+    const { limit, offset, search, maxDistance, price } = query;
 
-    const housings = await this.housingService.findAll(limit, offset, search);
+    const housings = await this.housingService.findAll(limit, offset, search, maxDistance, price);
 
     return {
       limit,
       offset,
       search,
+      maxDistance,
+      price,
       data: housings.map((housing) => housing as HousingResponseDTO),
     };
   }

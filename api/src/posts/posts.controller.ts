@@ -19,6 +19,7 @@ import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { UpdatePostDto } from './update-post.dto';
 import { PostOwnershipGuard } from 'src/guards/post-owner.guard';
 import { UserService } from 'src/user/user.service';
+import { PostType } from './post.entity';
 
 type PostResponseWithPagination = {
   filter?: string;
@@ -64,7 +65,9 @@ export class PostsController {
     @Query('offset', new DefaultValuePipe(0)) offset: number,
     @Query('search') search: string,
     @Query('email') email?: string,
-    @Query('withUserData') withUserData?: boolean, // <-- Add this line
+    @Query('withUserData') withUserData?: boolean,
+    @Query('type') type?: PostType,
+    @Query('cost', new DefaultValuePipe(10000)) cost?: number,
   ): Promise<PostResponseWithPagination> {
     let userId: number | undefined;
 
@@ -82,6 +85,8 @@ export class PostsController {
       search,
       userId,
       withUserData,
+      type,
+      cost,
     );
 
     return {
@@ -91,6 +96,7 @@ export class PostsController {
         limit,
         offset,
       },
+
       data: posts.map((post) => {
         delete post.userId;
         if (post.user) {

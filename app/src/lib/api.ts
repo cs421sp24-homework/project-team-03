@@ -189,16 +189,24 @@ export const register = async (
   };
 
   // Fetch all posts with user data
-  export const fetchPosts = async (): Promise<PostWithUserData[]> => {
-    const response = await fetch(`${API_URL}/posts?withUserData=true`);
+  export const fetchPosts = async (query?: string): Promise<PostWithUserData[]> => {
+    let url = `${API_URL}/posts?withUserData=true`;
+    if (query) {
+      url += `${query}`;
+    }  
+    const response = await fetch(url);
     const responseJson = await response.json();
     return responseJson.data;
   };
   
   // Fetch all housing items
-  export const fetchHousingItems = async (): Promise<HousingItem[]> => {
+  export const fetchHousingItems = async (query?: string): Promise<HousingItem[]> => {
     const API_URL = import.meta.env.VITE_API_URL;
-    const response = await fetch(`${API_URL}/housings?limit=50`)
+    let url = `${API_URL}/housings?limit=50`;
+    if (query) {
+      url += `&${query}`;
+    }  
+    const response = await fetch(url)
     const responseJson = await response.json();
 
     if (!response.ok) {
