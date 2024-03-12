@@ -1,6 +1,7 @@
 import Posts from "./posts";
-import SearchInput from "../catalog/search-input";
 import PostMapContainer from "../map/post-map-container";
+import SearchInput from "./search-input";
+import Filter from "./filter";
 
 const Feed = () => {
   return (
@@ -12,9 +13,9 @@ const Feed = () => {
         <div style={{ paddingRight: '2%' }}>
           <SearchInput />
         </div>
-        {/* //<Filter/> */}
+        <Filter/> 
       </div>
-      <div className="map-container flex justify-center pt-4" style={{ width: '100%', height: '57vh', overflow: 'hidden' }}>
+      <div className="flex justify-center pt-4 map-container" style={{ width: '100%', height: '57vh', overflow: 'hidden' }}>
         < PostMapContainer />
       </div>
       <div style={{ borderBottom: '2px solid black', width: '100%', paddingTop: '2%' }}></div> {/* Line underneath Filter */}

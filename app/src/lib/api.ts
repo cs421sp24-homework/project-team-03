@@ -189,8 +189,12 @@ export const register = async (
   };
 
   // Fetch all posts with user data
-  export const fetchPosts = async (): Promise<PostWithUserData[]> => {
-    const response = await fetch(`${API_URL}/posts?withUserData=true`);
+  export const fetchPosts = async (query?: string): Promise<PostWithUserData[]> => {
+    let url = `${API_URL}/posts?withUserData=true`;
+    if (query) {
+      url += `&${query}`;
+    }  
+    const response = await fetch(url);
     const responseJson = await response.json();
     return responseJson.data;
   };

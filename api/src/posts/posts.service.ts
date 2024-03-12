@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Post } from './post.entity';
+import { Post, PostType } from './post.entity';
 import { CreatePostDto } from './create-post.dto';
 import { UpdatePostDto } from './update-post.dto';
 
@@ -30,6 +30,7 @@ export class PostsService {
     search?: string,
     userId?: number,
     withUserData?: boolean,
+    type?: PostType,
   ): Promise<Post[]> {
     const queryBuilder = this.postRepository.createQueryBuilder('posts');
 
@@ -52,6 +53,15 @@ export class PostsService {
         queryBuilder.andWhere('posts.userId = :userId', { userId });
       } else {
         queryBuilder.where('posts.userId = :userId', { userId });
+        hasWhereCondition = true;
+      }
+    }
+
+    if (type !== undefined) {
+      if (hasWhereCondition) {
+        queryBuilder.andWhere('posts.type = :type', { type });
+      } else {
+        queryBuilder.where('posts.type = :type', { type });
         hasWhereCondition = true;
       }
     }
