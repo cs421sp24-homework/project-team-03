@@ -82,10 +82,10 @@ const DeckActions = () => {
             aria-label={"Reset"}
             variant="default"
             size="sm"
-            style={{ backgroundColor: '#c62828', color: 'white', marginLeft: '10px' }} 
+            style={{ backgroundColor: 'white', color: '#000000', marginLeft: '10px', border: '1px solid #000000' }} 
             onClick={handleResetClick}
           >
-            Reset
+            Clear Filters
           </Button>
         <DialogContent className="sm:max-w-[525px]" style={{ maxHeight: '600px', overflowY: 'auto' }}>
           <DialogHeader>
