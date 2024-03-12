@@ -1,5 +1,6 @@
 import {
   IsInt,
+  IsNumber,
   IsOptional,
   IsPositive,
   IsString,
@@ -23,4 +24,15 @@ export class FindHousingsQueryDTO {
   @IsString()
   @IsOptional()
   search?: string;
+
+  @IsNumber()
+  @IsOptional()
+  @Min(0)
+  maxDistance?: number;
+
+  @IsString()
+  @IsOptional()
+  price?: string;
+
+
 }
