@@ -41,12 +41,10 @@ const Filters = () => {
   };
 
   const handleCancel = () => {
-    setDistance(0);
+    setDistance(1);
     setPrice("");
   };
 
-  const handleResetClick = () => {
-  };
 
   return (
     <>
@@ -56,15 +54,7 @@ const Filters = () => {
             Filter
           </Button>
         </DialogTrigger>
-        <Button
-            aria-label={"Reset"}
-            variant="default"
-            size="sm"
-            style={{ backgroundColor: 'white', color: '#000000', marginLeft: '10px', border: '1px solid #000000' }} 
-            onClick={handleResetClick}
-          >
-            Clear Filters
-          </Button>
+        
         <DialogContent className="sm:max-w-[525px]" style={{ maxHeight: '600px', overflowY: 'auto' }}>
           <DialogHeader>
             <DialogTitle>Filter Options</DialogTitle>
