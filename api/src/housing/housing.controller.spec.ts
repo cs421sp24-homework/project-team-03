@@ -66,7 +66,7 @@ describe('HousingController', () => {
     jest.spyOn(service, 'findAll').mockResolvedValue(result);
 
     expect(await controller.findAll({ limit: 10, offset: 0, search: '' })).toEqual({ limit: 10, offset: 0, search: '', data: result });
-    expect(service.findAll).toHaveBeenCalledWith(10, 0, '');
+    expect(service.findAll).toHaveBeenCalledWith(10, 0, '', undefined, undefined);
   });
 
   // Test for findOne
