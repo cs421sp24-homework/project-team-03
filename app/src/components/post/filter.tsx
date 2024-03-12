@@ -9,42 +9,41 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { fetchHousingItems } from "@/lib/api";
+import { fetchPosts } from "@/lib/api";
 import { Label } from "@radix-ui/react-label";
 import { useState } from "react";
 import { useStore } from "@/lib/store";
 
 const Filters = () => {
-  const [distance, setDistance] = useState(1);
-  const [price, setPrice] = useState("");
-  const setHousingItems = useStore((state) => state.setHousingItems);
+  const [type, setType] = useState("");
+  const [maxCost, setMaxCost] = useState("");
+  const setPosts = useStore((state) => state.setPosts);
 
   const handleSave = async () => {
     try {
       // Construct query string based on filter options
       let query = '';
-      if (price) {
-        query += `&price=${price}`;
+      if (type) {
+        query += `&type=${type}`;
       }
-      if (distance) {
-        query += `&maxDistance=${distance}`;
+      if (maxCost) {
+        query += `&cost=${maxCost}`;
       }
 
-      // Fetch housing items with the constructed query
-      const housingItems = await fetchHousingItems(query);
+      // Fetch posts with the constructed query
+      const postItems = await fetchPosts(query);
 
-      // Update housing items in the store
-      setHousingItems(housingItems);
+      // Update posts in the store
+      setPosts(postItems);
     } catch (error) {
-      console.error('Error fetching housing items:', error);
+      console.error('Error fetching posts:', error);
     }
   };
 
   const handleCancel = () => {
-    setDistance(1);
-    setPrice("");
+    setType("");
+    setMaxCost("");
   };
-
 
   return (
     <>
@@ -54,7 +53,6 @@ const Filters = () => {
             Filter
           </Button>
         </DialogTrigger>
-        
         <DialogContent className="sm:max-w-[525px]" style={{ maxHeight: '600px', overflowY: 'auto' }}>
           <DialogHeader>
             <DialogTitle>Filter Options</DialogTitle>
@@ -63,43 +61,40 @@ const Filters = () => {
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
-          <div className="grid items-center grid-cols-4 gap-4">
-          <Label htmlFor="price" className="col-span-2">Price</Label>
-          <select
-            id="price"
-            value={price}
-            onChange={(e) => {
-              setPrice(e.target.value);
-            }}
-            className="h-8 col-span-4"
-          >
-            <option value="">All</option>
-            <option value="$">Low ($)</option>
-            <option value="$$">Medium ($$)</option>
-            <option value="$$$">High ($$$)</option>
-          </select>
-        </div>
             <div className="grid items-center grid-cols-4 gap-4">
-              <Label htmlFor="distance"> Max Distance (Miles)</Label>
+              <Label htmlFor="type" className="col-span-2">Type</Label>
+              <select
+                id="type"
+                value={type}
+                onChange={(e) => {
+                  setType(e.target.value);
+                }}
+                className="h-8 col-span-4"
+              >
+                <option value="">All</option>
+                <option value="Roommate">Roommate</option>
+                <option value="Sublet">Sublet</option>
+                <option value="Housing">Housing</option>
+              </select>
+            </div>
+            <div className="grid items-center grid-cols-4 gap-4">
+              <Label htmlFor="maxCost" className="col-span-2">Max Cost</Label>
               <input
                 type="number"
-                id="distance"
-                value={distance}
+                id="maxCost"
+                value={maxCost}
                 onChange={(e) => {
-                  setDistance(Number(e.target.value));
+                  setMaxCost((e.target.value));
                 }}
                 min="0"
-                step="0.1"
+                step="0.01"
                 className="h-8 col-span-4 px-2 border rounded-md"
               />
             </div>
-            
           </div>
           <DialogClose asChild>
             <DialogFooter>
-              <Button onClick={handleSave}>
-                  Submit
-                </Button>
+              <Button onClick={handleSave}>Submit</Button>
               <Button variant={"secondary"} type="reset" onClick={handleCancel}>Close</Button>
             </DialogFooter>
           </DialogClose>
