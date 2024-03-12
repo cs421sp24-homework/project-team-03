@@ -34,7 +34,9 @@ describe('user register + login', () => {
   });
 
   beforeEach(() => {
-    cy.visit('http://localhost:5173/project-team-03/');
+    cy.visit('/'); //visits base url from config file
+    //just in case deployed website is down due to render, waits a minute
+    //active check: at least 1 housing item shows up
     cy.get(':nth-child(1) > a > .p-5', { timeout: 60000 })
       .should('be.visible');
   });
@@ -67,6 +69,9 @@ describe('user register + login', () => {
     cy.loginUser(randomEmail, randomPassword);
     //assert that the red 'logout' button pops up
     cy.get(':nth-child(4) > .inline-flex').should('be.visible');
+    cy.wait(5000); // Waits in milliseconds
+    //check that the user page shows the proper user details
+    cy.visit(`/#/users/${randomName}`);
+    cy.get('.pt-10 > .flex > div').should('have.text', `${randomName} ${randomName}`);
   });
-  
 })
