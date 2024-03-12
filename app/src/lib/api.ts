@@ -196,9 +196,13 @@ export const register = async (
   };
   
   // Fetch all housing items
-  export const fetchHousingItems = async (): Promise<HousingItem[]> => {
+  export const fetchHousingItems = async (query?: string): Promise<HousingItem[]> => {
     const API_URL = import.meta.env.VITE_API_URL;
-    const response = await fetch(`${API_URL}/housings?limit=50`)
+    let url = `${API_URL}/housings?limit=50`;
+    if (query) {
+      url += `&${query}`;
+    }  
+    const response = await fetch(url)
     const responseJson = await response.json();
 
     if (!response.ok) {

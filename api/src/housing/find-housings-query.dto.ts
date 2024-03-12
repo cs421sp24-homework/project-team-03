@@ -34,5 +34,4 @@ export class FindHousingsQueryDTO {
   @IsOptional()
   price?: string;
 
-
 }
