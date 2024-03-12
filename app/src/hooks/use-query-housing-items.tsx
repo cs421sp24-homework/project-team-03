@@ -2,8 +2,6 @@ import { useEffect } from "react";
 import { fetchHousingItems } from "@/lib/api";
 import { useToast } from "@/components/ui/use-toast";
 import { useStore } from "@/lib/store";
-import { getAddressCoordinates } from "../lib/map";
-import useInterval from "./use-intervals";
 
 function useQueryHousingItems() {
   const { toast } = useToast();
@@ -13,16 +11,6 @@ function useQueryHousingItems() {
     const loadHousingItems = async () => {
         try {
             const fetchedHousingItems = await fetchHousingItems();
-
-            for (const item of fetchedHousingItems) {
-              const { address } = item;
-              const coordinates = await getAddressCoordinates(address);
-              if (coordinates) {
-                item.latitude = coordinates.lat;
-                item.longitude = coordinates.lng;
-              }
-            }
-
             setHousingItems(fetchedHousingItems);
         } catch (error) {
             toast({
@@ -34,10 +22,6 @@ function useQueryHousingItems() {
             });
         }
     };
-
-    useInterval(() => {
-      loadHousingItems();
-    }, 300);
 
   useEffect(() => {
     loadHousingItems();

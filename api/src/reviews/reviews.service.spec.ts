@@ -75,12 +75,15 @@ describe('ReviewsService', () => {
     verificationToken: 'verificationToken123',
     posts: [],
     reviews: [],
+    bio: null,
   };
 
   const mockHousing: Housing = {
     id: '1',
     name: 'Example Housing',
     address: '123 Example St',
+    latitude: 0,
+    longitude: 0,
     imageURL: 'http://example.com/housing.jpg',
     price: '$$$',
     distance: 0.3,
@@ -108,6 +111,8 @@ describe('ReviewsService', () => {
     id: '1',
     name: 'Example Housing',
     address: '123 Example St',
+    latitude: 0,
+    longitude: 0,
     imageURL: 'http://example.com/housing.jpg',
     price: '$$$',
     distance: 0.3,
@@ -120,6 +125,8 @@ describe('ReviewsService', () => {
     id: '1',
     name: 'Example Housing',
     address: '123 Example St',
+    latitude: 0,
+    longitude: 0,
     imageURL: 'http://example.com/housing.jpg',
     price: '$$$',
     distance: 0.3,

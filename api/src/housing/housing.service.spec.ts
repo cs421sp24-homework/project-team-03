@@ -16,6 +16,8 @@ describe('HousingService', () => {
     id: 'uuid-id', // Mocked UUID 
     name: 'Sample Housing',
     address: '123 Main St',
+    latitude: 0,
+    longitude: 0,
     imageURL: 'http://example.com/image.jpg', // nullable
     price: '1000$', // default value is '$', but typically this would be set to a specific price
     distance: 10.0, // decimal value with precision 6 and scale 1
@@ -57,6 +59,8 @@ describe('HousingService', () => {
     const createHousingDto: CreateHousingDTO = {
       name: 'Sample Housing',
       address: '123 Main St',
+      latitude: 0,
+      longitude: 0,
       imageURL: 'http://example.com/image.jpg', // optional
       distance: 10, // optional, positive number
       price: '1000$', // optional

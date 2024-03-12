@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDTO } from './create-user.dto';
+import { UpdateUserDTO } from './update-user.dto';
 
 
 @Injectable()
@@ -44,4 +45,11 @@ export class UserService {
     return this.userRepository.remove(user);
   }
   
+  async update(id: number, updateUserDto: UpdateUserDTO ): Promise<User | null> {
+    const user = await this.userRepository.preload({ id, ...updateUserDto });
+    if (!user) {
+      return null;
+    }
+    return this.userRepository.save(user);
+  }
 }
