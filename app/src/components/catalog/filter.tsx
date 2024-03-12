@@ -26,7 +26,8 @@ const DeckActions = () => {
   const handleSave = async () => {
     // Condition where no filters are applied but submitted
     if (rating === 0 && reviewCount === 0 && distance === 0 && price === "") {
-      fetchHousingItems();
+      const items = await fetchHousingItems();
+      setHousingItems(items);
       return;
     }
     try {
