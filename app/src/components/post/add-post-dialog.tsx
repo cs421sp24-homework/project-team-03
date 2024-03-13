@@ -158,7 +158,7 @@ export const AddPostDialog = () => {
         {user && (
           <div className="grid gap-4 py-4">
             <div className="grid items-center grid-cols-4 gap-4">
-              <Label htmlFor="cost">Cost 
+              <Label htmlFor="cost">Monthly Cost
                 <div>(Please enter an integer)</div>
               </Label>
               <Input

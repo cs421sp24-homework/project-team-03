@@ -49,6 +49,7 @@ export class HousingService {
         queryBuilder.where('housings.distance <= :maxDistance', {
           maxDistance,
         });
+        hasWhereCondition = true;
       }
     }
 
