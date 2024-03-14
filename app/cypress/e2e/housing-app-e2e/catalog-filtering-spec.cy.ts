@@ -29,7 +29,7 @@ describe('Testing post filtering feature', () => {
   });
 
   it('Filters items by price', () => {
-    cy.loginUser(randomEmail, randomPassword);
+    cy.loginUserByRef(randomEmail, randomPassword);
     // Apply filter for location
     cy.get('#filter-button').click();
     cy.get('#price').select('$');
@@ -46,7 +46,7 @@ describe('Testing post filtering feature', () => {
   });
 
   it('Filters items by distance', () => {
-    cy.loginUser(randomEmail, randomPassword);
+    cy.loginUserByRef(randomEmail, randomPassword);
     // Apply filter for location
     cy.get('#filter-button').click();
     const price = generateRandomPrice();
@@ -64,7 +64,7 @@ describe('Testing post filtering feature', () => {
   });
 
   it('Search-bar for posts', () => {
-    cy.loginUser(randomEmail, randomPassword);
+    cy.loginUserByRef(randomEmail, randomPassword);
     cy.get('#username').type(randomName);
     cy.get('#housing-name').each(($housingItem) => {
       // Within each post-footer

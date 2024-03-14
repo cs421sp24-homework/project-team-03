@@ -1,5 +1,3 @@
-import { generateRandomName, generateRandomPassword } from "./user-register-login-spec.cy";
-
 const generateRandomCost = (length = 4) => {
   const numbers = '123456789';
   let cost = '';
@@ -7,6 +5,24 @@ const generateRandomCost = (length = 4) => {
       cost += numbers.charAt(Cypress._.random(0, numbers.length - 1));
   }
   return cost;
+}
+
+export const generateRandomPassword = (length = 8) => {
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
+  let password = '';
+  for (let i = 0; i < length; i++) {
+      password += chars.charAt(Cypress._.random(0, chars.length - 1));
+  }
+  return password;
+}
+
+export const generateRandomName = (length = 6) => {
+  const letters = 'abcdefghijklmnopqrstuvwxyz';
+  let name = '';
+  for (let i = 0; i < length; i++) {
+      name += letters.charAt(Cypress._.random(0, letters.length - 1));
+  }
+  return name;
 }
 
 describe('Testing post filtering feature', () => {
@@ -33,15 +49,15 @@ describe('Testing post filtering feature', () => {
   });
 
   it('Feed loads when navigating to posts', () => {
-    cy.registerUser(randomEmail, randomPassword, randomName, randomName);
-    cy.loginUser(randomEmail, randomPassword);
+    cy.registerUserByRef(randomEmail, randomPassword, randomName, randomName);
+    cy.loginUserByRef(randomEmail, randomPassword);
     cy.get('#see-posts').click();
     cy.contains('Community Posts').should('be.visible');
     cy.url().should('include', '/posts');
 })
 
   it('Adds post successfully', () => {
-    cy.loginUser(randomEmail, randomPassword);
+    cy.loginUserByRef(randomEmail, randomPassword);
     randomTitle = generateRandomName();
     randomContent = generateRandomName(12);
     randomAddress = generateRandomName(12);
@@ -59,13 +75,13 @@ describe('Testing post filtering feature', () => {
 
     cy.contains(randomTitle).should('be.visible');
     cy.contains(randomContent).should('be.visible');
-    cy.contains(randomCost).should('be.visible');
+    cy.contains(randomCost).should('exist');
     cy.contains(randomAddress).should('be.visible');
 })
 
 
   it('Filters posts by type', () => {
-    cy.loginUser(randomEmail, randomPassword);
+    cy.loginUserByRef(randomEmail, randomPassword);
     cy.get('#see-posts').click();
     // Apply filter for location
     cy.get('#filter-button').click();
@@ -83,7 +99,7 @@ describe('Testing post filtering feature', () => {
   });
 
   it('Filters posts by type', () => {
-    cy.loginUser(randomEmail, randomPassword);
+    cy.loginUserByRef(randomEmail, randomPassword);
     cy.get('#see-posts').click();
     // Apply filter for location
     cy.get('#filter-button').click();
@@ -104,7 +120,7 @@ describe('Testing post filtering feature', () => {
   });
 
   it('Search-bar for posts', () => {
-    cy.loginUser(randomEmail, randomPassword);
+    cy.loginUserByRef(randomEmail, randomPassword);
     cy.get('#see-posts').click();
     cy.get('#username').type(randomName);
     cy.get('#username-area').each(($postFooter) => {

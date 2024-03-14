@@ -25,7 +25,7 @@ export const LogoutDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button aria-label={"Click to login"} variant="destructive">
+        <Button id="logout-dialog" aria-label={"Click to login"} variant="destructive">
           Logout
         </Button>
       </DialogTrigger>

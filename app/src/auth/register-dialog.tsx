@@ -54,7 +54,7 @@ export const RegisterDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button aria-label={"Click to register"} variant="outline">
+        <Button id="register-dialog" aria-label={"Click to register"} variant="outline">
           Register
         </Button>
       </DialogTrigger>
