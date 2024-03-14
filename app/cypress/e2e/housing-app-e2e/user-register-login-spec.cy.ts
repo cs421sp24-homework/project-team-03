@@ -1,4 +1,4 @@
-const generateRandomPassword = (length = 8) => {
+export const generateRandomPassword = (length = 8) => {
   const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
   let password = '';
   for (let i = 0; i < length; i++) {
@@ -7,7 +7,7 @@ const generateRandomPassword = (length = 8) => {
   return password;
 }
 
-const generateRandomName = (length = 6) => {
+export const generateRandomName = (length = 6) => {
   const letters = 'abcdefghijklmnopqrstuvwxyz';
   let name = '';
   for (let i = 0; i < length; i++) {
@@ -15,7 +15,6 @@ const generateRandomName = (length = 6) => {
   }
   return name;
 }
-
 
 describe('user register + login', () => {
   let randomName;

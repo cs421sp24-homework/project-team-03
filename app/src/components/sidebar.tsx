@@ -41,7 +41,7 @@ function Sidebar({ isPostsView }: SideBarProps) {
       <Button variant={"ghost"} size="sm" onClick={handleClickHome}>
         <HomeIcon className="w-5 h-5" />
       </Button>
-      {!isPostsView && <Button variant={"ghost"} size="sm" onClick={handleClickAddPost}>
+      {!isPostsView && <Button id="see-posts" variant={"ghost"} size="sm" onClick={handleClickAddPost}>
         <Pencil2Icon className="w-5 h-5" />
       </Button>}
       {isPostsView && <AddPostDialog />}
