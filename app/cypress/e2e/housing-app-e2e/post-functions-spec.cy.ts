@@ -43,7 +43,7 @@ describe('test post functionality', () => {
     })
 
     beforeEach(() => {
-        cy.visit('http://localhost:5173/project-team-03/');
+        cy.visit('/');
         cy.contains('Off-Campus Housing').should('be.visible');
         randomTitle = generateRandomName();
         randomContent = generateRandomName(12);
