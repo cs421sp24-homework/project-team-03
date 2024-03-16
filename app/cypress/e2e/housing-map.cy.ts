@@ -1,7 +1,7 @@
 describe('Housing Map Test', function () {
   beforeEach(() => {
     // Visit Housing Catalog Page
-    cy.visit('http://localhost:5173/project-team-03/');
+    cy.visit('/'); //visits base url from config file
   });
 
   it('check that housing map exists', () => {
@@ -32,7 +32,7 @@ describe('Housing Map Test', function () {
     cy.get(`[title=marker-${housingId_1}`)
       .click({ force: true });
     cy.url()
-      .should('include', `http://localhost:5173/project-team-03/#/housings/${housingId_1}`);
+      .should('include', `/#/housings/${housingId_1}`);
   });
 
   it('check that marker hover launches infoWindow', () => {
