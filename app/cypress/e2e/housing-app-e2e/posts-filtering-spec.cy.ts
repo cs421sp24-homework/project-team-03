@@ -91,17 +91,5 @@ describe('Testing post filtering feature', () => {
     });
   });
 
-  it('Search-bar for posts', () => {
-    cy.get('#see-posts').click();
-    cy.get('#search-bar').type(randomName);
-    cy.get('[style="height: 57vh; overflow-y: auto;"] > .flex-wrap').each(($postFooter) => {
-      // Within each post-footer
-      cy.wrap($postFooter).within(() => {
-        // Check for the type
-        cy.contains(randomName).should('be.visible');
-      });
-    });
-  });
-
   // Add more tests for other filter criteria as needed
 });

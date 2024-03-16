@@ -8,7 +8,7 @@ const Aside = () => {
 
   return (
     <div className="flex flex-col gap-2 p-4">
-      {user ? <LogoutDialog id="logout-dialog"/> : <LoginDialog />}
+      {user ? <LogoutDialog /> : <LoginDialog />}
       {!user && <RegisterDialog />}
     </div>
   );
