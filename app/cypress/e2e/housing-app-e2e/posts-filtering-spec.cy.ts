@@ -1,14 +1,5 @@
-import { generateRandomName, generateRandomPassword } from "./user-register-login-spec.cy";
+import { generateRandomPassword, generateRandomName, generateRandomCost } from '../../support/helpers';
 
-
-const generateRandomCost = (length = 4) => {
-  const numbers = '123456789';
-  let cost = '';
-  for (let i = 0; i < length; i++) {
-      cost += numbers.charAt(Cypress._.random(0, numbers.length - 1));
-  }
-  return cost;
-}
 
 describe('Testing post filtering feature', () => {
   let randomName;
@@ -47,7 +38,7 @@ describe('Testing post filtering feature', () => {
     randomCost = generateRandomCost();
 
     cy.get('#see-posts').click();
-    cy.get('#add-post-button').click();
+    cy.get('#add-posts').click();
 
     cy.get('#type').select('Roommate');
     cy.get('#title').type(randomTitle);

@@ -58,7 +58,7 @@ Populate Housing Catalog (follow instruction only when running app locally!)
 - Database: [Value of DB_NAME in .env]
 4. Confirm the changes by clicking "OK"
 5. A tab labeled with the prefix "console" (e.g., console postgres-db@localhost) will appear. Paste the housing data into this console.
-- Housing Data: https://drive.google.com/file/d/1AYpFOPSd6mFAAScptq6u9M91RvSeustc/view?usp=sharing
+- Housing Data: https://docs.google.com/document/d/13HGQMnyzpOj_O-C2aN4iwqeuD3EgJPusuBpESF52PdE/edit 
 6. Execute the command by clicking the green "play" arrow.
 7. Refresh the browser displaying the application.
 

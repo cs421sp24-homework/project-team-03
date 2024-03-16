@@ -43,7 +43,7 @@ export const LogoutDialog = () => {
             </Button>
           </DialogClose>
           <DialogClose asChild>
-            <Button id='submit' type="submit" onClick={handleLogout}>
+            <Button id="logout-btn" type="submit" onClick={handleLogout}>
               Logout
             </Button>
           </DialogClose>

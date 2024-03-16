@@ -1,20 +1,4 @@
-export const generateRandomPassword = (length = 8) => {
-  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
-  let password = '';
-  for (let i = 0; i < length; i++) {
-      password += chars.charAt(Cypress._.random(0, chars.length - 1));
-  }
-  return password;
-}
-
-export const generateRandomName = (length = 6) => {
-  const letters = 'abcdefghijklmnopqrstuvwxyz';
-  let name = '';
-  for (let i = 0; i < length; i++) {
-      name += letters.charAt(Cypress._.random(0, letters.length - 1));
-  }
-  return name;
-}
+import { generateRandomPassword, generateRandomName } from '../../support/helpers';
 
 describe('user register + login', () => {
   let randomName;

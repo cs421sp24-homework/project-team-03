@@ -47,7 +47,7 @@ Cypress.Commands.add('loginUser', (email, password) => {
 
 Cypress.Commands.add('logoutUser', () => {
   cy.get('#logout-dialog').click();
-  cy.get('#submit').click();
+  cy.get('#logout-btn').click();
 });
 
 declare global {

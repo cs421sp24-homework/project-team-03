@@ -64,7 +64,7 @@ const Filters = () => {
           </DialogHeader>
           <div className="grid gap-4 py-4">
           <div className="grid items-center grid-cols-4 gap-4">
-          <Label htmlFor="price" className="col-span-2">Price</Label>
+          <Label htmlFor="price" className="col-span-2">Max Price</Label>
           <select
             id="price"
             value={price}

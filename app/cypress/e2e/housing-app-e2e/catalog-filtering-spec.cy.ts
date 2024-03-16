@@ -1,4 +1,4 @@
-import { generateRandomName, generateRandomPassword } from "./user-register-login-spec.cy";
+import { generateRandomPassword, generateRandomName } from '../../support/helpers';
 
 describe('Testing catalog filtering feature', () => {
   let randomName;
