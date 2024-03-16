@@ -22,6 +22,7 @@ const HousingMapContainer = () => {
 
   return (
     <GoogleMap
+      id={"housing-map"}
       mapContainerStyle={{ height: "400px", width: "800px" }}
       center={{ lat: 39.330420, lng: -76.618050 }}
       zoom={13}
@@ -32,6 +33,7 @@ const HousingMapContainer = () => {
         item.latitude !== undefined &&
         item.longitude !== undefined && (
             <Marker
+              title={`marker-${item.id}`}
               key={index}
               position={{ lat: item.latitude, lng: item.longitude }}
               onClick={() => handleMarkerClick(item)}
@@ -39,7 +41,7 @@ const HousingMapContainer = () => {
               // onMouseOut={() => setHoveredHousing(null)}
             >
               {hoveredHousing === item &&
-                <InfoWindowF > 
+                <InfoWindowF> 
                   <HousingInfoWindow housingItem={item} />
                 </InfoWindowF>
               }
