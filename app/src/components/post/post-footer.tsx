@@ -17,7 +17,7 @@ const PostFooter = ({
     const userLogged = useStore((state) => state.user);
   
     return (
-      <div className="flex flex-col mb-8">
+      <div className="flex flex-col mb-8" id="post-footer">
         <span className="mr-4">
           Cost: ${post.cost}
         </span>

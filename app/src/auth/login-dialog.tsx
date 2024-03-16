@@ -48,7 +48,7 @@ export const LoginDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button aria-label={"Click to login"} variant="default">
+        <Button id="login-dialog" aria-label={"Click to login"} variant="default">
           Login
         </Button>
       </DialogTrigger>
@@ -93,7 +93,7 @@ export const LoginDialog = () => {
             </Button>
           </DialogClose>
           <DialogClose asChild>
-            <Button type="submit" onClick={handleLogin}>
+            <Button id='login' type="submit" onClick={handleLogin}>
               Login
             </Button>
           </DialogClose>

@@ -25,13 +25,54 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 //
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+
+Cypress.Commands.add('registerUser', (email, password, firstName, lastName) => {
+    // Place your registration steps here
+    cy.get('#register-dialog').click();
+    cy.get('#email').type(email);
+    cy.get('#password').type(password);
+    cy.get('#firstName').type(firstName);
+    cy.get('#lastName').type(lastName);
+    cy.contains('Save').click();
+});
+
+Cypress.Commands.add('loginUser', (email, password) => {
+     //click the login button 
+     cy.get('#login-dialog').click();
+     // Enter login credentials
+     cy.get('#email').type(email);
+     cy.get('#password').type(password);
+     cy.get('#login').click();
+});
+
+Cypress.Commands.add('logoutUser', () => {
+  cy.get('#logout-dialog').click();
+  cy.get('#logout-btn').click();
+});
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      /**
+       * Custom command to register a user.
+       * @example cy.registerUser('email@example.com', 'password123', 'John', 'Doe')
+       */
+      registerUser(email: string, password: string, firstName: string, lastName: string): Chainable<void>
+
+      /**
+       * Custom command to log in a user.
+       * @example cy.loginUser('email@example.com', 'password123')
+       */
+      loginUser(email: string, password: string): Chainable<void>
+
+      /**
+       * Custom command to logout any user.
+       * @example cy.loginUser()
+       */
+      logoutUser(): Chainable<void>
+    }
+  }
+}
+
+// cypress/support/commands.js
+

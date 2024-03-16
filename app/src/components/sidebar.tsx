@@ -1,4 +1,4 @@
-import { HomeIcon, Pencil2Icon } from "@radix-ui/react-icons";
+import { AvatarIcon, HomeIcon, Pencil2Icon } from "@radix-ui/react-icons";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import { AddPostDialog } from "./post/add-post-dialog";
@@ -13,7 +13,11 @@ function Sidebar({ isPostsView }: SideBarProps) {
   const navigate = useNavigate();
   const user = useStore((state) => state.user);
   const { toast } = useToast();
+  let jhed = "";
 
+  if (user) {
+    jhed = user.email.split("@")[0];
+  }
   const handleClickHome = () => {
     navigate("/");
   };
@@ -21,6 +25,10 @@ function Sidebar({ isPostsView }: SideBarProps) {
   const handleClickPosts = () => {
     navigate("/posts");
   };
+
+  const handleClickProfile = () => {
+    navigate(`/users/${jhed}`)
+  }
 
   const handleClickAddPost = () => {
     if (user) {
@@ -41,10 +49,11 @@ function Sidebar({ isPostsView }: SideBarProps) {
       <Button variant={"ghost"} size="sm" onClick={handleClickHome}>
         <HomeIcon className="w-5 h-5" />
       </Button>
-      {!isPostsView && <Button variant={"ghost"} size="sm" onClick={handleClickAddPost}>
+      {!isPostsView && <Button id="see-posts" variant={"ghost"} size="sm" onClick={handleClickAddPost}>
         <Pencil2Icon className="w-5 h-5" />
       </Button>}
       {isPostsView && <AddPostDialog />}
+      {user && <Button id="profile" variant="ghost" size="sm" onClick={handleClickProfile}><AvatarIcon className="w-5 h-5" /></Button>}
     </div>
   );
 }

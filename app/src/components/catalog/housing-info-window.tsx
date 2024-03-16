@@ -8,7 +8,7 @@ type HousingInfoWindowProps = {
 const HousingInfoWindow = (props: HousingInfoWindowProps) => {
   const { housingItem } = props;
   return (
-    <>
+    <div id={`info-window-${housingItem.id}`}>
       <div style={{fontWeight: "bold"}}>{housingItem.name}</div>
       <div>{housingItem.address}</div>
       <div style={{ display:"flex"}}>
@@ -19,7 +19,7 @@ const HousingInfoWindow = (props: HousingInfoWindowProps) => {
         <div style={{ fontWeight: 'bold'}}>{housingItem.price}</div>
         <span style={{ marginLeft: '0.4rem'}}> | <span style={{ fontWeight: 'bold'}}>{housingItem.distance} miles</span> from JHU Homewood</span>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -9,7 +9,7 @@ const PostHeader = ({ name, timestamp }: PostHeaderProps) => {
   return (
     <div className="flex flex-col">
       <div>
-        <p className="text-md font-medium leading-none">{name}</p>
+        <p id="username-area" className="text-md font-medium leading-none">{name}</p>
       </div>
       <p className="text-sm text-muted-foreground">
         {formattedTimestamp}

@@ -12,6 +12,7 @@ type StarRatingProps = {
           const starRating = index + 1;
           return (
             <span
+              className={`star star-${starRating}`}
               key={index}
               style={{ cursor: 'pointer' }}
               onClick={() => setRating && setRating(starRating)}

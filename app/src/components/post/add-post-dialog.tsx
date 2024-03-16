@@ -69,7 +69,7 @@ export const AddPostDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button aria-label={"Make a Post"} variant="default" size="sm">
+        <Button id="add-posts" aria-label={"Make a Post"} variant="default" size="sm">
           <PlusCircledIcon className="w-5 h-5" />
         </Button>
       </DialogTrigger>
@@ -95,9 +95,9 @@ export const AddPostDialog = () => {
                 }}
               >
                 <option value="">Select a post type...</option>
-                <option value="Roommate">Looking for Roommate</option>
-                <option value="Sublet">Looking for Subletter</option>
-                <option value="Housing">Looking for Housing</option>
+                <option id="Roommate" value="Roommate">Looking for Roommate</option>
+                <option id="Sublet" value="Sublet">Looking for Subletter</option>
+                <option id="Housing" value="Housing">Looking for Housing</option>
               </select>
             </div>
             {/* Textarea and other form fields */}
@@ -158,10 +158,11 @@ export const AddPostDialog = () => {
         {user && (
           <div className="grid gap-4 py-4">
             <div className="grid items-center grid-cols-4 gap-4">
-              <Label htmlFor="cost">Cost 
+              <Label htmlFor="cost">Monthly Cost
                 <div>(Please enter an integer)</div>
               </Label>
               <Input
+                id="cost"
                 type="number"
                 onChange={(e) => setCost(Number(e.target.value))}
               />

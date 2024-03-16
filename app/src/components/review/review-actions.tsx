@@ -29,7 +29,7 @@ import useMutationReviews from "@/hooks/use-mutations-reviews";
       <DropdownMenu>
         {isOwner && (
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
+          <Button id='review-actions' variant="ghost" className="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
             <DotsVerticalIcon className="w-4 h-4" />
             <span className="sr-only">Open menu</span>
           </Button> 
@@ -37,7 +37,7 @@ import useMutationReviews from "@/hooks/use-mutations-reviews";
         )}
         <DropdownMenuContent>
           {isOwner && (
-            <DropdownMenuItem className="text-red-500" onClick={() =>removeReviewById(review.housingId, review.id)}>
+            <DropdownMenuItem id='delete-review' className="text-red-500" onClick={() =>removeReviewById(review.housingId, review.id)}>
               Delete review
             </DropdownMenuItem>
           )}

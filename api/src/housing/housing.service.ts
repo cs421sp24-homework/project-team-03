@@ -49,6 +49,7 @@ export class HousingService {
         queryBuilder.where('housings.distance <= :maxDistance', {
           maxDistance,
         });
+        hasWhereCondition = true;
       }
     }
 
@@ -127,7 +128,12 @@ export class HousingService {
 
     reviewSum = reviewSum - deletedRating;
     housing.reviewCount = housing.reviewCount - 1;
-    housing.avgRating = reviewSum / housing.reviewCount;
+
+    if (housing.reviewCount > 0) {
+        housing.avgRating = reviewSum / housing.reviewCount;
+    } else {
+        housing.avgRating = 0; // Set to a default value, like 0, when there are no reviews
+    }
     await this.housingRepository.save(housing);
     return housing;
   }
