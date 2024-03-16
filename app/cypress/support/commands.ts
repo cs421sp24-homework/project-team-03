@@ -26,28 +26,9 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 //
 
-Cypress.Commands.add('registerUserByRef', (email, password, firstName, lastName) => {
-  // Place your registration steps here
-  cy.get('#register-dialog').click();
-  cy.get('#email').type(email);
-  cy.get('#password').type(password);
-  cy.get('#firstName').type(firstName);
-  cy.get('#lastName').type(lastName);
-  cy.contains('Save').click();
-});
-
-Cypress.Commands.add('loginUserByRef', (email, password) => {
-   //click the login button 
-   cy.get('#login-dialog').click();
-   // Enter login credentials
-   cy.get('#email').type(email);
-   cy.get('#password').type(password);
-   cy.get('#login').click();
-});
-
 Cypress.Commands.add('registerUser', (email, password, firstName, lastName) => {
     // Place your registration steps here
-    cy.get(':nth-child(4) > .border').click();
+    cy.get('#register-dialog').click();
     cy.get('#email').type(email);
     cy.get('#password').type(password);
     cy.get('#firstName').type(firstName);
@@ -57,11 +38,16 @@ Cypress.Commands.add('registerUser', (email, password, firstName, lastName) => {
 
 Cypress.Commands.add('loginUser', (email, password) => {
      //click the login button 
-     cy.get(':nth-child(4) > .bg-primary').click();
+     cy.get('#login-dialog').click();
      // Enter login credentials
      cy.get('#email').type(email);
      cy.get('#password').type(password);
      cy.get('#login').click();
+});
+
+Cypress.Commands.add('logoutUser', () => {
+  cy.get('#logout-dialog').click();
+  cy.get('#submit').click();
 });
 
 declare global {
@@ -80,16 +66,10 @@ declare global {
       loginUser(email: string, password: string): Chainable<void>
 
       /**
-       * Custom command to register a user.
-       * @example cy.registerUserByRef('email@example.com', 'password123', 'John', 'Doe')
+       * Custom command to logout any user.
+       * @example cy.loginUser()
        */
-      registerUserByRef(email: string, password: string, firstName: string, lastName: string): Chainable<void>
-
-      /**
-       * Custom command to log in a user.
-       * @example cy.loginUserByRef('email@example.com', 'password123')
-       */
-      loginUserByRef(email: string, password: string): Chainable<void>
+      logoutUser(): Chainable<void>
     }
   }
 }

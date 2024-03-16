@@ -321,8 +321,6 @@ export const createHousingItem = async (
   
   export const deleteReview = async (housingId: string, id: string): Promise<void> => {
     const token = getAuthenticatedUserToken();
-    console.log(housingId);
-    console.log(id);
   
     const response = await fetch(`${API_URL}/housings/${housingId}/reviews/${id}`, {
       method: "DELETE",
