@@ -1,4 +1,4 @@
-import { generateRandomPassword, generateRandomName, generateRandomCost } from '../support/helpers';
+import { generateRandomPassword, generateRandomName, generateRandomCost } from '../../support/helpers';
 
 describe('test post functionality', () => {
     let randomName;
@@ -58,6 +58,8 @@ describe('test post functionality', () => {
         cy.contains(randomContent).should('be.visible');
         cy.contains(randomCost).should('be.visible');
         cy.contains(randomAddress).should('be.visible');
+        cy.contains(randomTitle).parent().find('#delete-post').click({ force: true });
+        cy.get('#delete-btn').click({ force: true });
     })
 
     it('Deletes post successfully', () => {
