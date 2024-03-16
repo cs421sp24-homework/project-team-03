@@ -29,25 +29,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Detect package manager
-        id: detect-package-manager
-        run: |
-          if [ -f "${{ github.workspace }}/pnpm-lock.yaml" ]; then
-            echo "::set-output name=manager::pnpm"
-            echo "::set-output name=command::install"
-            echo "::set-output name=runner::pnpx --no-install"
-          elif [ -f "${{ github.workspace }}/yarn.lock" ]; then
-            echo "::set-output name=manager::yarn"
-            echo "::set-output name=command::install"
-            echo "::set-output name=runner::yarn"
-          elif [ -f "${{ github.workspace }}/package-lock.json" ]; then
-            echo "::set-output name=manager::npm"
-            echo "::set-output name=command::ci"
-            echo "::set-output name=runner::npx --no-install"
-          else
-            echo "Unable to determine package manager"
-            exit 1
-
       - name: Run SQL commands
         env:
           POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
@@ -65,17 +46,14 @@ jobs:
           node-version: "16"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
 
-      - name: Install dependencies
-        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
-
-      - name: Install api dependencies
-        run: cd api && ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
-
-      - name: Install app dependencies
-        run: cd app && ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
-
       - name: Install Dependencies
         run: pnpm install
+
+      - name: Install api dependencies
+        run: cd api && pnpm install
+
+      - name: Install app dependencies
+        run: cd app && pnpm install
 
       - name: Start Docker Services
         run: pnpm docker:up &
