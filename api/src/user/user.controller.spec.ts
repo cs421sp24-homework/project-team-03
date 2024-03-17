@@ -114,9 +114,21 @@ describe('UserController', () => {
       lastName: 'Doe',
       avatar: 'http://example.com/avatar.jpg', // optional, can be omitted
     };
+    const newuser = new UserResponseDTO;
+    expect(newuser instanceof UserResponseDTO).toBe(true);
+    const userResponse: UserResponseDTO = {
+      id: 1, // Assuming a sample ID for the user
+      email: userDto.email,
+      firstName: userDto.firstName,
+      lastName: userDto.lastName,
+      avatar: userDto.avatar || 'default_avatar_url', // Fallback to a default if avatar is optional
+      isEmailVerified: false, // Assuming the email has not been verified yet
+      bio: 'A brief user biography', // Sample bio, could also be an empty string or other default
+    };
     
     jest.spyOn(userService, 'createUser').mockResolvedValueOnce(exampleUser);
-    expect(await controller.register(userDto)).toEqual(exampleUser);
+    const result: UserResponseDTO = await controller.register(userDto)
+    expect(result).toEqual(exampleUser);
   });
 
   // Test for login
