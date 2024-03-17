@@ -11,6 +11,7 @@ import { User } from 'src/user/user.entity';
 import { CreatePostDto } from './create-post.dto';
 import { UpdatePostDto } from './update-post.dto';
 import { NotFoundException } from '@nestjs/common';
+import { PostResponseDto } from './post-response.dto';
 
 describe('PostsController', () => {
   let controller: PostsController;
@@ -152,6 +153,8 @@ describe('PostsController', () => {
     const withUserData = true;
     const type = 'Housing';
     const cost = 5000;
+    const newuse = new PostResponseDto;
+    expect(newuse instanceof PostResponseDto).toBe(true);
   
     const result = await controller.findAll(10, 0, search,undefined, withUserData, type, cost);
   

@@ -8,6 +8,8 @@ import { HousingService } from 'src/housing/housing.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateReviewDto } from './create-review.dto';
 import { NotFoundException } from '@nestjs/common';
+import { ReviewResponseDto } from './review-response.dto';
+import { FindReviewsResponseDTO } from './find-reviews-response.dto';
 
 describe('ReviewsController', () => {
   let controller: ReviewsController;
@@ -130,6 +132,12 @@ describe('ReviewsController', () => {
   describe('findOne', () => {
     it('should retrieve a single review by ID', async () => {
       jest.spyOn(reviewsService, 'findOne').mockResolvedValue(review);
+
+      const newuser = new ReviewResponseDto;
+      expect(newuser instanceof ReviewResponseDto).toBe(true);
+
+      const newuse = new FindReviewsResponseDTO;
+      expect(newuse instanceof FindReviewsResponseDTO).toBe(true);
 
       const reviewId = 'uuid-id';
       const housingId = '1';

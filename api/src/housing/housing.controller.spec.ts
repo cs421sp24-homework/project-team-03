@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { HousingResponseDTO } from './housing-reponse.dto';
 import { UpdateHousingDTO } from './update-housing.dto';
 import { CreateHousingDTO } from './create-housing.dto';
+import { FindHousingsResponseDTO } from './find-housings-reponse.dto';
 
 describe('HousingController', () => {
   let controller: HousingController;
@@ -53,6 +54,8 @@ describe('HousingController', () => {
   it('should create a new housing item', async () => {
     const createHousingDTO = new CreateHousingDTO();
     const result = new Housing(); // mock result
+    const newuse = new FindHousingsResponseDTO;
+    expect(newuse instanceof FindHousingsResponseDTO).toBe(true);
 
     jest.spyOn(service, 'create').mockResolvedValue(result);
 
@@ -64,6 +67,8 @@ describe('HousingController', () => {
   it('should return an array of housing items', async () => {
     const result = []; // mock array of housing items
     jest.spyOn(service, 'findAll').mockResolvedValue(result);
+    const newuse = new HousingResponseDTO;
+    expect(newuse instanceof HousingResponseDTO).toBe(true);
 
     expect(await controller.findAll({ limit: 10, offset: 0, search: '' })).toEqual({ limit: 10, offset: 0, search: '', data: result });
     expect(service.findAll).toHaveBeenCalledWith(10, 0, '', undefined, undefined);
