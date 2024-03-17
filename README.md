@@ -56,7 +56,7 @@ Unit Testing (The backend - jest):
 3. Run `pnpm run test:cov` to check the coverage of the files
 
 E2E Testing (The frontend - cypress):
-- Note: You must be locally running the app (docker up, start:all) in order for the cypress tests to work
+- Note: You must be locally running the app (docker up, start:all, and you must run the sql script in Datagrip) in order for the cypress tests to work
 1. `cd app` into the api folder
 2. Run `pnpm run cy:open` to open the cypress testing app
 3. Click the e2e testing configured and choose your preferred browser to run the test
