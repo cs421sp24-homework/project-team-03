@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
-import { Post } from '@nestjs/common';
+import { Post, Patch } from '@nestjs/common';
 import { ReviewResponseDto } from './review-response.dto';
 import { CreateReviewDto } from './create-review.dto';
 import { UserId } from 'src/decorators/user-id.decorator';
@@ -102,6 +102,24 @@ export class ReviewsController {
         }
         return review;
       }),
+    };
+  }
+
+  @UseGuards(HousingExistsGuard)
+  @Patch(':reviewId/upvote')
+  async upvote(
+    @Param('reviewId') reviewId: string,
+    @Param('housingId') housingId: string,
+  ): Promise<{ statusCode: number; message: string }> {
+    const review = await this.reviewsService.upvote(reviewId, housingId);
+    if (!review) {
+      throw new NotFoundException(
+        `Review with ID ${reviewId} not found in housing item with ID ${housingId}`,
+      );
+    }
+    return {
+      statusCode: 200,
+      message: 'Review upvoted successfully',
     };
   }
 }

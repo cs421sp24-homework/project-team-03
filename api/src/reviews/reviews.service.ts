@@ -84,4 +84,14 @@ export class ReviewsService {
 
     return reviews;
   }
+
+  // Upvote a specific review
+  async upvote(id: string, housingId: string): Promise<Review | null> {
+    const review = await this.findOne(id, housingId);
+    if (!review) {
+      return null;
+    }
+    review.upvoteCount++;
+    return this.reviewRepository.save(review);
+  }
 }
