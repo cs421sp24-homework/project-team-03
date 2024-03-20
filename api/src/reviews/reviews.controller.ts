@@ -122,4 +122,22 @@ export class ReviewsController {
       message: 'Review upvoted successfully',
     };
   }
+
+  @UseGuards(HousingExistsGuard)
+  @Patch(':reviewId/upvoteUndo')
+  async upvoteUndo(
+    @Param('reviewId') reviewId: string,
+    @Param('housingId') housingId: string,
+  ): Promise<{ statusCode: number; message: string }> {
+    const review = await this.reviewsService.upvoteUndo(reviewId, housingId);
+    if (!review) {
+      throw new NotFoundException(
+        `Review with ID ${reviewId} not found in housing item with ID ${housingId}`,
+      );
+    }
+    return {
+      statusCode: 200,
+      message: 'Review upvote undone successfully',
+    };
+  }
 }

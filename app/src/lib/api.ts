@@ -368,3 +368,41 @@ export const createHousingItem = async (
     return responseJson.data;
   
   };
+
+  export const upvoteReview = async (reviewId: string, housingId: string): Promise<void> => {
+    const response = await fetch(`${API_URL}/housings/${housingId}/reviews/${reviewId}/upvote`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ reviewId, housingId }),
+    });
+  
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  };
+  
+  export const undoUpvoteReview = async (reviewId: string, housingId: string): Promise<void> => {
+    const response = await fetch(`${API_URL}/housings/${housingId}/reviews/${reviewId}/upvoteUndo`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ reviewId, housingId }),
+    });
+  
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  };
+  
+  
