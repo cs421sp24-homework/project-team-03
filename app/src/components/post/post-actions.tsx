@@ -35,7 +35,7 @@ const PostActions = ({
       {isOwner && (
       <DropdownMenuTrigger asChild>
         <Button id="delete-post" variant="ghost" className="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
-          <DotsVerticalIcon className="w-4 h-4" />
+          <DotsVerticalIcon className="w-5 h-5" />
           <span className="sr-only">Open menu</span>
         </Button> 
       </DropdownMenuTrigger>
