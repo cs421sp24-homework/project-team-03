@@ -5,7 +5,7 @@ const Post = ({ post }: { post: PostWithUserData }) => {
   const { title, content, user } = post;
 
   return (
-    <div className="border border-slate-500" style={{ borderWidth: '2.5px', width: '340px', height: '360px', backgroundColor: 'rgb( 244, 241, 232 )' }}>
+    <div className="p-1 rounded-lg" style={{ width: '340px', height: '360px', backgroundColor: 'rgb( 244, 241, 232 )' }}>
       <PostHeader
         post={post}
         timestamp={post.timestamp}

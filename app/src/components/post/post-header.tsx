@@ -5,14 +5,12 @@ import { Link } from "react-router-dom";
 import PostAvatar from "./post-avatar";
 
 type PostHeaderProps = {
-  // name: string; // author's display name
   post: Post;
   timestamp?: string; // post's timestamp
   user?: User;
 };
 
 const PostHeader = ({ 
-  // name, 
   post, 
   timestamp, 
   user 
@@ -34,7 +32,7 @@ const PostHeader = ({
         </div>
         <div className="p-2">
           <Link to={`/users/${jhed}`}>
-            <div id="username-area" className="font-medium leading-none">
+            <div id="username-area" className="font-medium leading-none hover:underline">
               {`${firstName} ${lastName}`}
             </div>
           </Link>
