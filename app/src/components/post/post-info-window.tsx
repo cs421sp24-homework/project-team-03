@@ -21,7 +21,7 @@ const PostInfoWindow = ({ post }: { post: PostWithUserData }) => {
         </div>
         <div className="w-full pr-4 pt-7">
           <PostHeader
-            name={`${firstName} ${lastName}`}
+            post={post}
             timestamp={post.timestamp}
           />
           <div className="my-4 font-bold underline">{title}</div>
