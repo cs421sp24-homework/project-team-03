@@ -61,6 +61,7 @@ export class ReviewsService {
     offset: number,
     housingId: string,
     search?: string,
+    sortBy?: string,
     withUserData?: boolean,
   ): Promise<Review[] | null> {
     let query = this.reviewRepository
@@ -78,6 +79,23 @@ export class ReviewsService {
 
     if (withUserData) {
       query = query.leftJoinAndSelect('review.user', 'user');
+    }
+
+    if (sortBy) {
+      // Handle sorting based on sortBy parameter
+      switch (sortBy) {
+        case 'popularity':
+          query = query.orderBy('review.upvoteCount', 'DESC');
+          break;
+        case 'recency':
+          query = query.orderBy('review.timestamp', 'DESC');
+          break;
+        // Add more cases for other sorting criteria if needed
+        default:
+          // Default to sorting by timestamp if sortBy is not recognized
+          query = query.orderBy('review.timestamp', 'DESC');
+          break;
+      }
     }
 
     const reviews = await query.getMany();

@@ -80,13 +80,14 @@ export class ReviewsController {
     @Param('housingId') housingId: string,
     @Query() query: FindReviewsQueryDTO,
   ): Promise<FindReviewsResponseDTO> {
-    const { limit, offset, search, withUserData } = query;
+    const { limit, offset, search, sortBy, withUserData } = query;
 
     const reviews = await this.reviewsService.findAll(
       limit,
       offset,
       housingId,
       search,
+      sortBy,
       withUserData,
     );
 

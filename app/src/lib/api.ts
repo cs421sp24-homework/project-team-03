@@ -308,8 +308,12 @@ export const createHousingItem = async (
     };
   };
   
-  export const fetchReviews = async (housingId: string): Promise<ReviewWithUserData[]> => {
-    const response = await fetch(`${API_URL}/housings/${housingId}/reviews?withUserData=true`);
+  export const fetchReviews = async (housingId: string, query?: string): Promise<ReviewWithUserData[]> => {
+    let url = `${API_URL}/housings/${housingId}/reviews?withUserData=true`;
+    if (query) {
+      url += `&${query}`;
+    }
+    const response = await fetch(url);
     const responseJson = await response.json();
     if (!response.ok) {
       throw new Error(
@@ -317,7 +321,7 @@ export const createHousingItem = async (
       );
     }
     return responseJson.data; // Assuming the server responds with an array of reviews
-  };
+  };  
   
   export const deleteReview = async (housingId: string, id: string): Promise<void> => {
     const token = getAuthenticatedUserToken();
@@ -405,4 +409,13 @@ export const createHousingItem = async (
     }
   };
   
-  
+   // Fetch all posts with user data
+   export const fetchReviewsForSort = async (housingId: string, query?: string): Promise<ReviewWithUserData[]> => {
+    let url = `${API_URL}/housings/${housingId}/reviews?withUserData=true`;
+    if (query) {
+      url += `${query}`;
+    }  
+    const response = await fetch(url);
+    const responseJson = await response.json();
+    return responseJson.data;
+  };
