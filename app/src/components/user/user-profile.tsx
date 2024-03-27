@@ -7,6 +7,7 @@ import { useStore } from "@/lib/store";
 import useMutationUser from "@/hooks/use-mutations-users";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../ui/use-toast";
+import { sendEmail } from "@/lib/api";
 
 export const UserProfile = ({ user }: { user: User }) => {
     const { toast } = useToast();
@@ -62,7 +63,7 @@ export const UserProfile = ({ user }: { user: User }) => {
                         {(loggedUser?.email == user.email) && <Button id="edit-profile" variant="ghost" size="sm" onClick={handleEdit}><Pencil1Icon /></Button>}
                     </div>
                     <div>
-                        <Button variant="ghost" size="sm"><EnvelopeClosedIcon /></Button>
+                        <Button variant="ghost" size="sm" onClick={sendEmail}><EnvelopeClosedIcon /></Button>
                     </div>
                 </div>
             </div>

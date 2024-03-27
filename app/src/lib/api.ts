@@ -368,3 +368,38 @@ export const createHousingItem = async (
     return responseJson.data;
   
   };
+
+  export const sendEmail = async () => {
+    const apiKey = "api-CE75802CDC984ECA988EAA1C66B5A40F";
+    const url = "https://api.smtp2go.com/v3/email/send";
+
+    const emailData = {
+        to: ["Emily <eeljama1@jhu.edu>"],
+        sender: "Off Campus Housing <ooseoffcampushousing@outlook.com>",
+        subject: "Testing smtp2go!",
+        text_body: "Test message."
+    };
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                api_key: apiKey,
+                ...emailData
+            })
+        });
+
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            throw new Error(`Error: ${response.status} - ${errorResponse.message}`);
+        }
+
+        const responseData = await response.json();
+        console.log("Email sent successfully:", responseData);
+    } catch (error) {
+        console.error("Error sending email:", error);
+    }
+};
