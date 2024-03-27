@@ -104,7 +104,10 @@ export class HousingService {
     return this.housingRepository.remove(housing);
   }
 
-  async updateAggregateReviewAfterCreate(id: string): Promise<null> {
+  async updateAggregateReviewAfterCreate(
+    content: string,
+    id: string,
+  ): Promise<null> {
     // make sure housing item exists
     const housing = await this.findOne(id);
     if (!housing) {
@@ -123,6 +126,9 @@ export class HousingService {
 
     console.log('num reviews', reviews.length);
 
+    let allReviews = reviews.map((review) => review.content).join(', ');
+    allReviews = [...allReviews, content];
+
     // api request body along with response
     const completion = await openai.chat.completions.create({
       messages: [
@@ -133,7 +139,7 @@ export class HousingService {
         },
         {
           role: 'user',
-          content: `Summarize these reviews into a meaningful and clear paragraph of around 30 words. Do not refer to past message history by the user when formulating the paragraph. Write the paragraph as if you have not seen these reviews before.  ${reviews.map((review) => review.content).join(', ')}`,
+          content: `Summarize these reviews into a meaningful and clear paragraph of around 30 words. Do not refer to past message history by the user when formulating the paragraph. Write the paragraph as if you have not seen these reviews before. ${allReviews}`,
         },
       ],
       model: 'gpt-3.5-turbo',

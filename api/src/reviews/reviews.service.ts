@@ -24,17 +24,24 @@ export class ReviewsService {
       userId,
     });
 
+    // await this.reviewRepository.save(review);
+
     // Increment review count by 1 and update average rating for housing item
     await this.housingService.updateAvgReviewAfterCreate(
       review.rating,
       housingId,
     );
 
-    // Update aggregate review
-    await this.housingService.updateAggregateReviewAfterCreate(housingId);
+    // await this.reviewRepository.save(review);
 
-    // return this.reviewRepository.save(review);
-    return await this.reviewRepository.save(review);
+    // Update aggregate review
+    await this.housingService.updateAggregateReviewAfterCreate(
+      review.content,
+      housingId,
+    );
+
+    return this.reviewRepository.save(review);
+    // return review;
   }
 
   async findOne(id: string, housingId: string): Promise<Review | null> {
