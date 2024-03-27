@@ -4,6 +4,12 @@ import { Housing } from './housing.entity';
 import { Repository } from 'typeorm';
 import { CreateHousingDTO } from './create-housing.dto';
 import { UpdateHousingDTO } from './update-housing.dto';
+import OpenAI from 'openai';
+
+const API_URL = 'http://localhost:3000';
+const API_KEY = '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';
+const openai = new OpenAI({ apiKey: API_KEY });
+// const ENDPOINT_COMPLETIONS = 'https://api.openai.com/v1/chat/completions';
 
 @Injectable()
 export class HousingService {
@@ -69,7 +75,11 @@ export class HousingService {
   }
 
   async findOne(id: string): Promise<Housing | null> {
-    return this.housingRepository.findOne({ where: { id } });
+    return this.housingRepository
+      .createQueryBuilder('housing')
+      .leftJoinAndSelect('housing.reviews', 'reviews')
+      .where('housing.id = :id', { id })
+      .getOne();
   }
 
   async update(
@@ -92,6 +102,51 @@ export class HousingService {
       return null;
     }
     return this.housingRepository.remove(housing);
+  }
+
+  async updateAggregateReviewAfterCreate(id: string): Promise<null> {
+    // make sure housing item exists
+    const housing = await this.findOne(id);
+    if (!housing) {
+      return null;
+    }
+
+    // get reviews associated with housing
+    const response = await fetch(`${API_URL}/housings/${id}/reviews`);
+    const responseJson = await response.json();
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+    const reviews = responseJson.data;
+
+    console.log('num reviews', reviews.length);
+
+    // api request body along with response
+    const completion = await openai.chat.completions.create({
+      messages: [
+        {
+          role: 'system',
+          content:
+            'You are a helpful assistant who writes a concise and meaningful aggregate review of an apartment.',
+        },
+        {
+          role: 'user',
+          content: `Summarize these reviews into a meaningful and clear paragraph of around 30 words. Do not refer to past message history by the user when formulating the paragraph. Write the paragraph as if you have not seen these reviews before.  ${reviews.map((review) => review.content).join(', ')}`,
+        },
+      ],
+      model: 'gpt-3.5-turbo',
+    });
+
+    // throw an error if api response is null
+    if (!completion) {
+      throw new Error('Failed to fetch data from API');
+    }
+
+    console.log(completion.choices[0].message.content);
+    housing.aggregateReview = completion.choices[0].message.content;
+    await this.housingRepository.save(housing);
   }
 
   async updateAvgReviewAfterCreate(
@@ -130,9 +185,9 @@ export class HousingService {
     housing.reviewCount = housing.reviewCount - 1;
 
     if (housing.reviewCount > 0) {
-        housing.avgRating = reviewSum / housing.reviewCount;
+      housing.avgRating = reviewSum / housing.reviewCount;
     } else {
-        housing.avgRating = 0; // Set to a default value, like 0, when there are no reviews
+      housing.avgRating = 0; // Set to a default value, like 0, when there are no reviews
     }
     await this.housingRepository.save(housing);
     return housing;

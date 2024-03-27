@@ -29,7 +29,12 @@ export class ReviewsService {
       review.rating,
       housingId,
     );
-    return this.reviewRepository.save(review);
+
+    // Update aggregate review
+    await this.housingService.updateAggregateReviewAfterCreate(housingId);
+
+    // return this.reviewRepository.save(review);
+    return await this.reviewRepository.save(review);
   }
 
   async findOne(id: string, housingId: string): Promise<Review | null> {

@@ -37,6 +37,7 @@ export type HousingItem = {
   price: string;
   latitude?: number;
   longitude?: number;
+  aggregateReview: string;
 };
 
 export type ReviewWithUserData = Review & {user: User};

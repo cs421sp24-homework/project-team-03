@@ -41,6 +41,13 @@ const HousingExpanded = (props: HousingItemProps) => {
                     <div className="mx-2"> | </div>
                     <div>{housingItem.distance} miles from JHU Homewood Campus</div>
                 </div>
+                <div> 
+                    {housingItem.aggregateReview ? (
+                        <div> Students say: {housingItem.aggregateReview} </div>
+                    ) : (
+                        ""
+                    )}
+                </div>
             </div>
         </div>
     );
