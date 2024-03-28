@@ -4,14 +4,14 @@ import { useToast } from "@/components/ui/use-toast";
 import { useStore } from "@/lib/store";
 import useInterval from "./use-intervals";
 
-function useQueryReviews(housingId : string) {
+function useQueryReviews(housingId : string, query?: string) {
   const { toast } = useToast();
   const reviews = useStore((state) => state.reviews);
   const setReviews = useStore((state) => state.setReviews);
 
   const loadReviews = async () => {
     try {
-      const fetchedReviews = await fetchReviews(housingId);
+      const fetchedReviews = await fetchReviews(housingId, query);
       setReviews(fetchedReviews);
     } catch (error) {
       toast({
