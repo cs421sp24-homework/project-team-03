@@ -3,6 +3,7 @@ import { PostWithUserData } from "@/lib/types";
 import useQueryPosts from "@/hooks/use-query-posts";
 import React, { useState } from "react";
 import PostInfoWindow from "../post/post-info-window";
+import Post from "../post/post";
 
 const PostMapContainer = () => {
   const { posts } = useQueryPosts();

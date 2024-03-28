@@ -15,11 +15,10 @@ const Feed = () => {
         </div>
         <Filter/> 
       </div>
-      <div className="flex justify-center pt-4 map-container" style={{ width: '100%', height: '57vh', overflow: 'hidden' }}>
+      <div className="flex justify-center py-4 map-container border-b border-slate-400" style={{ width: '100%', height: '57vh', overflow: 'hidden' }}>
         < PostMapContainer />
       </div>
-      <div style={{ borderBottom: '2px solid black', width: '100%', paddingTop: '2%' }}></div> {/* Line underneath Filter */}
-      <div style={{ height: '57vh', overflowY: 'auto' }}>
+      <div style={{ height: '57vh', overflowY: 'auto', scrollbarWidth: 'none' }}>
         <Posts />
       </div>
     </div>

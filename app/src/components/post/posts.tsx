@@ -7,9 +7,9 @@ const Posts = () => {
   const selectedPostId = useStore((state) => state.selectedPostId);
 
   return (
-    <div className="flex flex-wrap">
+    <div className="grid grid-cols-2 px-10 py-5">
       {posts.map((post) => (
-        <div key={post.id} style={{ paddingLeft: '8%', paddingRight: '1%', paddingTop: '5%', paddingBottom: '2%' }}>
+        <div key={post.id} className="flex justify-center py-5">
           <Post post={post} />
           {post.id === selectedPostId}
         </div>
