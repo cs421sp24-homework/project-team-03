@@ -418,7 +418,6 @@ export const createHousingItem = async (
         `Error: ${response.status} - ${responseJson.message || response.statusText}`,
       );
     }
-    console.log(responseJson.data.likedBy)
     return responseJson.data.likedBy;
   };
   

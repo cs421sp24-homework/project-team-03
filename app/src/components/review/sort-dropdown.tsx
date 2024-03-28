@@ -14,13 +14,11 @@ const Sorting = ({ housingId }: { housingId: string }) => {
       if (sortBy) {
         query += `&sortBy=${sortCriteria}`;
       }
-      console.log("This is query:", query)
       // Fetch reviews with the constructed query
       const fetchedReviews = await fetchReviews(housingId, query);
-      console.log(fetchedReviews)
       setReviews(fetchedReviews);
     } catch (error) {
-      console.error('Error fetching reviews:', error);
+      return null;
     }
   };
 
@@ -39,7 +37,6 @@ const Sorting = ({ housingId }: { housingId: string }) => {
         style={{ width: "60px", backgroundColor: "", border: "1px solid black"}}
         value={sortBy}
         onChange={(e) => {
-          console.log("This is the e.target.value:", e.target.value)
           setSortBy(e.target.value)
         }}
       >

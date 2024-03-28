@@ -115,7 +115,6 @@ export class ReviewsService {
     }
     // Check if the user has already upvoted the review
     if (review.likedBy.includes(userId)) {
-      console.log('You have already upvoted this review')
       throw new Error('You have already upvoted this review');
     }
     review.upvoteCount++;
@@ -135,7 +134,6 @@ export class ReviewsService {
     }
     // Check if the user has already upvoted the review
     if (!review.likedBy.includes(userId)) {
-      console.log('You have not upvoted this review')
       throw new Error('You have not upvoted this review');
     }
     review.upvoteCount--;

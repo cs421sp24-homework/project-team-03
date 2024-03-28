@@ -24,7 +24,7 @@ const ReviewFooter = ({ review }: { review: ReviewWithUserData }) => {
                 setLiked(false);
             }
         } catch (error) {
-            console.error("Failed to fetch likedBy:", error);
+            return null;
         }
     };
     // Call the fetchLikedBy function
@@ -34,10 +34,6 @@ const ReviewFooter = ({ review }: { review: ReviewWithUserData }) => {
     const handleLike = async () => {
       // Toggle liked state using the functional form of setState
       setLiked(prevLiked => !prevLiked);
-      console.log(upvoteCount)
-      console.log(liked)
-      console.log("this is who liked: ", getLikedBy(review.id, review.housingId))
-
       try {
           // Call the appropriate API function based on the liked state
           if (!liked) {
@@ -49,9 +45,9 @@ const ReviewFooter = ({ review }: { review: ReviewWithUserData }) => {
           }
           setLiked(!liked);
       } catch (error) {
-          console.error("Failed to update upvote status:", error);
           // If API call fails, revert the liked state
           setLiked(prevLiked => !prevLiked);
+          return null;
       }
   };
   
