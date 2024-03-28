@@ -13,7 +13,7 @@ export const getAddressCoordinates = async (address: string) => {
         throw new Error('No results found');
       }
     } catch (error) {
-      console.error('Error geocoding address:', error);
+      //console.error('Error geocoding address:', error);
       return null;
     }
   };
