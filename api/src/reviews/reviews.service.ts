@@ -104,22 +104,52 @@ export class ReviewsService {
   }
 
   // Upvote a specific review
-  async upvote(id: string, housingId: string): Promise<Review | null> {
+  async upvote(
+    id: string,
+    housingId: string,
+    userId: number,
+  ): Promise<Review | null> {
     const review = await this.findOne(id, housingId);
     if (!review) {
       return null;
     }
+    // Check if the user has already upvoted the review
+    if (review.likedBy.includes(userId)) {
+      console.log('You have already upvoted this review')
+      throw new Error('You have already upvoted this review');
+    }
     review.upvoteCount++;
+    review.likedBy.push(userId); // Add user to likedBy array
     return this.reviewRepository.save(review);
   }
 
-  // Upvote a specific review
-  async upvoteUndo(id: string, housingId: string): Promise<Review | null> {
+  // Undo upvote a specific review
+  async upvoteUndo(
+    id: string,
+    housingId: string,
+    userId: number,
+  ): Promise<Review | null> {
     const review = await this.findOne(id, housingId);
     if (!review) {
       return null;
     }
+    // Check if the user has already upvoted the review
+    if (!review.likedBy.includes(userId)) {
+      console.log('You have not upvoted this review')
+      throw new Error('You have not upvoted this review');
+    }
     review.upvoteCount--;
+    review.likedBy = review.likedBy.filter(
+      (likedUserId) => likedUserId !== userId,
+    ); // Remove user from likedBy array
     return this.reviewRepository.save(review);
+  }
+
+  async findLikedBy(id: string, housingId: string): Promise<number[]> {
+    const review = await this.findOne(id, housingId);
+    if (!review) {
+      return null;
+    }
+    return review.likedBy;
   }
 }

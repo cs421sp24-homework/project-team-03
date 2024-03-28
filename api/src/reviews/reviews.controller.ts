@@ -107,12 +107,17 @@ export class ReviewsController {
   }
 
   @UseGuards(HousingExistsGuard)
-  @Patch(':reviewId/upvote')
+  @Patch(':reviewId/upvote/:userId')
   async upvote(
     @Param('reviewId') reviewId: string,
     @Param('housingId') housingId: string,
+    @Param('userId') userId: number, 
   ): Promise<{ statusCode: number; message: string }> {
-    const review = await this.reviewsService.upvote(reviewId, housingId);
+    const review = await this.reviewsService.upvote(
+      reviewId,
+      housingId,
+      userId,
+    );
     if (!review) {
       throw new NotFoundException(
         `Review with ID ${reviewId} not found in housing item with ID ${housingId}`,
@@ -125,12 +130,17 @@ export class ReviewsController {
   }
 
   @UseGuards(HousingExistsGuard)
-  @Patch(':reviewId/upvoteUndo')
+  @Patch(':reviewId/upvoteUndo/:userId')
   async upvoteUndo(
     @Param('reviewId') reviewId: string,
     @Param('housingId') housingId: string,
+    @Param('userId') userId: number, 
   ): Promise<{ statusCode: number; message: string }> {
-    const review = await this.reviewsService.upvoteUndo(reviewId, housingId);
+    const review = await this.reviewsService.upvoteUndo(
+      reviewId,
+      housingId,
+      userId,
+    );
     if (!review) {
       throw new NotFoundException(
         `Review with ID ${reviewId} not found in housing item with ID ${housingId}`,
@@ -140,5 +150,18 @@ export class ReviewsController {
       statusCode: 200,
       message: 'Review upvote undone successfully',
     };
+  }
+
+  @UseGuards(HousingExistsGuard)
+  @Get(':reviewId/likedBy')
+  async getLikedBy(
+    @Param('reviewId') reviewId: string,
+    @Param('housingId') housingId: string,
+  ): Promise<{ likedBy: number[] }> {
+    const likedBy = await this.reviewsService.findLikedBy(reviewId, housingId);
+    if (!likedBy) {
+      throw new NotFoundException(`Review with ID ${reviewId} not found`);
+    }
+    return { likedBy };
   }
 }

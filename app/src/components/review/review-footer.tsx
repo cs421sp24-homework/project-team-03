@@ -3,19 +3,41 @@ import { useStore } from "@/lib/store";
 import { ArrowUpIcon } from "@radix-ui/react-icons";
 import { Button } from "../ui/button";
 import ReviewActions from "./review-actions";
-import { useState } from "react";
-import { undoUpvoteReview, upvoteReview } from "@/lib/api";
+import { useEffect, useState } from "react";
+import { getLikedBy, undoUpvoteReview, upvoteReview } from "@/lib/api";
 
 const ReviewFooter = ({ review }: { review: ReviewWithUserData }) => {
-    const {user} = review;
-    const userLogged = useStore((state) => state.user);
-    const [liked, setLiked] = useState(false);
-    const {upvoteCount} = review;
+  const {user} = review;
+  const userLogged = useStore((state) => state.user);
+  const [liked, setLiked] = useState(false);
+  const {upvoteCount} = review;
+
+  useEffect(() => {
+    const fetchLikedBy = async () => {
+        try {
+            // Fetch the likedBy array
+            const likedBy = await getLikedBy(review.id, review.housingId);
+            // Check if the user's ID is included in the likedBy array
+            if (userLogged && likedBy.includes(userLogged.id)) {
+                setLiked(true);
+            } else {
+                setLiked(false);
+            }
+        } catch (error) {
+            console.error("Failed to fetch likedBy:", error);
+        }
+    };
+    // Call the fetchLikedBy function
+    fetchLikedBy();
+}, [review.id, review.housingId, userLogged]);
 
     const handleLike = async () => {
       // Toggle liked state using the functional form of setState
       setLiked(prevLiked => !prevLiked);
-      
+      console.log(upvoteCount)
+      console.log(liked)
+      console.log("this is who liked: ", getLikedBy(review.id, review.housingId))
+
       try {
           // Call the appropriate API function based on the liked state
           if (!liked) {
@@ -25,6 +47,7 @@ const ReviewFooter = ({ review }: { review: ReviewWithUserData }) => {
               // If the review is already liked, undo the upvote
               await undoUpvoteReview(review.id, review.housingId);
           }
+          setLiked(!liked);
       } catch (error) {
           console.error("Failed to update upvote status:", error);
           // If API call fails, revert the liked state

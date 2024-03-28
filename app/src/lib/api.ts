@@ -373,13 +373,32 @@ export const createHousingItem = async (
   
   };
 
-  export const upvoteReview = async (reviewId: string, housingId: string): Promise<void> => {
-    const response = await fetch(`${API_URL}/housings/${housingId}/reviews/${reviewId}/upvote`, {
+  export const upvoteReview = async (reviewId: string, housingId: string): Promise<void> => { 
+    const user = getAuthenticatedUser();
+    const response = await fetch(`${API_URL}/housings/${housingId}/reviews/${reviewId}/upvote/${user.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ reviewId, housingId }),
+      body: JSON.stringify({ reviewId, housingId, userId: user.id }),
+    });
+  
+    const responseJson = await response.json();
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  };
+  
+  export const undoUpvoteReview = async (reviewId: string, housingId: string): Promise<void> => {
+    const user = getAuthenticatedUser();
+    const response = await fetch(`${API_URL}/housings/${housingId}/reviews/${reviewId}/upvoteUndo/${user.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ reviewId, housingId, userId: user.id }),
     });
   
     const responseJson = await response.json();
@@ -390,23 +409,17 @@ export const createHousingItem = async (
       );
     }
   };
-  
-  export const undoUpvoteReview = async (reviewId: string, housingId: string): Promise<void> => {
-    const response = await fetch(`${API_URL}/housings/${housingId}/reviews/${reviewId}/upvoteUndo`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ reviewId, housingId }),
-    });
-  
+
+  export const getLikedBy = async (reviewId: string, housingId: string): Promise<number[]> => {
+    const response = await fetch(`${API_URL}/housings/${housingId}/reviews/${reviewId}/likedBy`);
     const responseJson = await response.json();
-  
     if (!response.ok) {
       throw new Error(
         `Error: ${response.status} - ${responseJson.message || response.statusText}`,
       );
     }
+    console.log(responseJson.data.likedBy)
+    return responseJson.data.likedBy;
   };
   
    // Fetch all posts with user data
