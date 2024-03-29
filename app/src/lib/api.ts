@@ -369,15 +369,22 @@ export const createHousingItem = async (
   
   };
 
-  export const sendEmail = async () => {
+  export const sendEmail = async (
+    name: string,
+    email: string,
+    subject: string,
+    message: string,
+    emailTo: User,
+  ) => {
     const apiKey = "api-CE75802CDC984ECA988EAA1C66B5A40F";
     const url = "https://api.smtp2go.com/v3/email/send";
 
     const emailData = {
-        to: ["Emily <eeljama1@jhu.edu>"],
+        to: [`${emailTo.firstName} ${emailTo.lastName} <${emailTo.email}>`],
         sender: "Off Campus Housing <ooseoffcampushousing@outlook.com>",
-        subject: "Testing smtp2go!",
-        text_body: "Test message."
+        //bcc: `Emily <eeljama1@jhu.edu>`,
+        subject: `${subject}`,
+        text_body: `${message}`
     };
 
     try {
