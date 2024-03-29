@@ -30,6 +30,7 @@ describe('UserController', () => {
     posts: [],
     reviews: [],
     bio: "Hello",
+    notifications: 0,
   };
 
   const USER_REPO_TOKEN = getRepositoryToken(User);
@@ -124,6 +125,7 @@ describe('UserController', () => {
       avatar: userDto.avatar || 'default_avatar_url', // Fallback to a default if avatar is optional
       isEmailVerified: false, // Assuming the email has not been verified yet
       bio: 'A brief user biography', // Sample bio, could also be an empty string or other default
+      notifications: 0,
     };
     
     jest.spyOn(userService, 'createUser').mockResolvedValueOnce(exampleUser);

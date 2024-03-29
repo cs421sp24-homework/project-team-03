@@ -1,5 +1,6 @@
 import { BellIcon } from "@radix-ui/react-icons";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
+import { useStore } from "@/lib/store";
 
 
 const NotificationBadge = ({ count }: {count: number}) => {
@@ -26,8 +27,8 @@ const NotificationBadge = ({ count }: {count: number}) => {
 };
 
 const Inbox = () => {
-  // Set your notification count here
-  const notificationCount = 5;
+    const user = useStore((state) => state.user);
+  const notificationCount = user?.notifications;
 
   return (
     <Popover>
@@ -38,11 +39,11 @@ const Inbox = () => {
             justifyContent: 'center',
             alignItems: 'center', }}>
           <BellIcon className="w-5 h-5" />
-          <NotificationBadge count={notificationCount} />
+          <NotificationBadge count={notificationCount ? notificationCount : 0} />
         </div>
       </PopoverTrigger>
       <PopoverContent className="relative">
-        Place content for the popover here.
+        You have {notificationCount ? notificationCount : 0} new emails. Check your inbox!
       </PopoverContent>
     </Popover>
   );

@@ -17,6 +17,7 @@ import { useState } from "react"
 import { useToast } from "../ui/use-toast"
 import { sendEmail } from "@/lib/api"
 import { User } from "@/lib/types"
+import useMutationUser from "@/hooks/use-mutations-users"
 
 export function EmailDialog({ userProf }: { userProf: User }) {
     const { toast } = useToast();
@@ -24,18 +25,25 @@ export function EmailDialog({ userProf }: { userProf: User }) {
     const [email, setEmail] = useState("");
     const [subject, setSubject] = useState("");
     const [message, setMessage] = useState("");
+    const { editUsers } = useMutationUser();
 
     const handleSave = async () => {
         if (!name || !email || !subject || !message) {
             toast({
-              variant: "destructive",
-              title: "Sorry! All fields  must be completed! 🙁",
-              description: `Please enter the missing fields of the email.`,
+                variant: "destructive",
+                title: "Sorry! All fields  must be completed! 🙁",
+                description: `Please enter the missing fields of the email.`,
             });
             clearForm()
             return;
-          }
+        }
         await sendEmail(name, email, subject, message, userProf);
+        toast({
+            variant: "default",
+            title: "Email Sent!",
+            description: `Your email was successfully sent`,
+        });
+        editUsers(userProf.id, userProf.firstName, userProf.lastName, userProf.avatar, userProf.bio, userProf.notifications++);
         clearForm();
     }
 

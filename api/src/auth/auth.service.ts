@@ -34,6 +34,7 @@ export class AuthService {
           avatar: user.avatar,
           isEmailVerified: user.isEmailVerified, 
           bio: user.bio,
+          notifications: user.notifications,
         };
         return {
           access_token: this.jwtService.sign(payload),

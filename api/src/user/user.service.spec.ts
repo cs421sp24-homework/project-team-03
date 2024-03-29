@@ -26,6 +26,7 @@ describe('UserService', () => {
     posts: [], // Assuming this user has no posts initially; you can add mock posts if needed
     reviews: [],
     bio: null,
+    notifications: 0,
   };
   
   const userDto: CreateUserDTO = {

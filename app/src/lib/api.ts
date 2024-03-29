@@ -345,6 +345,7 @@ export const createHousingItem = async (
     lastName?: string,
     avatar?: string,
     bio?: string,
+    notifications?: number,
   ): Promise<User> => {
     const token = getAuthenticatedUserToken();
     const response = await fetch(`${API_URL}/users/${id}`, {
@@ -353,7 +354,7 @@ export const createHousingItem = async (
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ firstName, lastName, avatar, bio }),
+      body: JSON.stringify({ firstName, lastName, avatar, bio, notifications }),
     });
   
     const responseJson = await response.json();
