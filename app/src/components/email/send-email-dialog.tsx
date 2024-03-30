@@ -43,7 +43,8 @@ export function EmailDialog({ userProf }: { userProf: User }) {
             title: "Email Sent!",
             description: `Your email was successfully sent`,
         });
-        editUsers(userProf.id, userProf.firstName, userProf.lastName, userProf.avatar, userProf.bio, userProf.notifications++);
+        const newNotifications = userProf.notifications + 1;
+        editUsers(userProf.id, userProf.firstName, userProf.lastName, userProf.avatar, userProf.bio, newNotifications);
         clearForm();
     }
 

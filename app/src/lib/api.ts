@@ -365,7 +365,7 @@ export const createHousingItem = async (
         }`,
       );
     }
-  
+
     return responseJson.data;
   
   };

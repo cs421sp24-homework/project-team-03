@@ -95,7 +95,7 @@ export const UserProfile = ({ user }: { user: User }) => {
                         />
                         <textarea
                             id="bio"
-                            value={bio}
+                            value={bio ? bio : ""}
                             onChange={(e) => setBio(e.target.value)}
                             className="w-full h-32 border border-gray-300 rounded-lg p-2 mb-2"
                             placeholder="Bio"
