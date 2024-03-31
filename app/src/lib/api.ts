@@ -273,67 +273,71 @@ export const createHousingItem = async (
   return responseJson.data;
 };
 
-//reviews ----
-export const createReview = async (
-  content: string,
-  rating: number,
-  housingId: string
-): Promise<ReviewWithUserData> => {
-  const user = getAuthenticatedUser();
-  const token = getAuthenticatedUserToken();
-
-  const response = await fetch(`${API_URL}/housings/${housingId}/reviews`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ content, rating }),
-  });
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      `Error: ${response.status} - ${responseJson.message || response.statusText}`,
-    );
-  }
-
-  return {
-    ...responseJson.data,
-    user: user,
-  };
-};
-
-export const fetchReviews = async (housingId: string): Promise<ReviewWithUserData[]> => {
-  const response = await fetch(`${API_URL}/housings/${housingId}/reviews?withUserData=true`);
-  const responseJson = await response.json();
-  if (!response.ok) {
-    throw new Error(
-      `Error: ${response.status} - ${responseJson.message || response.statusText}`,
-    );
-  }
-  return responseJson.data; // Assuming the server responds with an array of reviews
-};
-
-export const deleteReview = async (housingId: string, id: string): Promise<void> => {
-  const token = getAuthenticatedUserToken();
-
-  const response = await fetch(`${API_URL}/housings/${housingId}/reviews/${id}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!response.ok) {
+  //reviews ----
+  export const createReview = async (
+    content: string,
+    rating: number,
+    housingId: string
+  ): Promise<ReviewWithUserData> => {
+    const user = getAuthenticatedUser();
+    const token = getAuthenticatedUserToken();
+    
+    const response = await fetch(`${API_URL}/housings/${housingId}/reviews`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ content, rating }),
+    });
     const responseJson = await response.json();
-    throw new Error(
-      `Error: ${response.status} - ${responseJson.message || response.statusText}`,
-    );
-  }
-
-  // Assuming no content is returned for a DELETE operation
-};
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  
+    return {
+      ...responseJson.data,
+      user: user,
+    };
+  };
+  
+  export const fetchReviews = async (housingId: string, query?: string): Promise<ReviewWithUserData[]> => {
+    let url = `${API_URL}/housings/${housingId}/reviews?withUserData=true`;
+    if (query) {
+      url += `&${query}`;
+    }
+    const response = await fetch(url);
+    const responseJson = await response.json();
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+    return responseJson.data; // Assuming the server responds with an array of reviews
+  };  
+  
+  export const deleteReview = async (housingId: string, id: string): Promise<void> => {
+    const token = getAuthenticatedUserToken();
+  
+    const response = await fetch(`${API_URL}/housings/${housingId}/reviews/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  
+    if (!response.ok) {
+      const responseJson = await response.json();
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  
+    // Assuming no content is returned for a DELETE operation
+  };
 
 export const editUser = async (
   id: number,
@@ -362,8 +366,8 @@ export const editUser = async (
   }
 
   return responseJson.data;
-
 };
+
 
 export const sendEmail = async (
   name: string,
@@ -480,3 +484,63 @@ export const getNotifications = async (
   return responseJson.data.notifications;
 };
 
+
+
+  export const upvoteReview = async (reviewId: string, housingId: string): Promise<void> => { 
+    const user = getAuthenticatedUser();
+    const response = await fetch(`${API_URL}/housings/${housingId}/reviews/${reviewId}/upvote/${user.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ reviewId, housingId, userId: user.id }),
+    });
+  
+    const responseJson = await response.json();
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  };
+  
+  export const undoUpvoteReview = async (reviewId: string, housingId: string): Promise<void> => {
+    const user = getAuthenticatedUser();
+    const response = await fetch(`${API_URL}/housings/${housingId}/reviews/${reviewId}/upvoteUndo/${user.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ reviewId, housingId, userId: user.id }),
+    });
+  
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  };
+
+  export const getLikedBy = async (reviewId: string, housingId: string): Promise<number[]> => {
+    const response = await fetch(`${API_URL}/housings/${housingId}/reviews/${reviewId}/likedBy`);
+    const responseJson = await response.json();
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+    return responseJson.data.likedBy;
+  };
+  
+   // Fetch all posts with user data
+   export const fetchReviewsForSort = async (housingId: string, query?: string): Promise<ReviewWithUserData[]> => {
+    let url = `${API_URL}/housings/${housingId}/reviews?withUserData=true`;
+    if (query) {
+      url += `${query}`;
+    }  
+    const response = await fetch(url);
+    const responseJson = await response.json();
+    return responseJson.data;
+  };

@@ -93,6 +93,7 @@ describe('ReviewsController', () => {
     upvoteCount: 0,
     user: mockUser,
     userId: 1,
+    likedBy: [],
     housing: mockHousing,
     housingId: '1',
     ensureRatingNonNegative: function (): void {

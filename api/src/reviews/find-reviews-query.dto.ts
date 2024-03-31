@@ -25,6 +25,10 @@ export class FindReviewsQueryDTO {
   @IsOptional()
   search?: string;
 
+  @IsString()
+  @IsOptional()
+  sortBy?: string;
+
   @IsBoolean()
   @IsOptional()
   withUserData?: boolean;
