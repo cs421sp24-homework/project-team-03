@@ -87,7 +87,7 @@ export const sendEmail = async (email: string, token: string) => {
   const url = "https://api.smtp2go.com/v3/email/send";
 
   const emailData = {
-      to: ["Sabira <stasneem2003@gmail.com>"], // TODO: change this when we are done testing
+      to: [email], 
       sender: "Off Campus Housing <ooseoffcampushousing@outlook.com>",
       subject: "Verification Token",
       text_body: `Your verification token is: ${token}.`,

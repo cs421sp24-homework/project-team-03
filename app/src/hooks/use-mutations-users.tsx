@@ -1,4 +1,4 @@
-import { editUser, login, logout, register } from "@/lib/api";
+import { editUser, login, logout, register, verifyEmail } from "@/lib/api";
 import { useStore } from "@/lib/store";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect } from "react";
@@ -9,6 +9,25 @@ function useMutationUser() {
   const setUser = useStore((state) => state.setUser);
   const clearUser = useStore((state) => state.clearUser);
   const setEditUser = useStore((state) => state.setEditUser);
+
+  const verifyUser = async (email: string, token: string) => {
+    try {
+      await verifyEmail(email, token);
+      toast({
+        variant: "default",
+        title: "Verification successful",
+        description: "Please log in.",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Failed to verify email",
+        description:
+          (error as Error).message ||
+          "There was an error verifying your email. Please try again later.",
+      });
+    }
+  };
 
   const loginUser = async (email: string, password: string) => {
     try {
@@ -54,7 +73,7 @@ function useMutationUser() {
       toast({
         variant: "default",
         title: "Registration successful",
-        description: "Verification token sent to your email.",
+        description: "Verification token sent to your email. Please check spam.",
       });
     } catch (error) {
       toast({
@@ -98,7 +117,7 @@ function useMutationUser() {
     }
   }, []);
 
-  return { loginUser, logoutUser, registerUser, editUsers };
+  return { loginUser, logoutUser, registerUser, editUsers, verifyUser };
 }
 
 export default useMutationUser;

@@ -95,6 +95,28 @@ export const register = async (
     }
   };
   
+  export const verifyEmail = async (
+    email: string,
+    verificationToken: string
+  ): Promise<void> => {
+    const response = await fetch(`${API_URL}/users/verify`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, verificationToken }),
+    });
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${
+          responseJson.message || response.statusText
+        }`,
+      );
+    }
+  };
+
   export const createPost = async (
     title: string,
     content: string,
