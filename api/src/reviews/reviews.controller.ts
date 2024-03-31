@@ -68,6 +68,9 @@ export class ReviewsController {
         `Review with ID ${reviewId} not found in housing item with ID ${housingId}`,
       );
     }
+
+    // call housingService aggregate review
+
     return {
       statusCode: 200,
       message: 'Review deleted successfully',

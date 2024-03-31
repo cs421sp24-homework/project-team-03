@@ -123,11 +123,19 @@ export class HousingService {
       );
     }
     const reviews = responseJson.data;
+    console.log('reviews', reviews);
 
     console.log('num reviews', reviews.length);
 
     let allReviews = reviews.map((review) => review.content).join(', ');
-    allReviews = [...allReviews, content];
+    // allReviews.push(content);
+    allReviews = [allReviews, content];
+
+    console.log('allReviews', allReviews.length);
+
+    allReviews.forEach((review) => {
+      console.log(review);
+    });
 
     // api request body along with response
     const completion = await openai.chat.completions.create({
@@ -135,7 +143,7 @@ export class HousingService {
         {
           role: 'system',
           content:
-            'You are a helpful assistant who writes a concise and meaningful aggregate review of an apartment.',
+            'You are a helpful assistant who writes a concise and meaningful aggregate review of an apartment. Do not refer to past message history by the user when formulating the paragraph. Write the paragraph as if you have not seen these reviews before.',
         },
         {
           role: 'user',
