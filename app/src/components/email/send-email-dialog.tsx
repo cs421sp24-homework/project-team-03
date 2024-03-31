@@ -15,9 +15,8 @@ import { EnvelopeClosedIcon } from "@radix-ui/react-icons"
 import { Textarea } from "../ui/textarea"
 import { useState } from "react"
 import { useToast } from "../ui/use-toast"
-import { sendEmail } from "@/lib/api"
+import { incrementNotifications, sendEmail } from "@/lib/api"
 import { User } from "@/lib/types"
-import useMutationUser from "@/hooks/use-mutations-users"
 
 export function EmailDialog({ userProf }: { userProf: User }) {
     const { toast } = useToast();
@@ -25,7 +24,6 @@ export function EmailDialog({ userProf }: { userProf: User }) {
     const [email, setEmail] = useState("");
     const [subject, setSubject] = useState("");
     const [message, setMessage] = useState("");
-    const { editUsers } = useMutationUser();
 
     const handleSave = async () => {
         if (!name || !email || !subject || !message) {
@@ -43,8 +41,7 @@ export function EmailDialog({ userProf }: { userProf: User }) {
             title: "Email Sent!",
             description: `Your email was successfully sent`,
         });
-        const newNotifications = userProf.notifications + 1;
-        editUsers(userProf.id, userProf.firstName, userProf.lastName, userProf.avatar, userProf.bio, newNotifications);
+        await incrementNotifications(userProf.email);
         clearForm();
     }
 

@@ -1,4 +1,4 @@
-import { editUser, login, logout, register } from "@/lib/api";
+import { clearNotifs, editUser, login, logout, register } from "@/lib/api";
 import { useStore } from "@/lib/store";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect } from "react";
@@ -9,11 +9,13 @@ function useMutationUser() {
   const setUser = useStore((state) => state.setUser);
   const clearUser = useStore((state) => state.clearUser);
   const setEditUser = useStore((state) => state.setEditUser);
+  const setNotifs = useStore((state) => state.userNotificationCount);
 
   const loginUser = async (email: string, password: string) => {
     try {
       const user = await login(email, password);
       setUser(user);
+      setNotifs(user.notifications);
     } catch (error) {
       toast({
         variant: "destructive",
@@ -40,7 +42,6 @@ function useMutationUser() {
       });
     }
   };
-  
 
   const registerUser = async (
     email: string,
@@ -73,10 +74,9 @@ function useMutationUser() {
     lastName?: string,
     avatar?: string,
     bio?: string,
-    notifications?: number,
   ) => {
     try {
-      const editedUser = await editUser( id, firstName, lastName, avatar, bio, notifications);
+      const editedUser = await editUser( id, firstName, lastName, avatar, bio );
       setEditUser(editedUser);
     } catch (error) {
       toast({
@@ -89,6 +89,24 @@ function useMutationUser() {
     }
   };
 
+  const clearNotif = async (
+    email: string,
+  ) => {
+  try {
+    const clearedUser = await clearNotifs(email);
+    setNotifs(0);
+    setEditUser(clearedUser);
+  } catch (error) {
+    toast({
+      variant: "destructive",
+      title: "Failed to edit profile",
+      description:
+        (error as Error).message ||
+        "There was an error editing your profile. Please try again later.",
+    });
+  }
+};
+
 
     useEffect(() => {
     try {
@@ -99,7 +117,7 @@ function useMutationUser() {
     }
   }, []);
 
-  return { loginUser, logoutUser, registerUser, editUsers };
+  return { loginUser, logoutUser, registerUser, editUsers, clearNotif };
 }
 
 export default useMutationUser;

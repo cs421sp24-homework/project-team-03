@@ -10,6 +10,7 @@ type State = {
   selectedPostId: string | null;
   reviews: ReviewWithUserData[];
   selectedHousing: HousingItem | null;
+  notifications: number;
   // Add more state variables
 };
 
@@ -30,6 +31,7 @@ type Action = {
   setSelectedHousing: (housing: HousingItem) => void;
   clearSelectedHousing: () => void;
   setEditUser: (user: User) => void;
+  userNotificationCount: (notifs: number) => void;
   // Add more actions
 };
 
@@ -41,6 +43,7 @@ const initialState: State = {
   selectedPostId: null,
   reviews: [],
   selectedHousing: null,
+  notifications: 0,
 };
 
 export const useStore = create<State & Action>()(
@@ -52,64 +55,69 @@ export const useStore = create<State & Action>()(
       return storedUser ? JSON.parse(storedUser) : null;
     })(),
 
-  setUser: (user) => {
-    localStorage.setItem("user", JSON.stringify(user));
-    set({ user });
-  },
+    setUser: (user) => {
+      localStorage.setItem("user", JSON.stringify(user));
+      set({ user });
+    },
 
-  clearUser: () => {
-    localStorage.removeItem("user"); // Remove user from localStorage
-    set({ user: null });
-  },
+    clearUser: () => {
+      localStorage.removeItem("user"); // Remove user from localStorage
+      set({ user: null });
+    },
     setHousingItems: (housingItems) => set({ housingItems }),
 
     addHousingItem: (housingItem) => {
-        set({ housingItems: [housingItem, ...get().housingItems] });
+      set({ housingItems: [housingItem, ...get().housingItems] });
     },
 
-  
-  setPosts: (posts) => set({ posts }),
 
-  setSelectedPostId: (id) => set({ selectedPostId: id }),
+    setPosts: (posts) => set({ posts }),
 
-  clearSelectedPostId: () => set({ selectedPostId: null }),
+    setSelectedPostId: (id) => set({ selectedPostId: id }),
 
-  setSelectedHousing: (housing) => set({ selectedHousing: housing }),
+    clearSelectedPostId: () => set({ selectedPostId: null }),
 
-  clearSelectedHousing: () => set({ selectedHousing: null }),
+    setSelectedHousing: (housing) => set({ selectedHousing: housing }),
 
-  addPosts: (post) => {
-    const newPosts = [...get().posts, post];
-    set({ posts: newPosts });
-  },
+    clearSelectedHousing: () => set({ selectedHousing: null }),
 
-  setEditPosts: (editedPost) => {
-    set((state) => ({
-      posts: state.posts.map((post) =>
-        post.id === editedPost.id ? editedPost : post,
-      ),
-    }));
-  },
+    addPosts: (post) => {
+      const newPosts = [...get().posts, post];
+      set({ posts: newPosts });
+    },
 
-  removePost: (id) => {
-    const newPosts = get().posts.filter((post) => post.id !== id);
-    set({ posts: newPosts });
-  },
+    setEditPosts: (editedPost) => {
+      set((state) => ({
+        posts: state.posts.map((post) =>
+          post.id === editedPost.id ? editedPost : post,
+        ),
+      }));
+    },
 
-  setReviews: (reviews) => set({ reviews }),
-    
-  addReview: (review) => {
-    const newReviews = [...get().reviews, review];
-    set({ reviews: newReviews });
-  },
+    removePost: (id) => {
+      const newPosts = get().posts.filter((post) => post.id !== id);
+      set({ posts: newPosts });
+    },
 
-  removeReview: (id) => {
+    setReviews: (reviews) => set({ reviews }),
+
+    addReview: (review) => {
+      const newReviews = [...get().reviews, review];
+      set({ reviews: newReviews });
+    },
+
+    removeReview: (id) => {
       const newReviews = get().reviews.filter((review) => review.id !== id);
       set({ reviews: newReviews });
-  },
+    },
 
-  setEditUser: (user) => {
-    set({ user });
-  },
-  
-})));
+    setEditUser: (user) => {
+      set({ user });
+    },
+
+    userNotificationCount: (notifs) => {
+      set({notifications: notifs});
+    },
+    
+  }))
+);

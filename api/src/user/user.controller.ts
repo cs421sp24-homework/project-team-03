@@ -83,5 +83,21 @@ export class UserController {
         delete user.password;
         return user;
     }
+
+    @Patch(':email/notifications')
+    async incrementNotifications (
+        @Param('email') email: string,
+    ): Promise<UserResponseDTO> {
+        const user = await this.userService.incrementNotifs(email);
+        return user;
+    }
+
+    @Patch(':email/clearNotifs')
+    async clearNotifs (
+        @Param('email') email: string,
+    ): Promise<UserResponseDTO> {
+        const user = await this.userService.clearNotifs(email);
+        return user;
+    }
     
 }
