@@ -85,12 +85,15 @@ async verifyEmail(email: string, verificationToken: string): Promise<boolean> {
 export const sendEmail = async (email: string, token: string) => {
   const apiKey = "api-CE75802CDC984ECA988EAA1C66B5A40F";
   const url = "https://api.smtp2go.com/v3/email/send";
+  const clientURL = `${process.env.CLIENT_URL}/project-team-03/#/verify`;
+
+  console.log(clientURL);
 
   const emailData = {
       to: [email], 
       sender: "Off Campus Housing <ooseoffcampushousing@outlook.com>",
       subject: "Verification Token",
-      text_body: `Your verification token is: ${token}.`,
+      text_body: `Your verification token is: ${token}. Please follow the link: ${clientURL}. If that link doesn't work, then add /verify to the home page of the site. For example: http://localhost:5173/project-team-03/#/verify`,
   };
 
   try {
