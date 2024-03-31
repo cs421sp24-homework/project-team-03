@@ -54,7 +54,7 @@ function useMutationUser() {
       toast({
         variant: "default",
         title: "Registration successful",
-        description: "Please login with your credentials.",
+        description: "Verification token sent to your email.",
       });
     } catch (error) {
       toast({
