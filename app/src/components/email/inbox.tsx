@@ -1,8 +1,10 @@
+import { useEffect } from "react";
 import { BellIcon, CheckboxIcon } from "@radix-ui/react-icons";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 import { useStore } from "@/lib/store";
 import { Button } from "../ui/button";
 import useMutationUser from "@/hooks/use-mutations-users";
+import { getNotifications } from "@/lib/api";
 
 const NotificationBadge = ({ count }: { count: number }) => {
     return (
@@ -31,10 +33,27 @@ const Inbox = () => {
     const user = useStore((state) => state.user);
     const { clearNotif } = useMutationUser();
     const notifications = useStore((state) => state.notifications);
+    const setNotifications = useStore((state) => state.userNotificationCount)
+
+    useEffect(() => {
+        const fetchNotifications = async () => {
+            if (user) {
+                try {
+                    const notificationCount = await getNotifications(user.email);
+                    setNotifications(notificationCount);
+                } catch (error) {
+                    console.error("Error fetching notifications:", error);
+                }
+            }
+        };
+
+        fetchNotifications();
+    }, [user]);
 
     const clearNotifications = async () => {
         if (user && user.notifications) {
-            clearNotif(user.email); 
+            clearNotif(user.email);
+            setNotifications(0); 
         }
     }
 

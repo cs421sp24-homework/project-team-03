@@ -456,3 +456,27 @@ export const clearNotifs = async (
   return responseJson.data;
 };
 
+export const getNotifications = async (
+  email: string
+): Promise<number> => {
+  const token = getAuthenticatedUserToken();
+  const response = await fetch(`${API_URL}/users/${email}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      `Error: ${response.status} - ${responseJson.message || response.statusText
+      }`,
+    );
+  }
+
+  return responseJson.data.notifications;
+};
+
