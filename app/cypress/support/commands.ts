@@ -36,11 +36,11 @@ Cypress.Commands.add('registerUser', (email, password, firstName, lastName) => {
     cy.contains('Save').click();
 });
 
-Cypress.Commands.add('verifyUser', (email: string, token: string) => {
+Cypress.Commands.add('verifyUser', (email: string) => {
     cy.visit(`/#/verify`);
     cy.get('#verify-email-dialog').click();
     cy.get('#email').type(email);
-    cy.get('#token').type(token);
+    cy.get('#token').type("000000");
     cy.get('#save').click({ force: true });
     cy.visit('/');
 });

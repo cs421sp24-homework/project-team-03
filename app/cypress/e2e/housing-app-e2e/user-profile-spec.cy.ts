@@ -20,7 +20,7 @@ describe('test user profile functionality', () => {
         randomBio = generateRandomName(50);
         cy.visit('/');
         cy.registerUser(randomEmail, randomPassword, randomName, randomName);
-        cy.verifyUser(randomEmail, "000000");
+        cy.verifyUser(randomEmail);
     })
 
     beforeEach(() => {
