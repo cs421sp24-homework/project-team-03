@@ -49,6 +49,7 @@ describe('user register + login', () => {
   });
 
   it('allows a user to log in with proper credentials', () => {
+    cy.verifyUser(randomEmail, "000000");
     cy.loginUser(randomEmail, randomPassword);
     //assert that the red 'logout' button pops up
     cy.get(':nth-child(4) > .inline-flex').should('be.visible');

@@ -36,6 +36,15 @@ Cypress.Commands.add('registerUser', (email, password, firstName, lastName) => {
     cy.contains('Save').click();
 });
 
+Cypress.Commands.add('verifyUser', (email: string, token: string) => {
+    cy.visit(`/#/verify`);
+    cy.get('#verify-email-dialog').click();
+    cy.get('#email').type(email);
+    cy.get('#token').type(token);
+    cy.get('#save').click({ force: true });
+    cy.visit('/');
+});
+
 Cypress.Commands.add('loginUser', (email, password) => {
      //click the login button 
      cy.get('#login-dialog').click();

@@ -13,6 +13,7 @@ describe('Testing catalog filtering feature', () => {
     randomPassword = generateRandomPassword(10);
     cy.visit('/'); //visits base url from config file
     cy.registerUser(randomEmail, randomPassword, randomName, randomName);
+    cy.verifyUser(randomEmail, "000000");
   });
 
   beforeEach(() => {
