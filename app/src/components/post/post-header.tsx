@@ -1,19 +1,51 @@
+import { Post, User } from "@/lib/types";
+import PostActions from "./post-actions";
+import { useStore } from "@/lib/store";
+import { Link } from "react-router-dom";
+import PostAvatar from "./post-avatar";
 
 type PostHeaderProps = {
-  name: string; // author's display name
+  post: Post;
   timestamp?: string; // post's timestamp
+  user?: User;
 };
 
-const PostHeader = ({ name, timestamp }: PostHeaderProps) => {
+const PostHeader = ({ 
+  post, 
+  timestamp, 
+  user 
+}: PostHeaderProps) => {
+  const userLogged = useStore((state) => state.user);
+  const avatar = user?.avatar;
+  const jhed = user?.email.split("@")[0]; // Extract jhed from email
+  const firstName = user?.firstName;
+  const lastName = user?.lastName;
   const formattedTimestamp = timestamp ? new Date(timestamp).toLocaleString() : '';
+
   return (
-    <div className="flex flex-col">
-      <div>
-        <p id="username-area" className="text-md font-medium leading-none">{name}</p>
+    <div className="flex justify-between py-2 border-b border-slate-400">
+      <div className="flex">
+        <div className="p-2">
+          <Link to={`/users/${jhed}`}>
+            <PostAvatar imageUrl={avatar} displayName={`${firstName} ${lastName}`} />
+          </Link>
+        </div>
+        <div className="p-2">
+          <Link to={`/users/${jhed}`}>
+            <div id="username-area" className="font-medium leading-none hover:underline">
+              {`${firstName} ${lastName}`}
+            </div>
+          </Link>
+          <div className="inline-block align-baseline text-sm text-muted-foreground">
+            {formattedTimestamp}
+          </div>
+        </div>  
       </div>
-      <p className="text-sm text-muted-foreground">
-        {formattedTimestamp}
-      </p>
+      {(user?.id === userLogged?.id) && (
+        <div className="p-2">
+          <PostActions post={post} userId={post.userId} />
+        </div>
+      )}
     </div>
   );
 };

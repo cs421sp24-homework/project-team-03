@@ -51,3 +51,8 @@ export type Review = {
   housingId: string;
 };
 
+export type Like = {
+  id: string;
+  reviewId: string;
+  userId: string;
+};

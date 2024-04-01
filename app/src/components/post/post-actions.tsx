@@ -10,6 +10,7 @@ import { useStore } from "@/lib/store";
 import { useEffect, useState } from "react";
 import useMutationPosts from "@/hooks/use-mutations-posts";
 import { Post } from "@/lib/types";
+import { EditPostDialog } from "./edit-post-dialog";
 
 const PostActions = ({
   post,
@@ -21,6 +22,7 @@ const PostActions = ({
   const { user } = useStore((state) => state);
   const [isOwner, setIsOwner] = useState(false);
   const { removePostById } = useMutationPosts();
+  const [dropdownState, setDropdownState] = useState(false);
 
   useEffect(() => {
     if (user && post.userId === userId) {
@@ -31,29 +33,23 @@ const PostActions = ({
   }, [user, post.userId, userId]);
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={dropdownState} onOpenChange={setDropdownState}>
       {isOwner && (
-      <DropdownMenuTrigger asChild>
-        <Button id="delete-post" variant="ghost" className="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
-          <DotsVerticalIcon className="w-4 h-4" />
-          <span className="sr-only">Open menu</span>
-        </Button> 
-      </DropdownMenuTrigger>
+        <DropdownMenuTrigger asChild>
+          <Button id="post-actions" variant="ghost" className="h-8 w-8 p-0 data-[state=open]:bg-muted" >
+            <DotsVerticalIcon className="w-5 h-5" />
+            <span className="sr-only">Open menu</span>
+          </Button> 
+        </DropdownMenuTrigger>
       )}
       <DropdownMenuContent>
-        {/* {isOwner && ( <DropdownMenuItem onClick={() => editPostById}>Edit post</DropdownMenuItem>
-        )} */}
+
         {isOwner && (
-          <DropdownMenuItem id="delete-btn" className="text-red-500" onClick={() => removePostById(post.id)}>
-            Delete post
+          <><DropdownMenuItem id="delete-btn" className="text-red-500" onClick={() => removePostById(post.id)}>
+            Delete
           </DropdownMenuItem>
+          <EditPostDialog post={post} setDropdownState={setDropdownState}/></>
         )}
-        {/* <DropdownMenuItem>
-          <Link to={`posts/${post.id}`}>Go to post</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem className="text-red-500">
-          Report post
-        </DropdownMenuItem> */}
       </DropdownMenuContent>
     </DropdownMenu>
     

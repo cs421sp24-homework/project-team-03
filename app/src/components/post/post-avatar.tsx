@@ -8,7 +8,7 @@ type PostAvatarProps = {
 
 function PostAvatar({ imageUrl, displayName }: PostAvatarProps) {
   return (
-    <Avatar style={{ width: '60px', height: '60px', border: '1px solid #000'}}>
+    <Avatar className="hover:opacity-90" style={{ width: '40px', height: '40px', border: '1px solid #000'}}>
       <AvatarImage src={imageUrl} style={{ width: '100%', height: '100%' }} />
       <AvatarFallback style={{ fontSize: '24px' }}>{getInitials(displayName)}</AvatarFallback>
     </Avatar>

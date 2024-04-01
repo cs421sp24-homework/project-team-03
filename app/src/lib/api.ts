@@ -308,8 +308,12 @@ export const createHousingItem = async (
     };
   };
   
-  export const fetchReviews = async (housingId: string): Promise<ReviewWithUserData[]> => {
-    const response = await fetch(`${API_URL}/housings/${housingId}/reviews?withUserData=true`);
+  export const fetchReviews = async (housingId: string, query?: string): Promise<ReviewWithUserData[]> => {
+    let url = `${API_URL}/housings/${housingId}/reviews?withUserData=true`;
+    if (query) {
+      url += `&${query}`;
+    }
+    const response = await fetch(url);
     const responseJson = await response.json();
     if (!response.ok) {
       throw new Error(
@@ -317,7 +321,7 @@ export const createHousingItem = async (
       );
     }
     return responseJson.data; // Assuming the server responds with an array of reviews
-  };
+  };  
   
   export const deleteReview = async (housingId: string, id: string): Promise<void> => {
     const token = getAuthenticatedUserToken();
@@ -367,4 +371,63 @@ export const createHousingItem = async (
   
     return responseJson.data;
   
+  };
+
+  export const upvoteReview = async (reviewId: string, housingId: string): Promise<void> => { 
+    const user = getAuthenticatedUser();
+    const response = await fetch(`${API_URL}/housings/${housingId}/reviews/${reviewId}/upvote/${user.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ reviewId, housingId, userId: user.id }),
+    });
+  
+    const responseJson = await response.json();
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  };
+  
+  export const undoUpvoteReview = async (reviewId: string, housingId: string): Promise<void> => {
+    const user = getAuthenticatedUser();
+    const response = await fetch(`${API_URL}/housings/${housingId}/reviews/${reviewId}/upvoteUndo/${user.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ reviewId, housingId, userId: user.id }),
+    });
+  
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  };
+
+  export const getLikedBy = async (reviewId: string, housingId: string): Promise<number[]> => {
+    const response = await fetch(`${API_URL}/housings/${housingId}/reviews/${reviewId}/likedBy`);
+    const responseJson = await response.json();
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+    return responseJson.data.likedBy;
+  };
+  
+   // Fetch all posts with user data
+   export const fetchReviewsForSort = async (housingId: string, query?: string): Promise<ReviewWithUserData[]> => {
+    let url = `${API_URL}/housings/${housingId}/reviews?withUserData=true`;
+    if (query) {
+      url += `${query}`;
+    }  
+    const response = await fetch(url);
+    const responseJson = await response.json();
+    return responseJson.data;
   };
