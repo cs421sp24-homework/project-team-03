@@ -136,13 +136,6 @@ export class HousingService {
     // Joining the array elements with ' | ' separator
     allReviews = allReviewsArray.join(' | ');
 
-    // allReviews.push(content);
-    // allReviews = [allReviews, content];
-
-    //allReviews.forEach((review) => {
-    console.log(allReviews);
-    //});
-
     // api request body along with response
     const completion = await openai.chat.completions.create({
       messages: [
@@ -239,14 +232,6 @@ export class HousingService {
     const allReviews = updatedReviews
       .map((review) => review.content)
       .join(' | ');
-
-    console.log(allReviews);
-
-    /*
-    allReviews.forEach((review) => {
-      console.log(review);
-    });
-    */
 
     //If there is more than one review, then call chatgpt, otherwise set the value of the aggregateReview to null
     if (updatedReviews.length > 0) {
