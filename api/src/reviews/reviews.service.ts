@@ -24,16 +24,11 @@ export class ReviewsService {
       userId,
     });
 
-    // await this.reviewRepository.save(review);
-
     // Increment review count by 1 and update average rating for housing item
     await this.housingService.updateAvgReviewAfterCreate(
       review.rating,
       housingId,
     );
-
-    // await this.reviewRepository.save(review);
-
     // Update aggregate review
     await this.housingService.updateAggregateReviewAfterCreate(
       review.content,
@@ -58,6 +53,12 @@ export class ReviewsService {
     if (!review) {
       return null;
     }
+
+    // Create new Aggregate review without the to-be-deleted review
+    await this.housingService.updateAggregateReviewAfterDelete(
+      review,
+      housingId,
+    );
 
     // Decrement review count by 1 and update average review of housing item
     await this.housingService.updateAvgReviewAfterDelete(

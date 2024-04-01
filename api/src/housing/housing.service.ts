@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateHousingDTO } from './create-housing.dto';
 import { UpdateHousingDTO } from './update-housing.dto';
 import OpenAI from 'openai';
+import { Review } from 'src/reviews/review.entity';
 
 const API_URL = 'http://localhost:3000';
 const API_KEY = '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';
@@ -123,19 +124,10 @@ export class HousingService {
       );
     }
     const reviews = responseJson.data;
-    console.log('reviews', reviews);
-
-    console.log('num reviews', reviews.length);
 
     let allReviews = reviews.map((review) => review.content).join(', ');
     // allReviews.push(content);
     allReviews = [allReviews, content];
-
-    console.log('allReviews', allReviews.length);
-
-    allReviews.forEach((review) => {
-      console.log(review);
-    });
 
     // api request body along with response
     const completion = await openai.chat.completions.create({
@@ -158,7 +150,6 @@ export class HousingService {
       throw new Error('Failed to fetch data from API');
     }
 
-    console.log(completion.choices[0].message.content);
     housing.aggregateReview = completion.choices[0].message.content;
     await this.housingRepository.save(housing);
   }
@@ -205,5 +196,58 @@ export class HousingService {
     }
     await this.housingRepository.save(housing);
     return housing;
+  }
+
+  async updateAggregateReviewAfterDelete(
+    toBeDeletedReview: Review,
+    id: string,
+  ): Promise<null> {
+    // make sure housing item exists
+    const housing = await this.findOne(id);
+    if (!housing) {
+      return null;
+    }
+
+    // get reviews associated with housing
+    const response = await fetch(`${API_URL}/housings/${id}/reviews`);
+    const responseJson = await response.json();
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+    const reviews = responseJson.data;
+    // Filter out the review with the specific ID only for this copy of reviews
+    let updatedReviews = reviews.filter(review => review.id !== toBeDeletedReview.id);
+    //map all the updated reviews into one string for processing
+    let allReviews = updatedReviews.map((review) => review.content).join(', ');
+
+    //If there is more than one review, then call chatgpt, otherwise set the value of the aggregateReview to null
+    if (updatedReviews.length > 0) { 
+        // api request body along with response
+      const completion = await openai.chat.completions.create({
+        messages: [
+          {
+            role: 'system',
+            content:
+              'You are a helpful assistant who writes a concise and meaningful aggregate review of an apartment. Do not refer to past message history by the user when formulating the paragraph. Write the paragraph as if you have not seen these reviews before. Clear your mind completely',
+          },
+          {
+            role: 'user',
+            content: `Clear your mind completely. Summarize these reviews into a meaningful and clear paragraph of around 30 words. Do not refer to past message history by the user when formulating the paragraph. Write the paragraph as if you have not seen these reviews before. ${allReviews}`,
+          },
+        ],
+        model: 'gpt-3.5-turbo',
+      });
+
+      // throw an error if api response is null
+      if (!completion) {
+        throw new Error('Failed to fetch data from API');
+      }
+      housing.aggregateReview = completion.choices[0].message.content;
+    } else {
+      housing.aggregateReview = null;
+    }
+    await this.housingRepository.save(housing);
   }
 }
