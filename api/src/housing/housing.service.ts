@@ -6,6 +6,7 @@ import { CreateHousingDTO } from './create-housing.dto';
 import { UpdateHousingDTO } from './update-housing.dto';
 import OpenAI from 'openai';
 import { Review } from 'src/reviews/review.entity';
+import { createAggregateReviewPrompt } from 'src/chatgpt-prompts';
 
 const API_URL = 'http://localhost:3000';
 const API_KEY = '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';
@@ -135,22 +136,10 @@ export class HousingService {
 
     // Joining the array elements with ' | ' separator
     allReviews = allReviewsArray.join(' | ');
+    const prompt = createAggregateReviewPrompt(allReviews);
 
     // api request body along with response
-    const completion = await openai.chat.completions.create({
-      messages: [
-        {
-          role: 'system',
-          content:
-            'You are a helpful assistant who writes a concise and meaningful aggregate review of an apartment. Do not refer to past message history by the user when formulating the paragraph. Write the paragraph as if you have not seen these reviews before. Reviews are seperated by "|" . If the review includes at least one apartment-specific characteristic or detail (i.e. size of room, the view, the amenities, location, noise levels, crime, and more), then use the review to form the aggregate review. If ALL of the reviews do NOT include at least one apartment-specific characteristic or detail (i.e. size of room, the view, the amenities, location, noise levels, crime, and more), please reply with the following: Not enough information to create an aggregate review. ',
-        },
-        {
-          role: 'user',
-          content: `Summarize these reviews into a meaningful and clear paragraph of around 30 words. Do not refer to past message history by the user when formulating the paragraph. Write the paragraph as if you have not seen these reviews before. Write the paragraph as if you have not seen these reviews before. Reviews are seperated by "|". If the review includes at least one apartment-specific characteristic or detail (i.e. size of room, the view, the amenities, location, noise levels, crime, and more), then use the review to form the aggregate review. If ALL of the reviews do NOT include at least one apartment-specific characteristic or detail (i.e. size of room, the view, the amenities, location, noise levels, crime, and more), please reply with the following: Not enough information to create an aggregate review. ${allReviews}`,
-        },
-      ],
-      model: 'gpt-3.5-turbo',
-    });
+    const completion = await openai.chat.completions.create(prompt);
 
     // throw an error if api response is null
     if (!completion) {
@@ -235,21 +224,10 @@ export class HousingService {
 
     //If there is more than one review, then call chatgpt, otherwise set the value of the aggregateReview to null
     if (updatedReviews.length > 0) {
+      const prompt = createAggregateReviewPrompt(allReviews);
+
       // api request body along with response
-      const completion = await openai.chat.completions.create({
-        messages: [
-          {
-            role: 'system',
-            content:
-              'You are a helpful assistant who writes a concise and meaningful aggregate review of an apartment. Do not refer to past message history by the user when formulating the paragraph. Write the paragraph as if you have not seen these reviews before. Clear your mind completely. Reviews are seperated by "|" . If the review includes at least one apartment-specific characteristic or detail (i.e. size of room, the view, the amenities, location, noise levels, crime, and more), then use the review to form the aggregate review. If ALL of the reviews do NOT include at least one apartment-specific characteristic or detail (i.e. size of room, the view, the amenities, location, noise levels, crime, and more), please reply with the following: Not enough information to create an aggregate review.',
-          },
-          {
-            role: 'user',
-            content: `Clear your mind completely. Summarize these reviews into a meaningful and clear paragraph of around 30 words. Do not refer to past message history by the user when formulating the paragraph. Write the paragraph as if you have not seen these reviews before. Reviews are seperated by "|" . If the review includes at least one apartment-specific characteristic or detail (i.e. size of room, the view, the amenities, location, noise levels, crime, and more), then use the review to form the aggregate review. If ALL of the reviews do NOT include at least one apartment-specific characteristic or detail (i.e. size of room, the view, the amenities, location, noise levels, crime, and more), please reply with the following: Not enough information to create an aggregate review. ${allReviews}`,
-          },
-        ],
-        model: 'gpt-3.5-turbo',
-      });
+      const completion = await openai.chat.completions.create(prompt);
 
       // throw an error if api response is null
       if (!completion) {
