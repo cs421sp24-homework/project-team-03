@@ -36,7 +36,7 @@ const PostActions = ({
     <DropdownMenu open={dropdownState} onOpenChange={setDropdownState}>
       {isOwner && (
         <DropdownMenuTrigger asChild>
-          <Button id="delete-post" variant="ghost" className="h-8 w-8 p-0 data-[state=open]:bg-muted" >
+          <Button id="post-actions" variant="ghost" className="h-8 w-8 p-0 data-[state=open]:bg-muted" >
             <DotsVerticalIcon className="w-5 h-5" />
             <span className="sr-only">Open menu</span>
           </Button> 
@@ -49,7 +49,6 @@ const PostActions = ({
             Delete
           </DropdownMenuItem>
           <EditPostDialog post={post} setDropdownState={setDropdownState}/></>
-          
         )}
       </DropdownMenuContent>
     </DropdownMenu>

@@ -14,7 +14,7 @@ const Post = ({ post }: { post: PostWithUserData }) => {
           user={user}
         />
       </div>
-      <div className="text-sm py-2 px-4 overflow-y-auto" style={{ height: '80%', scrollbarWidth: 'none', }}>
+      <div id='post' className="px-4 py-2 overflow-y-auto text-sm" style={{ height: '80%', scrollbarWidth: 'none', }}>
         <div className="pb-2 text-base font-bold underline">{title}</div>
           <div className="pl-2">
             <div className="pb-2">{content}</div>
