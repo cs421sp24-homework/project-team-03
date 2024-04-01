@@ -57,15 +57,13 @@ describe('Testing post filtering feature', () => {
 
   it('Filters posts by type', () => {
     cy.get('#see-posts').click();
-    // Apply filter for location
     cy.get('#filter-button').click();
     cy.get('#type').select('Roommate');
     cy.contains('Submit').click();
 
-      // Verify that only posts with selected location are displayed
-      cy.get('#post-footer').each(($postFooter) => {
+      cy.get('#post').each(($post) => {
         // Within each post-footer
-        cy.wrap($postFooter).within(() => {
+        cy.wrap($post).within(() => {
           // Check for the type
           cy.contains('Type: Roommate').should('exist');
         });
@@ -80,10 +78,10 @@ describe('Testing post filtering feature', () => {
     cy.contains('Submit').click();
 
     // Verify that only posts with selected location are displayed
-    cy.get('#post-footer').each(($postFooter) => {
-      cy.wrap($postFooter).within(() => {
+    cy.get('#post').each(($post) => {
+      cy.wrap($post).within(() => {
         // Get the text containing the cost value
-        cy.get('.mr-4').contains('Cost:').invoke('text').then((costText) => {
+        cy.contains('Cost:').parent().invoke('text').then((costText) => {
           // Extract and parse the cost value from the text
           const cost = Number(costText.replace('Cost: $', '').trim());
           expect(cost).to.be.greaterThan(0);

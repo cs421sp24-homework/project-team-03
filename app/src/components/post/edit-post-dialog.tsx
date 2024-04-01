@@ -17,6 +17,7 @@ import { useToast } from "@/components/ui/use-toast";
 import useMutationPosts from "@/hooks/use-mutations-posts";
 import { PostWithUserData } from "@/lib/types";
 import { PostType } from "@/lib/types";
+import { DropdownMenuItem } from "../ui/dropdown-menu";
 
 export const EditPostDialog = ({
   post,
@@ -34,6 +35,12 @@ export const EditPostDialog = ({
   const { editPostById } = useMutationPosts();
   const { toast } = useToast();
   const [dialogueState, setDialogueState] = useState(false);
+
+  const handleEditClick = async (event: React.SyntheticEvent) => {
+    event.stopPropagation(); // Stop event propagation to prevent closing the dropdown
+    event.preventDefault(); // Prevent the default behavior (e.g., form submission)
+    setDialogueState(true);
+  };
 
   const handleSave = async (event: React.SyntheticEvent) => {
     event.preventDefault();
@@ -68,10 +75,11 @@ export const EditPostDialog = ({
   return (
     <Dialog open={dialogueState} onOpenChange={setDialogueState}>
       <DialogTrigger asChild>
-        <Button aria-label="Edit Post" variant="ghost" size="sm">
-          Edit
-        </Button>
+          <DropdownMenuItem id="edit-post" onClick={handleEditClick}>
+              Edit
+          </DropdownMenuItem>
       </DialogTrigger>
+
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit Post</DialogTitle>
