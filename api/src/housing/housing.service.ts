@@ -125,9 +125,23 @@ export class HousingService {
     }
     const reviews = responseJson.data;
 
-    let allReviews = reviews.map((review) => review.content).join(', ');
+    let allReviews = reviews.map((review) => review.content).join(' | ');
+
+    // Assuming allReviews is a string containing reviews separated by ' | '
+    const allReviewsArray = allReviews.split(' | ');
+
+    // Pushing new content to the array
+    allReviewsArray.push(content);
+
+    // Joining the array elements with ' | ' separator
+    allReviews = allReviewsArray.join(' | ');
+
     // allReviews.push(content);
-    allReviews = [allReviews, content];
+    // allReviews = [allReviews, content];
+
+    //allReviews.forEach((review) => {
+    console.log(allReviews);
+    //});
 
     // api request body along with response
     const completion = await openai.chat.completions.create({
@@ -135,11 +149,11 @@ export class HousingService {
         {
           role: 'system',
           content:
-            'You are a helpful assistant who writes a concise and meaningful aggregate review of an apartment. Do not refer to past message history by the user when formulating the paragraph. Write the paragraph as if you have not seen these reviews before.',
+            'You are a helpful assistant who writes a concise and meaningful aggregate review of an apartment. Do not refer to past message history by the user when formulating the paragraph. Write the paragraph as if you have not seen these reviews before. Reviews are seperated by "|" . If the review includes at least one apartment-specific characteristic or detail (i.e. size of room, the view, the amenities, location, noise levels, crime, and more), then use the review to form the aggregate review. If ALL of the reviews do NOT include at least one apartment-specific characteristic or detail (i.e. size of room, the view, the amenities, location, noise levels, crime, and more), please reply with the following: Not enough information to create an aggregate review. ',
         },
         {
           role: 'user',
-          content: `Summarize these reviews into a meaningful and clear paragraph of around 30 words. Do not refer to past message history by the user when formulating the paragraph. Write the paragraph as if you have not seen these reviews before. ${allReviews}`,
+          content: `Summarize these reviews into a meaningful and clear paragraph of around 30 words. Do not refer to past message history by the user when formulating the paragraph. Write the paragraph as if you have not seen these reviews before. Write the paragraph as if you have not seen these reviews before. Reviews are seperated by "|". If the review includes at least one apartment-specific characteristic or detail (i.e. size of room, the view, the amenities, location, noise levels, crime, and more), then use the review to form the aggregate review. If ALL of the reviews do NOT include at least one apartment-specific characteristic or detail (i.e. size of room, the view, the amenities, location, noise levels, crime, and more), please reply with the following: Not enough information to create an aggregate review. ${allReviews}`,
         },
       ],
       model: 'gpt-3.5-turbo',
@@ -218,23 +232,35 @@ export class HousingService {
     }
     const reviews = responseJson.data;
     // Filter out the review with the specific ID only for this copy of reviews
-    let updatedReviews = reviews.filter(review => review.id !== toBeDeletedReview.id);
+    const updatedReviews = reviews.filter(
+      (review) => review.id !== toBeDeletedReview.id,
+    );
     //map all the updated reviews into one string for processing
-    let allReviews = updatedReviews.map((review) => review.content).join(', ');
+    const allReviews = updatedReviews
+      .map((review) => review.content)
+      .join(' | ');
+
+    console.log(allReviews);
+
+    /*
+    allReviews.forEach((review) => {
+      console.log(review);
+    });
+    */
 
     //If there is more than one review, then call chatgpt, otherwise set the value of the aggregateReview to null
-    if (updatedReviews.length > 0) { 
-        // api request body along with response
+    if (updatedReviews.length > 0) {
+      // api request body along with response
       const completion = await openai.chat.completions.create({
         messages: [
           {
             role: 'system',
             content:
-              'You are a helpful assistant who writes a concise and meaningful aggregate review of an apartment. Do not refer to past message history by the user when formulating the paragraph. Write the paragraph as if you have not seen these reviews before. Clear your mind completely',
+              'You are a helpful assistant who writes a concise and meaningful aggregate review of an apartment. Do not refer to past message history by the user when formulating the paragraph. Write the paragraph as if you have not seen these reviews before. Clear your mind completely. Reviews are seperated by "|" . If the review includes at least one apartment-specific characteristic or detail (i.e. size of room, the view, the amenities, location, noise levels, crime, and more), then use the review to form the aggregate review. If ALL of the reviews do NOT include at least one apartment-specific characteristic or detail (i.e. size of room, the view, the amenities, location, noise levels, crime, and more), please reply with the following: Not enough information to create an aggregate review.',
           },
           {
             role: 'user',
-            content: `Clear your mind completely. Summarize these reviews into a meaningful and clear paragraph of around 30 words. Do not refer to past message history by the user when formulating the paragraph. Write the paragraph as if you have not seen these reviews before. ${allReviews}`,
+            content: `Clear your mind completely. Summarize these reviews into a meaningful and clear paragraph of around 30 words. Do not refer to past message history by the user when formulating the paragraph. Write the paragraph as if you have not seen these reviews before. Reviews are seperated by "|" . If the review includes at least one apartment-specific characteristic or detail (i.e. size of room, the view, the amenities, location, noise levels, crime, and more), then use the review to form the aggregate review. If ALL of the reviews do NOT include at least one apartment-specific characteristic or detail (i.e. size of room, the view, the amenities, location, noise levels, crime, and more), please reply with the following: Not enough information to create an aggregate review. ${allReviews}`,
           },
         ],
         model: 'gpt-3.5-turbo',
