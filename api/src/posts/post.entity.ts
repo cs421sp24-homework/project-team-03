@@ -30,8 +30,8 @@ export class Post {
   @Column()
   address: string;
 
-  @Column({ nullable: true })
-  images: string;
+  @Column('text', { array: true, default: {} })
+  images: string[];
 
   @ManyToOne(() => User, (user) => user.posts)
   @JoinColumn({ name: 'userId' })
