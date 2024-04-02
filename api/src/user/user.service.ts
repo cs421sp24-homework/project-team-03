@@ -114,7 +114,6 @@ export const sendEmail = async (email: string, token: string) => {
       }
 
       const responseData = await response.json();
-      console.log("Email sent successfully:", responseData);
   } catch (error) {
       console.error("Error sending email:", error);
   }
