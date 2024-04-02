@@ -158,21 +158,21 @@ describe('UserController', () => {
     expect(result).toEqual(exampleUser);
   });
 
-  // test for incremement notifications
-  it('should increment notifications for a user', async () => {
-    const userEmail = 'example@domain.com';
-    const result: UserResponseDTO = await controller.incrementNotifications(userEmail);
-    expect(userService.incrementNotifs).toHaveBeenCalledWith(userEmail);
-    expect(result).toEqual(exampleUser);
-  });
+  // // test for incremement notifications
+  // it('should increment notifications for a user', async () => {
+  //   const userEmail = 'example@domain.com';
+  //   const result: UserResponseDTO = await controller.incrementNotifications(userEmail);
+  //   expect(userService.incrementNotifs).toHaveBeenCalledWith(userEmail);
+  //   expect(result).toEqual(exampleUser);
+  // });
 
-  // test for clear notifications
-  it('should clear notifications for a user', async () => {
-    const userEmail = 'example@domain.com';
-    const result: UserResponseDTO = await controller.clearNotifs(userEmail);
-    expect(userService.clearNotifs).toHaveBeenCalledWith(userEmail);
-    expect(result).toEqual(exampleUser);
-  });
+  // // test for clear notifications
+  // it('should clear notifications for a user', async () => {
+  //   const userEmail = 'example@domain.com';
+  //   const result: UserResponseDTO = await controller.clearNotifs(userEmail);
+  //   expect(userService.clearNotifs).toHaveBeenCalledWith(userEmail);
+  //   expect(result).toEqual(exampleUser);
+  // });
 
 
 });

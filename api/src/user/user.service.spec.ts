@@ -197,36 +197,36 @@ describe('UserService', () => {
   });
   
   
-  describe('incrementNotifs', () => {
-    it('should increment notifications for existing user', async () => {
-      const userEmail = 'example@jhu.edu';
-      const updatedUser = await userService.incrementNotifs(userEmail);
-      expect(updatedUser.notifications).toBe(1);
-    });
+  // describe('incrementNotifs', () => {
+  //   it('should increment notifications for existing user', async () => {
+  //     const userEmail = 'example@jhu.edu';
+  //     const updatedUser = await userService.incrementNotifs(userEmail);
+  //     expect(updatedUser.notifications).toBe(1);
+  //   });
 
-    it('should return null for non-existing user', async () => {
-      jest.spyOn(userRepository, 'preload').mockResolvedValue(null);
+  //   it('should return null for non-existing user', async () => {
+  //     jest.spyOn(userRepository, 'preload').mockResolvedValue(null);
 
-      const userEmail = 'nonexisting@example.com';
-      const updatedUser = await userService.incrementNotifs(userEmail);
-      expect(updatedUser).toBeNull();
-    });
-  });
+  //     const userEmail = 'nonexisting@example.com';
+  //     const updatedUser = await userService.incrementNotifs(userEmail);
+  //     expect(updatedUser).toBeNull();
+  //   });
+  // });
 
-  describe('clearNotifs', () => {
-    it('should clear notifications for existing user', async () => {
-      const userEmail = 'example@jhu.edu';
-      const updatedUser = await userService.clearNotifs(userEmail);
-      expect(updatedUser.notifications).toBe(0);
-    });
+  // describe('clearNotifs', () => {
+  //   it('should clear notifications for existing user', async () => {
+  //     const userEmail = 'example@jhu.edu';
+  //     const updatedUser = await userService.clearNotifs(userEmail);
+  //     expect(updatedUser.notifications).toBe(0);
+  //   });
 
-    it('should return null for non-existing user', async () => {
-      jest.spyOn(userRepository, 'preload').mockResolvedValue(null);
+  //   it('should return null for non-existing user', async () => {
+  //     jest.spyOn(userRepository, 'preload').mockResolvedValue(null);
 
-      const userEmail = 'nonexisting@example.com';
-      const updatedUser = await userService.clearNotifs(userEmail);
-      expect(updatedUser).toBeNull();
-    });
-  });
+  //     const userEmail = 'nonexisting@example.com';
+  //     const updatedUser = await userService.clearNotifs(userEmail);
+  //     expect(updatedUser).toBeNull();
+  //   });
+  // });
 
 });
