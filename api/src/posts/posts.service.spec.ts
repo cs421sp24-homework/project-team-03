@@ -53,6 +53,7 @@ describe('PostsService', () => {
     posts: [],
     reviews: [],
     bio: null,
+    notifications: 0,
   };
 
   const resultPost: Post = {

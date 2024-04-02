@@ -98,4 +98,27 @@ export class UserController {
         delete user.password;
         return user;
     }
+
+    @Patch(':email/notifications')
+    async incrementNotifications (
+        @Param('email') email: string,
+    ): Promise<UserResponseDTO> {
+        const user = await this.userService.incrementNotifs(email);
+        if (!user) {
+            throw new NotFoundException(`User with Email ${email} not found`);
+        }
+        return user;
+    }
+
+    @Patch(':email/clearNotifs')
+    async clearNotifs (
+        @Param('email') email: string,
+    ): Promise<UserResponseDTO> {
+        const user = await this.userService.clearNotifs(email);
+        if (!user) {
+            throw new NotFoundException(`User with Email ${email} not found`);
+        }
+        return user;
+    }
+    
 }

@@ -76,6 +76,7 @@ describe('ReviewsService', () => {
     posts: [],
     reviews: [],
     bio: null,
+    notifications: 0,
   };
 
   const mockHousing: Housing = {

@@ -34,7 +34,11 @@ export class User {
   // NEW - user can have multiple reviews
   @OneToMany(() => Review, (review) => review.user)
   reviews: Review[];
+
   @Column({ nullable: true })
   bio: string;
+
+  @Column({ default: 0 })
+  notifications: number;
 
 }

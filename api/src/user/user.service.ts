@@ -79,6 +79,28 @@ async verifyEmail(email: string, verificationToken: string): Promise<boolean> {
     }
     return this.userRepository.save(user);
   }
+
+  async incrementNotifs(email: string): Promise<User | null> {
+    const user = await this.findOne(email);
+    if (!user) {
+      return null;
+    }
+
+    user.notifications += 1;
+    await this.userRepository.save(user);
+    return user;
+  }
+
+  async clearNotifs(email: string): Promise<User | null> {
+    const user = await this.findOne(email);
+    if (!user) {
+      return null;
+    }
+
+    user.notifications = 0;;
+    await this.userRepository.save(user);
+    return user;
+  }
 }
 
 

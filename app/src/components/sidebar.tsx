@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AddPostDialog } from "./post/add-post-dialog";
 import { useStore } from "@/lib/store";
 import { useToast } from "./ui/use-toast";
+import Inbox from "./email/inbox";
 
 type SideBarProps = {
   isPostsView: true | false;
@@ -54,6 +55,7 @@ function Sidebar({ isPostsView }: SideBarProps) {
       </Button>}
       {isPostsView && <AddPostDialog />}
       {user && <Button id="profile" variant="ghost" size="sm" onClick={handleClickProfile}><AvatarIcon className="w-5 h-5" /></Button>}
+      {user && <Inbox />} 
     </div>
   );
 }
