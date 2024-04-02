@@ -73,7 +73,7 @@ const Inbox = () => {
                 </div>
             </PopoverTrigger>
             <PopoverContent id="inbox-content" className="relative">
-                You have {notifications} new emails. Check your inbox!
+                You have {notifications} new emails. {notifications != 0 && "Check your inbox!"}
                 {notifications != 0 && <Button id="clear-inbox" variant="ghost" size="sm" onClick={clearNotifications}><CheckboxIcon /></Button>}
             </PopoverContent>
         </Popover>
