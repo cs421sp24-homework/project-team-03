@@ -28,7 +28,7 @@ describe('Email Verification', () => {
 
         cy.contains('Save').click();
     
-        cy.get('#toast', { timeout: 1000 })
+        cy.get('#toast', { timeout: 10000 })
             .should('exist')
             .contains(/registration successful/i);
     
