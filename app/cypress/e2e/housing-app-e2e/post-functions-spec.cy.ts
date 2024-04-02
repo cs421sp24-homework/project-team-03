@@ -16,6 +16,7 @@ describe('test post functionality', () => {
         randomPassword = generateRandomPassword(10);
         cy.visit('/'); //visits base url from config file
         cy.registerUser(randomEmail, randomPassword, randomName, randomName);
+        cy.verifyUser(randomEmail);
     })
 
     beforeEach(() => {

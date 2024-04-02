@@ -17,6 +17,7 @@ describe('Testing post filtering feature', () => {
     randomPassword = generateRandomPassword(10);
     cy.visit('/'); //visits base url from config file
     cy.registerUser(randomEmail, randomPassword, randomName, randomName); //register once
+    cy.verifyUser(randomEmail);
   });
 
   beforeEach(() => {
