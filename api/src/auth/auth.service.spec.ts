@@ -52,7 +52,7 @@ describe('AuthService', () => {
         avatar: 'http://example.com/avatar.jpg', // Optional, can be null
         firstName: 'John',
         lastName: 'Doe',
-        isEmailVerified: false,
+        isEmailVerified: true,
         verificationToken: 'some-verification-token', // Optional, can be null
         posts: [], // Array of Post entities, can be empty if not testing related functionality
         reviews: [],
@@ -93,7 +93,7 @@ describe('AuthService', () => {
             avatar: 'http://example.com/avatar.jpg', // Optional, can be null
             firstName: 'John',
             lastName: 'Doe',
-            isEmailVerified: false,
+            isEmailVerified: true,
             verificationToken: 'some-verification-token', // Optional, can be null
             posts: [], // Array of Post entities, can be empty if not testing related functionality
             reviews: [],

@@ -10,6 +10,7 @@ import User from "./views/user";
 import PostView from "./views/post-view";
 import HousingView from "./views/housing-view";
 import { LoadScript } from '@react-google-maps/api';
+import { VerifyEmailDialog } from "./auth/verify-email-dialog";
 
 function App() {
   const clearUser = useStore((state) => state.clearUser);
@@ -67,6 +68,7 @@ function App() {
           <Route path="/posts/" element={<PostView />} />
           <Route path= "/users/:jhed" element= {<User />} errorElement={<ErrorPage />} />
           <Route path="/housings/:id" element={<HousingView />} errorElement={<ErrorPage />} />
+          <Route path="/verify" element={<VerifyEmailDialog />} errorElement={<ErrorPage />} />
         </Routes>
         </LoadScript>
       </HashRouter>

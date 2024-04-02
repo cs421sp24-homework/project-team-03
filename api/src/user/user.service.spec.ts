@@ -22,7 +22,7 @@ describe('UserService', () => {
     lastName: 'Doe',
     avatar: 'http://example.com/avatar.jpg', // Can be null if testing for nullability
     isEmailVerified: false,
-    verificationToken: 'someRandomVerificationToken', // Can also be null
+    verificationToken: '123456', // Can also be null
     posts: [], // Assuming this user has no posts initially; you can add mock posts if needed
     reviews: [],
     bio: null,
@@ -153,6 +153,49 @@ describe('UserService', () => {
       expect(result).toBeNull();
     });
   });
+
+  describe('verifyEmail', () => {
+    const verificationToken = '123456';
+  
+    it('should verify email and return true', async () => {
+      const email = 'example@jhu.edu';
+      const updatedUser = { ...mockUser, isEmailVerified: true };
+      jest.spyOn(userService, 'findOne').mockResolvedValue(mockUser);
+      jest.spyOn(userRepository, 'save').mockResolvedValue(updatedUser);
+  
+      const result = await userService.verifyEmail(email, verificationToken);
+  
+      expect(result).toBe(true);
+      expect(userService.findOne).toHaveBeenCalledWith(email);
+      expect(userRepository.save).toHaveBeenCalledWith({ ...mockUser, isEmailVerified: true });
+    });
+  
+    it('should not verify email if user does not exist and return false', async () => {
+      const email = 'nonexistent@example.com';
+      jest.spyOn(userService, 'findOne').mockResolvedValue(null);
+  
+      const result = await userService.verifyEmail(email, verificationToken);
+  
+      expect(result).toBe(false);
+      expect(userService.findOne).toHaveBeenCalledWith(email);
+      expect(userRepository.save).not.toHaveBeenCalled();
+    });
+  
+    it('should not verify email if verification token does not match and return false', async () => {
+      const email = 'example@jhu.edu';
+      const invalidVerificationToken = 'invalidToken';
+      jest.spyOn(userService, 'findOne').mockResolvedValue(mockUser);
+  
+      const result = await userService.verifyEmail(email, invalidVerificationToken);
+  
+      expect(result).toBe(false);
+      expect(userService.findOne).toHaveBeenCalledWith(email);
+      expect(userRepository.save).not.toHaveBeenCalled();
+    });
+  
+
+  });
+  
   
   describe('incrementNotifs', () => {
     it('should increment notifications for existing user', async () => {

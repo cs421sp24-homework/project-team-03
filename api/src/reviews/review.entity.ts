@@ -31,7 +31,9 @@ export class Review {
   likedBy: number[];
 
   // many reviews written by a single user
-  @ManyToOne(() => User, (user) => user.reviews)
+  @ManyToOne(() => User, (user) => user.reviews, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'userId' })
   user: User;
 

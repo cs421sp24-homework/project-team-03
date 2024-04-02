@@ -24,6 +24,7 @@ describe('test user profile functionality', () => {
         randomMessage = generateRandomName(50);
         cy.visit('/');
         cy.registerUser(randomEmail, randomPassword, randomName, randomName);
+        cy.verifyUser(randomEmail);
     })
 
     beforeEach(() => {
