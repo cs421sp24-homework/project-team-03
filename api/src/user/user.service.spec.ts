@@ -162,7 +162,7 @@ describe('UserService', () => {
     });
 
     it('should return null for non-existing user', async () => {
-      jest.spyOn(userRepository, 'findOne').mockResolvedValue(null);
+      jest.spyOn(userRepository, 'preload').mockResolvedValue(null);
 
       const userEmail = 'nonexisting@example.com';
       const updatedUser = await userService.incrementNotifs(userEmail);
@@ -178,7 +178,7 @@ describe('UserService', () => {
     });
 
     it('should return null for non-existing user', async () => {
-      jest.spyOn(userRepository, 'findOne').mockResolvedValue(null);
+      jest.spyOn(userRepository, 'preload').mockResolvedValue(null);
 
       const userEmail = 'nonexisting@example.com';
       const updatedUser = await userService.clearNotifs(userEmail);

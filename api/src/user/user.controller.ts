@@ -89,6 +89,9 @@ export class UserController {
         @Param('email') email: string,
     ): Promise<UserResponseDTO> {
         const user = await this.userService.incrementNotifs(email);
+        if (!user) {
+            throw new NotFoundException(`User with Email ${email} not found`);
+        }
         return user;
     }
 
@@ -97,6 +100,9 @@ export class UserController {
         @Param('email') email: string,
     ): Promise<UserResponseDTO> {
         const user = await this.userService.clearNotifs(email);
+        if (!user) {
+            throw new NotFoundException(`User with Email ${email} not found`);
+        }
         return user;
     }
     
