@@ -36,4 +36,7 @@ export class Housing {
   // NEW - housing can have multiple reviews
   @OneToMany(() => Review, (review) => review.housing)
   reviews: Review[];
+
+  @Column({ nullable: true })
+  aggregateReview: string;
 }

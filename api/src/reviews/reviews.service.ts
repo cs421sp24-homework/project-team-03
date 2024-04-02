@@ -29,7 +29,14 @@ export class ReviewsService {
       review.rating,
       housingId,
     );
+    // Update aggregate review
+    await this.housingService.updateAggregateReviewAfterCreate(
+      review.content,
+      housingId,
+    );
+
     return this.reviewRepository.save(review);
+    // return review;
   }
 
   async findOne(id: string, housingId: string): Promise<Review | null> {
@@ -46,6 +53,12 @@ export class ReviewsService {
     if (!review) {
       return null;
     }
+
+    // Create new Aggregate review without the to-be-deleted review
+    await this.housingService.updateAggregateReviewAfterDelete(
+      review,
+      housingId,
+    );
 
     // Decrement review count by 1 and update average review of housing item
     await this.housingService.updateAvgReviewAfterDelete(

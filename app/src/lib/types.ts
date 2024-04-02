@@ -30,13 +30,14 @@ export type HousingItem = {
   id: string;
   name: string;
   address: string;
-  imageURL?: string;
+  imageURL: string;
   avgRating: number;
   reviewCount: number;
   distance: number;
   price: string;
   latitude?: number;
   longitude?: number;
+  aggregateReview: string;
 };
 
 export type ReviewWithUserData = Review & {user: User};

@@ -83,6 +83,7 @@ describe('ReviewsController', () => {
     avgRating: 4,
     reviewCount: 1,
     reviews: [], // Assuming reviews are an array of Review entities
+    aggregateReview: null
   };
 
   const review: Review = {
