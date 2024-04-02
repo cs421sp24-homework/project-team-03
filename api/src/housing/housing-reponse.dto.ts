@@ -14,4 +14,5 @@ export class HousingResponseDTO {
 
   // NEW
   reviews: Review[];
+  aggregateReview: string;
 }
