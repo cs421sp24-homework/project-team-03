@@ -50,6 +50,7 @@ describe('test user profile functionality', () => {
     it('A user should not be able to edit another users profile', () => {
         cy.logoutUser();
         cy.registerUser(secondEmail, secondPassword, secondName, secondName);
+        cy.verifyUser(secondEmail);
         cy.loginUser(randomEmail, randomPassword);
         cy.wait(1000);
         cy.visit(`/#/users/${secondName}`);
