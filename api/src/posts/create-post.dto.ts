@@ -20,6 +20,7 @@ export class CreatePostDto {
 
     @IsOptional()
     @IsArray()
+    @IsString({ each: true })
     images?: string[];
 
     @IsString()
