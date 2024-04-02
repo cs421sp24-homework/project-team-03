@@ -55,7 +55,7 @@ export function EmailDialog({ userProf }: { userProf: User }) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="ghost" size="sm" ><EnvelopeClosedIcon /></Button>
+                <Button id="send-email" variant="ghost" size="sm" ><EnvelopeClosedIcon /></Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

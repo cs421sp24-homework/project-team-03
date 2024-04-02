@@ -9,6 +9,7 @@ import { getNotifications } from "@/lib/api";
 const NotificationBadge = ({ count }: { count: number }) => {
     return (
         <div
+            id="notification-count"
             style={{
                 position: 'absolute',
                 top: '-8px',
@@ -30,6 +31,7 @@ const NotificationBadge = ({ count }: { count: number }) => {
 };
 
 const Inbox = () => {
+
     const user = useStore((state) => state.user);
     const { clearNotif } = useMutationUser();
     const notifications = useStore((state) => state.notifications);
@@ -66,13 +68,13 @@ const Inbox = () => {
                     justifyContent: 'center',
                     alignItems: 'center',
                 }}>
-                    <BellIcon className="w-5 h-5" />
-                    <NotificationBadge count={notifications} /> 
+                    <BellIcon id="inbox" className="w-5 h-5" />
+                    {notifications != 0 && <NotificationBadge count={notifications} />} 
                 </div>
             </PopoverTrigger>
-            <PopoverContent className="relative">
+            <PopoverContent id="inbox-content" className="relative">
                 You have {notifications} new emails. Check your inbox!
-                <Button variant="ghost" size="sm" onClick={clearNotifications}><CheckboxIcon /></Button>
+                {notifications != 0 && <Button id="clear-inbox" variant="ghost" size="sm" onClick={clearNotifications}><CheckboxIcon /></Button>}
             </PopoverContent>
         </Popover>
     );

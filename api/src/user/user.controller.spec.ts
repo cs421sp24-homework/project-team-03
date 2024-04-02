@@ -38,12 +38,12 @@ describe('UserController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UserController],
       providers: [
-        UserService, 
+        UserService,
         {
           provide: USER_REPO_TOKEN,
           useValue: {
-            create:  jest.fn(),
-            remove:  jest.fn(),
+            create: jest.fn(),
+            remove: jest.fn(),
             findOneBy: jest.fn(),
             save: jest.fn(),
             find: jest.fn()
@@ -55,7 +55,9 @@ describe('UserController', () => {
           provide: USER_REPO_TOKEN,
           useValue: {
             validateUser: jest.fn(),
-            login: jest.fn()
+            login: jest.fn(),
+            incrementNotifs: jest.fn(),
+            clearNotifs: jest.fn(),
           }
         }
       ],
@@ -125,9 +127,9 @@ describe('UserController', () => {
       avatar: userDto.avatar || 'default_avatar_url', // Fallback to a default if avatar is optional
       isEmailVerified: false, // Assuming the email has not been verified yet
       bio: 'A brief user biography', // Sample bio, could also be an empty string or other default
-      notifications: 0,
+      notifications: 1, // default is 0 but could be any number
     };
-    
+
     jest.spyOn(userService, 'createUser').mockResolvedValueOnce(exampleUser);
     const result: UserResponseDTO = await controller.register(userDto)
     expect(result).toEqual(exampleUser);
@@ -155,5 +157,22 @@ describe('UserController', () => {
     expect(userService.update).toHaveBeenCalledWith(1, updateUserDto);
     expect(result).toEqual(exampleUser);
   });
+
+  // test for incremement notifications
+  it('should increment notifications for a user', async () => {
+    const userEmail = 'example@domain.com';
+    const result: UserResponseDTO = await controller.incrementNotifications(userEmail);
+    expect(userService.incrementNotifs).toHaveBeenCalledWith(userEmail);
+    expect(result).toEqual(exampleUser);
+  });
+
+  // test for clear notifications
+  it('should clear notifications for a user', async () => {
+    const userEmail = 'example@domain.com';
+    const result: UserResponseDTO = await controller.clearNotifs(userEmail);
+    expect(userService.clearNotifs).toHaveBeenCalledWith(userEmail);
+    expect(result).toEqual(exampleUser);
+  });
+
 
 });

@@ -8,6 +8,8 @@ describe('test user profile functionality', () => {
     let secondName;
     let secondEmail;
     let secondPassword;
+    let randomMessage;
+    let randomSubject;
 
     before(() => {
         // Generate the credentials before all tests run
@@ -18,6 +20,8 @@ describe('test user profile functionality', () => {
         secondPassword = generateRandomPassword(10);
         randomPassword = generateRandomPassword(10);
         randomBio = generateRandomName(50);
+        randomSubject = generateRandomName(12);
+        randomMessage = generateRandomName(50);
         cy.visit('/');
         cy.registerUser(randomEmail, randomPassword, randomName, randomName);
     })
@@ -95,6 +99,49 @@ describe('test user profile functionality', () => {
 
         cy.contains(`${secondName} ${secondName}`).should('be.visible');
         cy.contains(randomBio).should('be.visible');
+    })
+
+    it('A user can send an email to another user', () => {
+        cy.logoutUser();
+        cy.loginUser(randomEmail, randomPassword);
+        cy.wait(1000);
+        cy.visit(`/#/users/${secondName}`);
+        cy.get('#send-email').click();
+
+        cy.get('#name').type(randomName);
+        cy.get('#email').type(randomEmail);
+        cy.get('#subject').type(randomSubject);
+        cy.get('#message').type(randomMessage);
+        cy.contains('Submit').click();
+
+        cy.get('#toast', { timeout: 3000 })
+      .should('exist')
+      .contains(/Email sent/i);
+        
+    })
+
+    it('A user should have a notification on their inbox once an email is sent to them', () => {
+        cy.logoutUser();
+        cy.loginUser(secondEmail, secondPassword);
+
+        cy.get('#inbox').should('be.visible');
+
+        cy.get('#notification-count').should('be.visible').invoke('text').then(notificationCount => {
+            const count = parseInt(notificationCount, 10);
+            expect(count).to.be.greaterThan(0); // Assuming you expect at least one notification
+    });
+
+    })
+
+    it('A user should be able to clear notifications on their inbox', () => {
+        cy.logoutUser();
+        cy.loginUser(secondEmail, secondPassword);
+
+        cy.get('#inbox').click();
+        cy.contains('Check your inbox!').should('be.visible');
+
+        cy.get('#clear-inbox').click();
+        cy.get('#notification-count').should('not.exist');
     })
 
 })

@@ -123,6 +123,7 @@ describe('UserService', () => {
       lastName: 'Love',
       avatar: 'http://example.com/avatar2.jpg',
       bio: "Hello",
+      notifications: 1,
     };
     it('should update a user', async () => {
       const userId = 1;
@@ -131,6 +132,7 @@ describe('UserService', () => {
       mockUser.lastName = updateUserDto.lastName ?? mockUser.lastName;
       mockUser.avatar = updateUserDto.avatar ?? mockUser.avatar;
       mockUser.bio = updateUserDto.bio ?? mockUser.bio;
+      mockUser.notifications = updateUserDto.notifications ?? mockUser.notifications;
 
       jest.spyOn(userRepository, 'preload').mockResolvedValue(mockUser);
       jest.spyOn(userRepository, 'save').mockResolvedValue(mockUser);
@@ -152,4 +154,36 @@ describe('UserService', () => {
     });
   });
   
+  describe('incrementNotifs', () => {
+    it('should increment notifications for existing user', async () => {
+      const userEmail = 'example@jhu.edu';
+      const updatedUser = await userService.incrementNotifs(userEmail);
+      expect(updatedUser.notifications).toBe(1);
+    });
+
+    it('should return null for non-existing user', async () => {
+      jest.spyOn(userRepository, 'findOne').mockResolvedValue(null);
+
+      const userEmail = 'nonexisting@example.com';
+      const updatedUser = await userService.incrementNotifs(userEmail);
+      expect(updatedUser).toBeNull();
+    });
+  });
+
+  describe('clearNotifs', () => {
+    it('should clear notifications for existing user', async () => {
+      const userEmail = 'example@jhu.edu';
+      const updatedUser = await userService.clearNotifs(userEmail);
+      expect(updatedUser.notifications).toBe(0);
+    });
+
+    it('should return null for non-existing user', async () => {
+      jest.spyOn(userRepository, 'findOne').mockResolvedValue(null);
+
+      const userEmail = 'nonexisting@example.com';
+      const updatedUser = await userService.clearNotifs(userEmail);
+      expect(updatedUser).toBeNull();
+    });
+  });
+
 });
