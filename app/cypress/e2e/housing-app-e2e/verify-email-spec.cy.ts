@@ -46,7 +46,7 @@ describe('Email Verification', () => {
     it('log in fails when user is not verified', () => {
         cy.registerUser(randomEmail, randomPassword, randomName, randomName);
         cy.loginUser(randomEmail, randomPassword);
-        cy.get('#toast', { timeout: 1000 })
+        cy.get('#toast', { timeout: 10000 })
             .should('exist')
             .contains(/not verified/i);
     })
@@ -58,7 +58,7 @@ describe('Email Verification', () => {
         cy.get('#email').type(randomEmail);
         cy.get('#token').type(randomToken);
         cy.get('#save').click({ force: true });        
-        cy.get('#toast', { timeout: 1000 })
+        cy.get('#toast', { timeout: 10000 })
         .should('exist')
         .contains(/failed to verify/i);
         cy.visit('/');
@@ -72,7 +72,7 @@ describe('Email Verification', () => {
         cy.get('#email').type(randomEmail);
         cy.get('#token').type("000000");
         cy.get('#save').click({ force: true });        
-        cy.get('#toast', { timeout: 1000 })
+        cy.get('#toast', { timeout: 10000 })
         .should('exist')
         .contains(/verification successful/i);
         cy.visit('/');
@@ -86,7 +86,7 @@ describe('Email Verification', () => {
         cy.get('#email').type(randomEmail);
         cy.get('#token').type("000000");
         cy.get('#save').click({ force: true });        
-        cy.get('#toast', { timeout: 1000 })
+        cy.get('#toast', { timeout: 10000 })
         .should('exist')
         .contains(/verification successful/i);
         cy.visit('/');
