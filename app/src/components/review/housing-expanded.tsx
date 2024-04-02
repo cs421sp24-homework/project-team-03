@@ -30,23 +30,21 @@ const HousingExpanded = (props: HousingItemProps) => {
                     <div className="mx-2"> | </div>
                     <div>{housingItem.distance} miles from JHU Homewood Campus</div>
                 </div>
-                <div>
-                    {housingItem?.aggregateReview && user ? (
-                        <div className="max-w my-3 bg-blue-50 rounded-lg shadow border border-gray-200">
-                            <div className="flex px-4 py-2 border-b border-gray-200">
-                                <div>
-                                    <div className="mt-2 font-bold mb-2">Students say:</div>
-                                    <p>{housingItem.aggregateReview}</p>
-                                    <div className="mt-2 text-sm italic mb-4">
-                                        AI-generated from the text of customer reviews
-                                    </div>
-                                </div>
+            <div>
+            {housingItem?.aggregateReview && user && (
+                <div className="max-w my-3 bg-blue-50 rounded-lg shadow border border-gray-200">
+                    <div className="flex px-4 py-2 border-b border-gray-200">
+                        <div>
+                            <div className="mt-2 font-bold mb-2">Students say:</div>
+                            <p>{housingItem.aggregateReview}</p>
+                            <div className="mt-2 text-sm italic mb-4">
+                                AI-generated from the text of customer reviews
                             </div>
                         </div>
-                    ) : (
-                        <div></div>
-                    )}
+                    </div>
                 </div>
+            )}
+            </div>
             </div>
         </div>
     );
