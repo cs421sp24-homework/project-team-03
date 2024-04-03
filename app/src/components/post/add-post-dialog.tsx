@@ -36,6 +36,7 @@ export const AddPostDialog = () => {
   const { makeNewPost } = useMutationPosts();
   const { toast } = useToast();
   const user = useStore((state) => state.user);
+
   // For saving uploaded images
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<PreviewType[]>([]);
@@ -171,12 +172,8 @@ export const AddPostDialog = () => {
             {user
               ? 
                 <>
-                  <div>
-                    Provide the information of your post here.
-                  </div>
-                  <div>
-                    <span className="text-red-500">*</span> Required fields
-                  </div>
+                  Provide the information of your post here.<br/>
+                  Required fields <span className="text-red-500">*</span>
                 </>
               : "Please login to make a post."}
           </DialogDescription>
