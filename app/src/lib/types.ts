@@ -16,7 +16,7 @@ export type User = {
     timestamp?: string;
     cost: number;
     address: string;
-    images?: string; //Make it an array later
+    images: string[]; //Make it an array later
     userId: number;
     type: PostType;
     latitude?: number;
