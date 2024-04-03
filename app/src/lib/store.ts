@@ -79,7 +79,7 @@ export const useStore = create<State & Action>()(
   clearSelectedHousing: () => set({ selectedHousing: null }),
 
   addPosts: (post) => {
-    const newPosts = [...get().posts, post];
+    const newPosts = [post, ...get().posts];
     set({ posts: newPosts });
   },
 
