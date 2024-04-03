@@ -18,10 +18,9 @@ export class CreatePostDto {
     @IsNotEmpty({ message: 'Address cannot be empty' })
     address: string;
 
-    @IsOptional()
     @IsArray()
     @IsString({ each: true })
-    images?: string[];
+    images: string[];
 
     @IsString()
     @IsNotEmpty({ message: 'Type cannot be empty' })
