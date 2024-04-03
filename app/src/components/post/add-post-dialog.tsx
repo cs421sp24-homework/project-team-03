@@ -15,10 +15,17 @@ import { PlusCircledIcon } from "@radix-ui/react-icons";
 import useMutationPosts from "@/hooks/use-mutations-posts";
 import { useToast } from "@/components/ui/use-toast";
 import { useStore } from "@/lib/store";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { PostType } from "@/lib/types";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+// import './drag-drop-image-uploader.css';
+// import { supabase } from "@/lib/api";
+
+// type PreviewType = {
+//   url: string,
+//   name: string
+// }
 
 export const AddPostDialog = () => {
   const [title, setTitle] = useState("");
@@ -26,12 +33,100 @@ export const AddPostDialog = () => {
   const [cost, setCost] = useState(0);
   const [address, setAddress] = useState("");
   const [type, setType] = useState<PostType | null>(null);
-  const [image, setImage] = useState<string>("");
   const { makeNewPost } = useMutationPosts();
   const { toast } = useToast();
   const user = useStore((state) => state.user);
+  // For saving uploaded images
+  const [images, setImages] = useState<string>('');
+  // const [images, setImages] = useState<File[]>([]);
+  // const [previews, setPreviews] = useState<PreviewType[]>([]);
+  // const [isDragging, setIsDragging] = useState(false);
+  // const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  // const selectFiles = () => {
+  //   fileInputRef.current?.click();
+  // }
+
+  // const onFileSelect = (e: React.FormEvent<HTMLInputElement>) => {
+  //   const target = e.target as HTMLInputElement & {
+  //     files: FileList,
+  //   };
+  //   const files = target.files;
+  //   if (files.length === 0) return;
+
+  //   // Filter out duplicate images by name
+  //   let uniqueImages: File[] = [];
+  //   let uniquePreviews: PreviewType[] = [];
+  //   Array.from(files).forEach((file) => {
+  //     if (!previews.some((item) => item.name === file.name)) {
+  //       uniqueImages.push(file);
+  //       uniquePreviews.push(
+  //         {
+  //           url: URL.createObjectURL(file),
+  //           name: file.name,
+  //         }
+  //       );
+  //     }
+  //   });
+
+  //   // Add unique images to state variable
+  //   setImages([...images, ...uniqueImages]);
+  //   setPreviews([...previews, ...uniquePreviews]);
+  // }
+
+  // const deleteImage = (index: number) => {
+  //   setPreviews(previews.filter((_, i) => i !== index));
+  // }
+
+  // const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  //   e.preventDefault();   // prevent browser from opening dragged file in new tab onDrop
+  //   setIsDragging(true);
+  //   e.dataTransfer.dropEffect = 'copy';
+  // }
+
+  // const onDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+  //   e.preventDefault();   
+  //   setIsDragging(false);
+  // }
+
+  // const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  //   e.preventDefault();   
+  //   setIsDragging(false);
+  //   const files = e.dataTransfer.files;
+  //   if (files.length === 0) return;
+
+  //   // Filter out duplicate images by name
+  //   let uniqueImages: File[] = [];
+  //   let uniquePreviews: PreviewType[] = [];
+  //   Array.from(files).forEach((file) => {
+  //     if (!previews.some((item) => item.name === file.name)) {
+  //       uniqueImages.push(file);
+  //       uniquePreviews.push(
+  //         {
+  //           url: URL.createObjectURL(file),
+  //           name: file.name,
+  //         }
+  //       );
+  //     }
+  //   });
+
+  //   // Add unique images to state variable
+  //   setImages([...images, ...uniqueImages]);
+  //   setPreviews([...previews, ...uniquePreviews]);
+  // }
 
   const handleSave = async () => {
+    // let count = 0;
+    // images.map((img) => async () => {
+    //   console.log(count++);
+    //   const { data, error } = await supabase.storage.from('post-images').upload(`post-images_${Date.now()}.jpg`, img)
+    //   if (error) {
+    //     console.log(error);
+    //   }
+    //   console.log(data);
+    //   console.log(error);
+    // })
+    
     if (!title || !content || !address || !type) {
       toast({
         variant: "destructive",
@@ -39,6 +134,7 @@ export const AddPostDialog = () => {
         description: `Please enter the missing fields of the post.`,
       });
       handleCancel()
+      // delete uploaded image from Supabase storage
       return;
     }
     if (cost === 0 || cost < 0) {
@@ -48,10 +144,12 @@ export const AddPostDialog = () => {
         description: `Please enter an integer, greater than 0`,
       });
       handleCancel()
+      // delete uploaded image from Supabase storage
       return;
     }
-    await makeNewPost(title, content, cost, address, type, image);
-    setImage("");
+    await makeNewPost(title, content, cost, address, type, images);
+    // setImages([]);
+    // setPreviews([]);
     setTitle("");
     setContent("");
     setCost(0);
@@ -59,7 +157,8 @@ export const AddPostDialog = () => {
   };
 
   const handleCancel = () => {
-    setImage("");
+    // setImages([]);
+    // setPreviews([]);
     setTitle("");
     setContent("");
     setCost(0);
@@ -78,114 +177,137 @@ export const AddPostDialog = () => {
           <DialogTitle>Add Post</DialogTitle>
           <DialogDescription>
             {user
-              ? "Provide the information of your post here."
+              ? 
+                <>
+                  <div>
+                    Provide the information of your post here.
+                  </div>
+                  <div>
+                    <span className="text-red-500">*</span> Required fields
+                  </div>
+                </>
               : "Please login to make a post."}
           </DialogDescription>
         </DialogHeader>
-        {user && (
-          <div className="grid gap-4 py-4">
-            {/* Other form fields */}
-            <div className="grid items-center grid-cols-4 gap-4">
-              <Label htmlFor="type">Type</Label>
-              <select
-                id="type"
-                className="col-span-4"
-                onChange={(e) => {
-                  setType(e.target.value as PostType);
-                }}
-              >
-                <option value="">Select a post type...</option>
-                <option id="Roommate" value="Roommate">Looking for Roommate</option>
-                <option id="Sublet" value="Sublet">Looking for Subletter</option>
-                <option id="Housing" value="Housing">Looking for Housing</option>
-              </select>
-            </div>
-            {/* Textarea and other form fields */}
+        <div className="grid gap-4 mb-4">
+          <div className="grid items-center grid-cols-4 gap-4">
+            <Label htmlFor="type">
+              Type <span className="text-red-500 ">*</span>
+            </Label>
+            <select
+              id="type"
+              className="col-span-4"
+              onChange={(e) => {
+                setType(e.target.value as PostType);
+              }}
+            >
+              <option value="">Select a post type...</option>
+              <option id="Roommate" value="Roommate">Looking for Roommate</option>
+              <option id="Sublet" value="Sublet">Looking for Subletter</option>
+              <option id="Housing" value="Housing">Looking for Housing</option>
+            </select>
           </div>
-        )}
-        {user && (
-          <div className="grid gap-4 py-4">
-            <div className="grid items-center grid-cols-4 gap-4">
-              <Label htmlFor="title">Title</Label>
-              <Textarea
-                id="title"
-                value={title}
-                className="h-0 col-span-4"
-                style={{ resize: 'none' }}
-                placeholder="Type your title here."
-                onChange={(e) => {
-                  setTitle(e.target.value);
-                }}
-              />
-            </div>
+        </div>
+        <div className="grid gap-4 mb-4">
+          <div className="grid items-center grid-cols-4 gap-4">
+            <Label htmlFor="title">
+              Title <span className="text-red-500 ">*</span>
+            </Label>
+            <Textarea
+              id="title"
+              value={title}
+              className="h-0 col-span-4"
+              style={{ resize: 'none' }}
+              placeholder="Type your title here."
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
+            />
           </div>
-        )}
-        {user && (
-          <div className="grid gap-4 py-4">
-            <div className="grid items-center grid-cols-4 gap-4">
-              <Label htmlFor="content">Content</Label>
-              <Textarea
-                id="content"
-                value={content}
-                className="col-span-4 h-30"
-                style={{ resize: 'none' }}
-                placeholder="Type your content here."
-                onChange={(e) => {
-                  setContent(e.target.value);
-                }}
-              />
-            </div>
+        </div>
+        <div className="grid gap-4 mb-4">
+          <div className="grid items-center grid-cols-4 gap-4">
+            <Label htmlFor="content">
+              Content <span className="text-red-500 ">*</span>
+            </Label>
+            <Textarea
+              id="content"
+              value={content}
+              className="col-span-4 h-30"
+              style={{ resize: 'none' }}
+              placeholder="Type your content here."
+              onChange={(e) => {
+                setContent(e.target.value);
+              }}
+            />
           </div>
-        )}
-        {/* {user && (
-          <div className="grid gap-4 py-4">
-            <div className="grid items-center grid-cols-4 gap-4">
-              <Label htmlFor="image">Image URL (Optional)</Label>
-              <Textarea
-                id="image"
-                value={image}
-                className="h-0 col-span-4"
-                style={{ resize: 'none' }}
-                placeholder="Type your URL here."
-                onChange={(e) => {
-                  setImage(e.target.value);
-                  console.log(e.target.value)
-                }}
-              />
-            </div>
+        </div>
+        <div className="grid gap-4 mb-4">
+          <div className="grid items-center gap-4">
+            <Label htmlFor="cost">
+              Monthly Cost <span className="text-red-500 ">*</span>
+            </Label>
+            <Input
+              id="cost"
+              type="number"
+              placeholder="Please enter an integer"
+              onChange={(e) => setCost(Number(e.target.value))}
+            />
           </div>
-        )} */}
-        {user && (
-          <div className="grid gap-4 py-4">
-            <div className="grid items-center grid-cols-4 gap-4">
-              <Label htmlFor="cost">Monthly Cost
-                <div>(Please enter an integer)</div>
-              </Label>
-              <Input
-                id="cost"
-                type="number"
-                onChange={(e) => setCost(Number(e.target.value))}
-              />
-            </div>
+        </div>
+        <div className="grid gap-4 mb-4">
+          <div className="grid items-center gap-4">
+            <Label htmlFor="address">
+              Address <span className="text-red-500 ">*</span>
+            </Label>
+            <Textarea
+              id="address"
+              value={address}
+              className="col-span-4"
+              style={{ resize: 'none' }}
+              placeholder="Type your address here."
+              onChange={(e) => {
+                setAddress(e.target.value);
+              }}
+            />
           </div>
-        )}
-        {user && (
-          <div className="grid gap-4 py-4">
-            <div className="grid items-center grid-cols-4 gap-4">
-              <Label htmlFor="address">Address</Label>
-              <Textarea
-                id="address"
-                value={address}
-                className="col-span-4"
-                style={{ resize: 'none' }}
-                placeholder="Type your address here."
-                onChange={(e) => {
-                  setAddress(e.target.value);
-                }}
-              />
-            </div>
+        </div>
+        {/* <Label htmlFor="upload">
+          Upload Images
+        </Label>
+        <div className='card'>
+          <div className='drag-area' onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={onDrop}>
+            {isDragging ? (
+              <span className='select'>
+                Drop images here
+              </span>
+            ) : (
+              <>
+                Drag & Drop images here or {' '}
+                <span className='select' role='button' onClick={selectFiles}>
+                  Browse
+                </span>
+              </>
+            )}
+            <input 
+              name='file' 
+              type='file' 
+              className='file' 
+              accept='image/png, image/jpg'
+              multiple 
+              ref={fileInputRef} 
+              onChange={onFileSelect}
+            />
           </div>
-        )}
+          <div className='container'>
+            {previews.map((item, i) => (
+              <div className='image' key={`img-${i}`}>
+                <span className='delete' onClick={() => deleteImage(i)}>&times;</span>
+                <img src={item.url} alt={item.name}/>
+              </div>
+            ))}
+          </div>
+        </div> */}
         <DialogFooter>
           {!user && (
             <DialogClose asChild>

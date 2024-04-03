@@ -30,9 +30,14 @@ function useMutationPosts() {
         cost: number,
         address: string,
         type: PostType,
+        // images: File[],
         image?: string,
     ) => {
         try {
+            // let imageURLs: string[] = [];
+            // if (images.length !== 0) {
+            //     imageURLs = await uploadPostImages(images);
+            // }
             const newPost = await createPost(title, content, cost, address, type, image);
             addPost(newPost);
         } catch (error) {

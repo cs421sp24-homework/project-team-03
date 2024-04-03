@@ -1,8 +1,16 @@
 import { getAuthenticatedUser, getAuthenticatedUserToken, removeAuthenticatedUserToken, storeAuthenticatedUserToken } from "./auth";
 import { PostType, PostWithUserData, User, HousingItem, ReviewWithUserData } from "./types";
+import { createClient } from "@supabase/supabase-js";
 
 const API_URL = import.meta.env.VITE_API_URL;
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+/** 
+ * User functions
+ *  
+ * 
+ * */ 
 export const fetchUser = async (
   email: string
 ): Promise<User> => {
@@ -94,7 +102,42 @@ export const register = async (
       );
     }
   };
+
+  export const editUser = async (
+    id: number,
+    firstName?: string,
+    lastName?: string,
+    avatar?: string,
+    bio?: string,
+  ): Promise<User> => {
+    const token = getAuthenticatedUserToken();
+    const response = await fetch(`${API_URL}/users/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ firstName, lastName, avatar, bio }),
+    });
   
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText
+        }`,
+      );
+    }
+  
+    return responseJson.data;
+  
+  };
+  
+  /** 
+   * Post functions
+   *  
+   * 
+   * */ 
   export const createPost = async (
     title: string,
     content: string,
@@ -106,7 +149,6 @@ export const register = async (
     const user = getAuthenticatedUser();
     const token = getAuthenticatedUserToken();
   
-    const API_URL = import.meta.env.VITE_API_URL;
     const response = await fetch(`${API_URL}/posts`, {
       method: "POST",
       headers: {
@@ -134,7 +176,6 @@ export const register = async (
   export const deletePost = async (id: string): Promise<void> => {
     const token = getAuthenticatedUserToken();
   
-    const API_URL = import.meta.env.VITE_API_URL;
     const response = await fetch(`${API_URL}/posts/${id}`, {
       method: "DELETE",
       headers: {
@@ -163,7 +204,6 @@ export const register = async (
     const user = getAuthenticatedUser();
     const token = getAuthenticatedUserToken();
   
-    const API_URL = import.meta.env.VITE_API_URL;
     const response = await fetch(`${API_URL}/posts/${postId}`, {
       method: "PATCH",
       headers: {
@@ -199,9 +239,13 @@ export const register = async (
     return responseJson.data;
   };
   
+  /** 
+   * HousingItem functions
+   *  
+   * 
+   * */ 
   // Fetch all housing items
   export const fetchHousingItems = async (query?: string): Promise<HousingItem[]> => {
-    const API_URL = import.meta.env.VITE_API_URL;
     let url = `${API_URL}/housings?limit=50`;
     if (query) {
       url += `&${query}`;
@@ -231,7 +275,6 @@ export const register = async (
   export const fetchHousingItem = async (
     id: string
   ): Promise<HousingItem> => {
-    const API_URL = import.meta.env.VITE_API_URL;
     const response = await fetch(`${API_URL}/housings/${id}`)
     const responseJson = await response.json();
 
@@ -255,7 +298,6 @@ export const createHousingItem = async (
     price: string,
     imageURL?: string,
   ): Promise<HousingItem> => {
-    const API_URL = import.meta.env.VITE_API_URL;
     const response = await fetch(`${API_URL}/housings`, {
       method: "POST",
       headers: {
@@ -277,7 +319,11 @@ export const createHousingItem = async (
     return responseJson.data;
   };
 
-  //reviews ----
+  /** 
+   * Review functions
+   *  
+   * 
+   * */ 
   export const createReview = async (
     content: string,
     rating: number,
@@ -339,32 +385,43 @@ export const createHousingItem = async (
     // Assuming no content is returned for a DELETE operation
   };
 
-  export const editUser = async (
-    id: number,
-    firstName?: string,
-    lastName?: string,
-    avatar?: string,
-    bio?: string,
-  ): Promise<User> => {
-    const token = getAuthenticatedUserToken();
-    const response = await fetch(`${API_URL}/users/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ firstName, lastName, avatar, bio }),
-    });
-  
-    const responseJson = await response.json();
-  
-    if (!response.ok) {
-      throw new Error(
-        `Error: ${response.status} - ${responseJson.message || response.statusText
-        }`,
-      );
+  /**
+   * Supabase storage functions
+   * 
+   * 
+   */
+
+  // Create singleton Supabase client to fix 'Multiple GoTrueClient instances' browser warning
+  export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // Upload image to
+  export const uploadPostImages = async (image: File): Promise<string> => {
+    const { data, error } = await supabase.storage.from('post-images').upload(`post-image_${Date.now()}.jpg`, image);
+    if (error) {
+      throw new Error(`Error: ${error}`);
     }
+    return data.path;
+  }
+/*
+  // Store to Supabase
+  if (!file) return;
+  const { data, error } = await supabase.storage.from('test-bucket').upload(`test_${Date.now()}.jpg`, file);
+
+  console.log('UPLOAD...');
+  console.log('data', data);
+  console.log('path', data?.path);
   
-    return responseJson.data;
-  
-  };
+  if (!data || error) {
+    // TODO: Handle Supabase upload error
+    console.log(error);
+    return;
+  }
+  const path = data.path;
+  const response = await supabase.storage.from('test-bucket').getPublicUrl(path);
+
+  console.log('GET URL...');
+  console.log('data', response.data);
+  console.log('public url', response.data.publicUrl);
+
+  // Store image to backend
+*/
