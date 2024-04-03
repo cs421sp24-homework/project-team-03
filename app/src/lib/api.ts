@@ -404,8 +404,11 @@ export const createHousingItem = async (
   }
 
   export const getPostImageURL = async (path: string): Promise<string> => {
-    const { data } = await supabase.storage.from('post-images').getPublicUrl(path);
+    const { data } = await supabase.storage.from('post-images').getPublicUrl(path); 
     return data.publicUrl;
+  }
+
+  export const deletePostImage = async () => {
     
   }
 /*
