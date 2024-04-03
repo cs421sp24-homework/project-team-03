@@ -19,13 +19,13 @@ import { useState, useRef } from "react";
 import { PostType } from "@/lib/types";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-// import './drag-drop-image-uploader.css';
-// import { supabase } from "@/lib/api";
+import './drag-drop-image-uploader.css';
+import useMutationImages from "@/hooks/use-mutations-images";
 
-// type PreviewType = {
-//   url: string,
-//   name: string
-// }
+type PreviewType = {
+  url: string,
+  name: string
+}
 
 export const AddPostDialog = () => {
   const [title, setTitle] = useState("");
@@ -37,96 +37,85 @@ export const AddPostDialog = () => {
   const { toast } = useToast();
   const user = useStore((state) => state.user);
   // For saving uploaded images
-  const [images, setImages] = useState<string>('');
-  // const [images, setImages] = useState<File[]>([]);
-  // const [previews, setPreviews] = useState<PreviewType[]>([]);
-  // const [isDragging, setIsDragging] = useState(false);
-  // const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [previews, setPreviews] = useState<PreviewType[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const { postImagesToURLs } = useMutationImages();
 
-  // const selectFiles = () => {
-  //   fileInputRef.current?.click();
-  // }
+  const selectFiles = () => {
+    fileInputRef.current?.click();
+  }
 
-  // const onFileSelect = (e: React.FormEvent<HTMLInputElement>) => {
-  //   const target = e.target as HTMLInputElement & {
-  //     files: FileList,
-  //   };
-  //   const files = target.files;
-  //   if (files.length === 0) return;
+  const onFileSelect = (e: React.FormEvent<HTMLInputElement>) => {
+    const target = e.target as HTMLInputElement & {
+      files: FileList,
+    };
+    const files = target.files;
+    if (files.length === 0) return;
 
-  //   // Filter out duplicate images by name
-  //   let uniqueImages: File[] = [];
-  //   let uniquePreviews: PreviewType[] = [];
-  //   Array.from(files).forEach((file) => {
-  //     if (!previews.some((item) => item.name === file.name)) {
-  //       uniqueImages.push(file);
-  //       uniquePreviews.push(
-  //         {
-  //           url: URL.createObjectURL(file),
-  //           name: file.name,
-  //         }
-  //       );
-  //     }
-  //   });
+    // Filter out duplicate images by name
+    let uniqueImages: File[] = [];
+    let uniquePreviews: PreviewType[] = [];
+    Array.from(files).forEach((file) => {
+      if (!previews.some((item) => item.name === file.name)) {
+        uniqueImages.push(file);
+        uniquePreviews.push(
+          {
+            url: URL.createObjectURL(file),
+            name: file.name,
+          }
+        );
+      }
+    });
 
-  //   // Add unique images to state variable
-  //   setImages([...images, ...uniqueImages]);
-  //   setPreviews([...previews, ...uniquePreviews]);
-  // }
+    // Add unique images to state variable
+    setImageFiles([...imageFiles, ...uniqueImages]);
+    setPreviews([...previews, ...uniquePreviews]);
+  }
 
-  // const deleteImage = (index: number) => {
-  //   setPreviews(previews.filter((_, i) => i !== index));
-  // }
+  const deleteImage = (index: number) => {
+    setPreviews(previews.filter((_, i) => i !== index));
+  }
 
-  // const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-  //   e.preventDefault();   // prevent browser from opening dragged file in new tab onDrop
-  //   setIsDragging(true);
-  //   e.dataTransfer.dropEffect = 'copy';
-  // }
+  const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();   // prevent browser from opening dragged file in new tab onDrop
+    setIsDragging(true);
+    e.dataTransfer.dropEffect = 'copy';
+  }
 
-  // const onDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-  //   e.preventDefault();   
-  //   setIsDragging(false);
-  // }
+  const onDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();   
+    setIsDragging(false);
+  }
 
-  // const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
-  //   e.preventDefault();   
-  //   setIsDragging(false);
-  //   const files = e.dataTransfer.files;
-  //   if (files.length === 0) return;
+  const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();   
+    setIsDragging(false);
+    const files = e.dataTransfer.files;
+    if (files.length === 0) return;
 
-  //   // Filter out duplicate images by name
-  //   let uniqueImages: File[] = [];
-  //   let uniquePreviews: PreviewType[] = [];
-  //   Array.from(files).forEach((file) => {
-  //     if (!previews.some((item) => item.name === file.name)) {
-  //       uniqueImages.push(file);
-  //       uniquePreviews.push(
-  //         {
-  //           url: URL.createObjectURL(file),
-  //           name: file.name,
-  //         }
-  //       );
-  //     }
-  //   });
+    // Filter out duplicate images by name
+    let uniqueImages: File[] = [];
+    let uniquePreviews: PreviewType[] = [];
+    Array.from(files).forEach((file) => {
+      if (!previews.some((item) => item.name === file.name)) {
+        uniqueImages.push(file);
+        uniquePreviews.push(
+          {
+            url: URL.createObjectURL(file),
+            name: file.name,
+          }
+        );
+      }
+    });
 
-  //   // Add unique images to state variable
-  //   setImages([...images, ...uniqueImages]);
-  //   setPreviews([...previews, ...uniquePreviews]);
-  // }
+    // Add unique images to state variable
+    setImageFiles([...imageFiles, ...uniqueImages]);
+    setPreviews([...previews, ...uniquePreviews]);
+  }
 
   const handleSave = async () => {
-    // let count = 0;
-    // images.map((img) => async () => {
-    //   console.log(count++);
-    //   const { data, error } = await supabase.storage.from('post-images').upload(`post-images_${Date.now()}.jpg`, img)
-    //   if (error) {
-    //     console.log(error);
-    //   }
-    //   console.log(data);
-    //   console.log(error);
-    // })
-    
     if (!title || !content || !address || !type) {
       toast({
         variant: "destructive",
@@ -134,7 +123,6 @@ export const AddPostDialog = () => {
         description: `Please enter the missing fields of the post.`,
       });
       handleCancel()
-      // delete uploaded image from Supabase storage
       return;
     }
     if (cost === 0 || cost < 0) {
@@ -144,12 +132,16 @@ export const AddPostDialog = () => {
         description: `Please enter an integer, greater than 0`,
       });
       handleCancel()
-      // delete uploaded image from Supabase storage
       return;
     }
-    await makeNewPost(title, content, cost, address, type, images);
-    // setImages([]);
-    // setPreviews([]);
+    let imageURLs: string[] = [];
+    if (imageFiles.length !== 0) {
+      imageURLs = await postImagesToURLs(imageFiles);
+    }
+    console.log(imageURLs);
+    await makeNewPost(title, content, cost, address, type, imageURLs);
+    setImageFiles([]);
+    setPreviews([]);
     setTitle("");
     setContent("");
     setCost(0);
@@ -157,8 +149,8 @@ export const AddPostDialog = () => {
   };
 
   const handleCancel = () => {
-    // setImages([]);
-    // setPreviews([]);
+    setImageFiles([]);
+    setPreviews([]);
     setTitle("");
     setContent("");
     setCost(0);
@@ -272,7 +264,7 @@ export const AddPostDialog = () => {
             />
           </div>
         </div>
-        {/* <Label htmlFor="upload">
+        <Label htmlFor="upload">
           Upload Images
         </Label>
         <div className='card'>
@@ -307,7 +299,7 @@ export const AddPostDialog = () => {
               </div>
             ))}
           </div>
-        </div> */}
+        </div>
         <DialogFooter>
           {!user && (
             <DialogClose asChild>
