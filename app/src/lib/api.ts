@@ -144,7 +144,7 @@ export const register = async (
     cost: number,
     address: string,
     type: PostType,
-    image?: string,
+    images: string[],
   ): Promise<PostWithUserData> => {
     const user = getAuthenticatedUser();
     const token = getAuthenticatedUserToken();
@@ -155,7 +155,7 @@ export const register = async (
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ title, content, cost, address, image, type }),
+      body: JSON.stringify({ title, content, cost, address, images, type }),
     });
   
     const responseJson = await response.json();
@@ -394,13 +394,19 @@ export const createHousingItem = async (
   // Create singleton Supabase client to fix 'Multiple GoTrueClient instances' browser warning
   export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // Upload image to
-  export const uploadPostImages = async (image: File): Promise<string> => {
+  // Upload image to Supabase and return path
+  export const uploadPostImage = async (image: File): Promise<string> => {
     const { data, error } = await supabase.storage.from('post-images').upload(`post-image_${Date.now()}.jpg`, image);
     if (error) {
       throw new Error(`Error: ${error}`);
     }
     return data.path;
+  }
+
+  export const getPostImageURL = async (path: string): Promise<string> => {
+    const { data } = await supabase.storage.from('post-images').getPublicUrl(path);
+    return data.publicUrl;
+    
   }
 /*
   // Store to Supabase
