@@ -396,15 +396,15 @@ export const createHousingItem = async (
 
   // Upload image to Supabase and return path
   export const uploadPostImage = async (image: File): Promise<string> => {
-    const { data, error } = await supabase.storage.from('post-images').upload(`post-image_${Date.now()}.jpg`, image);
+    const { data, error } = await supabase.storage.from('post-images').upload(`post-image_${image.name.split('.')[0]}_${Date.now()}.jpg`, image);
     if (error) {
       throw new Error(`Error: ${error}`);
     }
     return data.path;
   }
 
-  export const getPostImageURL = async (path: string): Promise<string> => {
-    const { data } = await supabase.storage.from('post-images').getPublicUrl(path); 
+  export const getPostImageURL = (path: string): string => {
+    const { data } = supabase.storage.from('post-images').getPublicUrl(path); 
     return data.publicUrl;
   }
 

@@ -28,7 +28,7 @@ const Post = ({ post }: { post: PostWithUserData }) => {
               <span className="font-bold">Address: </span>{post.address}
             </div>
           </div>
-          {images.length &&
+          {images.length > 0 &&
             <div className="mx-8 flex justify-center py-2">
               <Carousel>
                 <CarouselContent>

@@ -73,6 +73,7 @@ export const AddPostDialog = () => {
     // Add unique images to state variable
     setImageFiles([...imageFiles, ...uniqueImages]);
     setPreviews([...previews, ...uniquePreviews]);
+    console.log('Selected files', [...uniqueImages]);
   }
 
   const deleteImage = (index: number) => {
@@ -114,6 +115,7 @@ export const AddPostDialog = () => {
     // Add unique images to state variable
     setImageFiles([...imageFiles, ...uniqueImages]);
     setPreviews([...previews, ...uniquePreviews]);
+    console.log('Dropped files', [...uniqueImages]);
   }
 
   const handleSave = async () => {
