@@ -7,6 +7,7 @@ export class ReviewResponseDto {
   timestamp: Date;
   rating: number;
   upvoteCount: number;
+  likedBy: number[];
   housing?: HousingResponseDTO;
   user?: UserResponseDTO;
 }

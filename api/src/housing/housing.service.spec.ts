@@ -24,6 +24,7 @@ describe('HousingService', () => {
     avgRating: null, // default value is null, represents calculated field
     reviewCount: 0, // default value is 0, represents calculated field
     reviews: [],
+    aggregateReview: null
   };
 
   beforeEach(async () => {
@@ -182,24 +183,45 @@ describe('HousingService', () => {
 
   describe('remove', () => {
     it('should remove and return a housing entity', async () => {
-      housingRepository.findOne = jest.fn().mockResolvedValue(resultHousing);
+      // Mock for createQueryBuilder and its chain methods
+      const mockQueryBuilder = {
+        leftJoinAndSelect: jest.fn().mockReturnThis(),
+        where: jest.fn().mockReturnThis(),
+        getOne: jest.fn().mockResolvedValue(resultHousing),
+      };
+    
+      housingRepository.createQueryBuilder = jest.fn().mockReturnValue(mockQueryBuilder);
       housingRepository.remove = jest.fn().mockResolvedValue(resultHousing);
-  
+    
       const result = await service.remove(id);
-  
-      expect(housingRepository.findOne).toHaveBeenCalledWith({ where: { id } });
+    
+      expect(housingRepository.createQueryBuilder).toHaveBeenCalledWith('housing');
+      expect(mockQueryBuilder.leftJoinAndSelect).toHaveBeenCalledWith('housing.reviews', 'reviews');
+      expect(mockQueryBuilder.where).toHaveBeenCalledWith('housing.id = :id', { id });
+      expect(mockQueryBuilder.getOne).toHaveBeenCalled();
       expect(housingRepository.remove).toHaveBeenCalledWith(resultHousing);
       expect(result).toEqual(resultHousing);
     });
   
     it('should return null if no housing entity is found', async () => {
-      housingRepository.findOne = jest.fn().mockResolvedValue(null);
-  
+      // Mock for createQueryBuilder and its chain methods
+      const mockQueryBuilder = {
+        leftJoinAndSelect: jest.fn().mockReturnThis(),
+        where: jest.fn().mockReturnThis(),
+        getOne: jest.fn().mockResolvedValue(null), // Mocked to return null
+      };
+    
+      housingRepository.createQueryBuilder = jest.fn().mockReturnValue(mockQueryBuilder);
+    
       const result = await service.remove(id);
-  
-      expect(housingRepository.findOne).toHaveBeenCalledWith({ where: { id } });
+    
+      expect(housingRepository.createQueryBuilder).toHaveBeenCalledWith('housing');
+      expect(mockQueryBuilder.leftJoinAndSelect).toHaveBeenCalledWith('housing.reviews', 'reviews');
+      expect(mockQueryBuilder.where).toHaveBeenCalledWith('housing.id = :id', { id });
+      expect(mockQueryBuilder.getOne).toHaveBeenCalled();
       expect(result).toBeNull();
     });
+    
   
     // Additional test cases if necessary
   });

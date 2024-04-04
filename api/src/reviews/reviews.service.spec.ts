@@ -76,6 +76,7 @@ describe('ReviewsService', () => {
     posts: [],
     reviews: [],
     bio: null,
+    notifications: 0,
   };
 
   const mockHousing: Housing = {
@@ -90,6 +91,7 @@ describe('ReviewsService', () => {
     avgRating: 4,
     reviewCount: 1,
     reviews: [], // Assuming reviews are an array of Review entities
+    aggregateReview: null
   };
 
   const review: Review = {
@@ -100,6 +102,7 @@ describe('ReviewsService', () => {
     upvoteCount: 0,
     user: mockUser,
     userId: 1,
+    likedBy: [],
     housing: mockHousing,
     housingId: '1',
     ensureRatingNonNegative: function (): void {
@@ -119,6 +122,7 @@ describe('ReviewsService', () => {
     avgRating: 4,
     reviewCount: 2,
     reviews: [review], // Assuming reviews are an array of Review entities
+    aggregateReview: null
   };
 
   const updatedHousingAfterDeleteReview: Housing = {
@@ -133,6 +137,8 @@ describe('ReviewsService', () => {
     avgRating: 4,
     reviewCount: 1,
     reviews: [review], // Assuming reviews are an array of Review entities
+    aggregateReview: null
+
   };
 
   describe('findOne', () => {
@@ -181,6 +187,8 @@ describe('ReviewsService', () => {
           Promise.resolve(updatedHousingAfterAddReview),
         );
 
+        jest.spyOn(housingService, 'updateAggregateReviewAfterCreate').mockResolvedValueOnce(undefined);
+
       // Call create method of ReviewsService
       const createdReview = await service.create(
         createReviewDto,
@@ -197,6 +205,7 @@ describe('ReviewsService', () => {
         housingId,
         userId,
       });
+      expect(housingService.updateAggregateReviewAfterCreate).toHaveBeenCalledWith(review.content, housingId);
 
       // Assert that save method of reviewRepository is called with correct parameters
       expect(repository.save).toHaveBeenCalledWith(review);
@@ -213,35 +222,28 @@ describe('ReviewsService', () => {
     it('should remove a review and update average rating for housing', async () => {
       const reviewId = 'uuid-id';
       const housingId = '1';
-
-      // Mock findOne method of ReviewsService to return a review
+  
+      // Mock findOne method to return the review
       jest.spyOn(service, 'findOne').mockResolvedValueOnce(review);
-
-      // Mock remove method of reviewRepository to return the removed review
+  
+      // Mock housingService methods
+      jest.spyOn(housingService, 'updateAggregateReviewAfterDelete').mockResolvedValueOnce(undefined);
+      jest.spyOn(housingService, 'updateAvgReviewAfterDelete').mockResolvedValueOnce(undefined);
+  
+      // Mock reviewRepository.remove method to return the removed review
       jest.spyOn(repository, 'remove').mockResolvedValueOnce(review);
-
-      // Mock updateAvgReviewAfterDelete method of housingService
-      jest
-        .spyOn(housingService, 'updateAvgReviewAfterDelete')
-        .mockResolvedValueOnce(updatedHousingAfterDeleteReview);
-
-      // Call remove method of ReviewsService
+  
+      // Execute the remove method
       const removedReview = await service.remove(reviewId, housingId);
-
-      // Assert that the review is removed and returned
+  
+      // Assert the review was removed and returned
       expect(removedReview).toEqual(review);
-
-      // Assert that findOne method of ReviewsService is called with correct parameters
+  
+      // Assert the service methods were called with the correct parameters
       expect(service.findOne).toHaveBeenCalledWith(reviewId, housingId);
-
-      // Assert that remove method of reviewRepository is called with correct parameters
+      expect(housingService.updateAggregateReviewAfterDelete).toHaveBeenCalledWith(review, housingId);
+      expect(housingService.updateAvgReviewAfterDelete).toHaveBeenCalledWith(review.rating, housingId);
       expect(repository.remove).toHaveBeenCalledWith(review);
-
-      // Assert that updateAvgReviewAfterDelete method of housingService is called with correct parameters
-      expect(housingService.updateAvgReviewAfterDelete).toHaveBeenCalledWith(
-        review.rating,
-        housingId,
-      );
     });
 
     it('should return null if review is not found', async () => {
@@ -297,6 +299,7 @@ describe('ReviewsService', () => {
         offset,
         housingId,
         search,
+        null,
         withUserData,
       );
 

@@ -6,6 +6,7 @@ import { UserResponseDTO } from './user-response.dto';
 import { UserLoginDTO } from './user-login.dto';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { UpdateUserDTO } from './update-user.dto';
+import { VerifyEmailDTO } from './verify-email.dto';
 
 @Controller('users')
 export class UserController {
@@ -55,6 +56,20 @@ export class UserController {
         return user;
     }
 
+    @Post('verify')
+    async verifyEmail(@Body() verifyEmailDto: VerifyEmailDTO): Promise<{ statusCode: number; message: string}> {
+        const { email, verificationToken } = verifyEmailDto;
+        const isVerified = await this.userService.verifyEmail(email, verificationToken);
+        if (isVerified) {
+            return {
+                statusCode: 200,
+                message: "Email verified. You may now log in.",
+                };
+        } else {
+            throw new BadRequestException('Email verification failed');
+        }
+    }
+
     @Post('login')
     async login(@Body() userDto: UserLoginDTO): Promise<{
         access_token: string;
@@ -83,4 +98,27 @@ export class UserController {
         delete user.password;
         return user;
     }
+
+    @Patch(':email/notifications')
+    async incrementNotifications (
+        @Param('email') email: string,
+    ): Promise<UserResponseDTO> {
+        const user = await this.userService.incrementNotifs(email);
+        if (!user) {
+            throw new NotFoundException(`User with Email ${email} not found`);
+        }
+        return user;
+    }
+
+    @Patch(':email/clearNotifs')
+    async clearNotifs (
+        @Param('email') email: string,
+    ): Promise<UserResponseDTO> {
+        const user = await this.userService.clearNotifs(email);
+        if (!user) {
+            throw new NotFoundException(`User with Email ${email} not found`);
+        }
+        return user;
+    }
+    
 }

@@ -33,7 +33,9 @@ export class Post {
   @Column('text', { array: true, default: {} })
   images: string[];
 
-  @ManyToOne(() => User, (user) => user.posts)
+  @ManyToOne(() => User, (user) => user.posts,  {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'userId' })
   user: User;
 

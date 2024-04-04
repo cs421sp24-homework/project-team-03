@@ -79,18 +79,39 @@ export const logout = async (): Promise<void> => {
 
 // Register a new user
 export const register = async (
+  email: string,
+  password: string,
+  firstName: string,
+  lastName: string,
+  avatar?: string,
+): Promise<void> => {
+  const response = await fetch(`${API_URL}/users/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password, firstName, lastName, avatar }),
+  });
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      `Error: ${response.status} - ${responseJson.message || response.statusText
+      }`,
+    );
+  }
+};
+
+  export const verifyEmail = async (
     email: string,
-    password: string,
-    firstName: string,
-    lastName: string,
-    avatar?: string,
+    verificationToken: string
   ): Promise<void> => {
-    const response = await fetch(`${API_URL}/users/register`, {
+    const response = await fetch(`${API_URL}/users/verify`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password, firstName, lastName, avatar }),
+      body: JSON.stringify({ email, verificationToken }),
     });
     const responseJson = await response.json();
   
@@ -253,22 +274,21 @@ export const register = async (
     const response = await fetch(url)
     const responseJson = await response.json();
 
-    if (!response.ok) {
-        throw new Error(
-          `Error: ${response.status} - ${
-            responseJson.message || response.statusText
-          }`,
-        );
-    }
+  if (!response.ok) {
+    throw new Error(
+      `Error: ${response.status} - ${responseJson.message || response.statusText
+      }`,
+    );
+  }
 
-    const housingItems = responseJson.data.map((item: HousingItem) => ({
-      ...item,
-      latitude: typeof item.latitude === 'number' ? item.latitude : parseFloat(item.latitude || '0'),
-      longitude: typeof item.longitude === 'number' ? item.longitude : parseFloat(item.longitude || '0'), 
+  const housingItems = responseJson.data.map((item: HousingItem) => ({
+    ...item,
+    latitude: typeof item.latitude === 'number' ? item.latitude : parseFloat(item.latitude || '0'),
+    longitude: typeof item.longitude === 'number' ? item.longitude : parseFloat(item.longitude || '0'),
   }));
-  
 
-    return housingItems;
+
+  return housingItems;
 };
 
   // Fetch one housing item
@@ -278,15 +298,14 @@ export const register = async (
     const response = await fetch(`${API_URL}/housings/${id}`)
     const responseJson = await response.json();
 
-    if (!response.ok) {
-        throw new Error(
-          `Error: ${response.status} - ${
-            responseJson.message || response.statusText
-          }`,
-        );
-    }
+  if (!response.ok) {
+    throw new Error(
+      `Error: ${response.status} - ${responseJson.message || response.statusText
+      }`,
+    );
+  }
 
-    return responseJson.data;
+  return responseJson.data;
 };
 
 // NOT consistent with backend
@@ -354,8 +373,12 @@ export const createHousingItem = async (
     };
   };
   
-  export const fetchReviews = async (housingId: string): Promise<ReviewWithUserData[]> => {
-    const response = await fetch(`${API_URL}/housings/${housingId}/reviews?withUserData=true`);
+  export const fetchReviews = async (housingId: string, query?: string): Promise<ReviewWithUserData[]> => {
+    let url = `${API_URL}/housings/${housingId}/reviews?withUserData=true`;
+    if (query) {
+      url += `&${query}`;
+    }
+    const response = await fetch(url);
     const responseJson = await response.json();
     if (!response.ok) {
       throw new Error(
@@ -363,7 +386,7 @@ export const createHousingItem = async (
       );
     }
     return responseJson.data; // Assuming the server responds with an array of reviews
-  };
+  };  
   
   export const deleteReview = async (housingId: string, id: string): Promise<void> => {
     const token = getAuthenticatedUserToken();

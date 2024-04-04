@@ -2,11 +2,13 @@ import { useState } from "react";
 import { User } from "@/lib/types"
 import UserAvatar from "./user-avatar"
 import { Button } from "../ui/button"
-import { EnvelopeClosedIcon, Pencil1Icon } from "@radix-ui/react-icons"
+import { Pencil1Icon } from "@radix-ui/react-icons"
 import { useStore } from "@/lib/store";
 import useMutationUser from "@/hooks/use-mutations-users";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../ui/use-toast";
+
+import { EmailDialog } from "../email/send-email-dialog";
 
 export const UserProfile = ({ user }: { user: User }) => {
     const { toast } = useToast();
@@ -62,7 +64,7 @@ export const UserProfile = ({ user }: { user: User }) => {
                         {(loggedUser?.email == user.email) && <Button id="edit-profile" variant="ghost" size="sm" onClick={handleEdit}><Pencil1Icon /></Button>}
                     </div>
                     <div>
-                        <Button variant="ghost" size="sm"><EnvelopeClosedIcon /></Button>
+                        <EmailDialog userProf={user}/>
                     </div>
                 </div>
             </div>
@@ -93,7 +95,7 @@ export const UserProfile = ({ user }: { user: User }) => {
                         />
                         <textarea
                             id="bio"
-                            value={bio}
+                            value={bio ? bio : ""}
                             onChange={(e) => setBio(e.target.value)}
                             className="w-full h-32 border border-gray-300 rounded-lg p-2 mb-2"
                             placeholder="Bio"

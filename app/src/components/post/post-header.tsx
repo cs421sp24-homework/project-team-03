@@ -23,7 +23,7 @@ const PostHeader = ({
   const formattedTimestamp = timestamp ? new Date(timestamp).toLocaleString() : '';
 
   return (
-    <div className="flex justify-between py-2 border-b border-slate-300">
+    <div className="flex justify-between py-2 border-b border-slate-400">
       <div className="flex">
         <div className="p-2">
           <Link to={`/users/${jhed}`}>

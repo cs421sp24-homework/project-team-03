@@ -44,7 +44,13 @@ export class HousingController {
   ): Promise<FindHousingsResponseDTO> {
     const { limit, offset, search, maxDistance, price } = query;
 
-    const housings = await this.housingService.findAll(limit, offset, search, maxDistance, price);
+    const housings = await this.housingService.findAll(
+      limit,
+      offset,
+      search,
+      maxDistance,
+      price,
+    );
 
     return {
       limit,

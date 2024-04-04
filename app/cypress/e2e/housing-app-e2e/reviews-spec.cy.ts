@@ -12,6 +12,7 @@ import { generateRandomPassword, generateRandomName } from '../../support/helper
       randomPassword = generateRandomPassword(10);
       cy.visit('/'); //visits base url from config file
       cy.registerUser(randomEmail, randomPassword, randomName, randomName); //register once
+      cy.verifyUser(randomEmail);
     });
   
     beforeEach(() => {
@@ -60,18 +61,20 @@ import { generateRandomPassword, generateRandomName } from '../../support/helper
         return;
     });
 
-    it('after creating a review, the review count is 1 with 3 stars', () => {
-        cy.get(':nth-child(1) > a > .p-5').click();
-        cy.url().should('include', '/housings');
-        cy.wait(3000); //wait for realtime
-        cy.get('.mt-4 > :nth-child(3) > div > :nth-child(1)').should('have.text', '★');
-        cy.get('.mt-4 > :nth-child(3) > div > :nth-child(2)').should('have.text', '★');
-        cy.get('.mt-4 > :nth-child(3) > div > :nth-child(3)').should('have.text', '★');
-        cy.get('.mt-4 > :nth-child(3) > div > :nth-child(4)').should('have.text', '☆');
-        cy.get('.mt-4 > :nth-child(3) > div > :nth-child(5)').should('have.text', '☆');
-        cy.get('.ml-2')
-          .should('exist')
-          .contains(/1 reviews/i);
+    it('after creating a review, the review count is 1 with 3 stars and aggregate review exists', () => {
+      cy.get(':nth-child(1) > a > .p-5').click();
+      cy.url().should('include', '/housings');
+      cy.wait(3000); //wait for realtime
+      cy.get('.mt-4 > :nth-child(3) > div > :nth-child(1)').should('have.text', '★');
+      cy.get('.mt-4 > :nth-child(3) > div > :nth-child(2)').should('have.text', '★');
+      cy.get('.mt-4 > :nth-child(3) > div > :nth-child(3)').should('have.text', '★');
+      cy.get('.mt-4 > :nth-child(3) > div > :nth-child(4)').should('have.text', '☆');
+      cy.get('.mt-4 > :nth-child(3) > div > :nth-child(5)').should('have.text', '☆');
+      cy.get('.ml-2')
+        .should('exist')
+        .contains(/1 reviews/i);
+      cy.get(':nth-child(5) > div')
+        .should('exist')
     });
 
 
@@ -102,6 +105,8 @@ import { generateRandomPassword, generateRandomName } from '../../support/helper
         cy.get('.ml-2')
           .should('exist')
           .contains(/0 reviews/i);
+        cy.get(':nth-child(5) > div')
+          .should('not.exist')
     });
 
     it('a logged out user can see housing page but no reviews', () => {

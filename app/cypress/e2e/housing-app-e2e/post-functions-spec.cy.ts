@@ -16,6 +16,7 @@ describe('test post functionality', () => {
         randomPassword = generateRandomPassword(10);
         cy.visit('/'); //visits base url from config file
         cy.registerUser(randomEmail, randomPassword, randomName, randomName);
+        cy.verifyUser(randomEmail);
     })
 
     beforeEach(() => {
@@ -58,8 +59,10 @@ describe('test post functionality', () => {
         cy.contains(randomContent).should('be.visible');
         cy.contains(randomCost).should('be.visible');
         cy.contains(randomAddress).should('be.visible');
-        cy.contains(randomTitle).parent().find('#delete-post').click({ force: true });
+        cy.contains(randomName).parent().parent().parent().find('#post-actions').click({ force: true });
+        cy.get('#edit-post').should('exist');
         cy.get('#delete-btn').click({ force: true });
+        
     })
 
     it('Deletes post successfully', () => {
@@ -78,7 +81,7 @@ describe('test post functionality', () => {
         cy.contains(randomCost).should('be.visible');
         cy.contains(randomAddress).should('be.visible');
 
-        cy.contains(randomTitle).parent().find('#delete-post').click({ force: true });
+        cy.contains(randomName).parent().parent().parent().find('#post-actions').click({ force: true });
         cy.get('#delete-btn').click({ force: true });
 
         cy.contains(randomTitle).should('not.exist');
@@ -86,6 +89,91 @@ describe('test post functionality', () => {
         cy.contains(randomCost).should('not.exist');
         cy.contains(randomAddress).should('not.exist');
     })
+
+    it('Edit post successfully', () => {
+        cy.get('#see-posts').click();
+        cy.get('#add-posts').click();
+
+        cy.get('#type').select('Roommate');
+        cy.get('#title').type(randomTitle);
+        cy.get('#content').type(randomContent);
+        cy.get('#cost').type(randomCost);
+        cy.get('#address').type(randomAddress);
+        cy.contains('Submit').click();
+
+        cy.contains(randomTitle).should('be.visible');
+        cy.contains(randomContent).should('be.visible');
+        cy.contains(randomCost).should('be.visible');
+        cy.contains(randomAddress).should('be.visible');
+
+        cy.contains(randomName).parent().parent().parent().find('#post-actions').click({ force: true });
+        cy.get('#edit-post').click({ force: true });
+
+        const updatedTitle = 'Updated Title';
+        const updatedContent = 'Updated Content';
+        const updatedCost = 100; 
+        const updatedAddress = 'Updated Address';
+
+        cy.get('#newTitle').clear().type(updatedTitle); 
+        cy.get('#newContent').clear().type(updatedContent); 
+        cy.get('#cost').clear().type(updatedCost); 
+        cy.get('#address').clear().type(updatedAddress);
+
+        cy.contains('Save').click();
+
+        cy.contains(updatedTitle).should('be.visible');
+        cy.contains(updatedContent).should('be.visible');
+        cy.contains(updatedCost).should('be.visible');
+        cy.contains(updatedAddress).should('be.visible');
+
+        cy.contains(randomName).parent().parent().parent().find('#post-actions').click({ force: true });
+        cy.get('#delete-btn').click({ force: true });
+    })
+
+
+    it('Edit post fails when a field is empty', () => {
+        cy.get('#see-posts').click();
+        cy.get('#add-posts').click();
+
+        cy.get('#type').select('Roommate');
+        cy.get('#title').type(randomTitle);
+        cy.get('#content').type(randomContent);
+        cy.get('#cost').type(randomCost);
+        cy.get('#address').type(randomAddress);
+        cy.contains('Submit').click();
+
+        cy.contains(randomTitle).should('be.visible');
+        cy.contains(randomContent).should('be.visible');
+        cy.contains(randomCost).should('be.visible');
+        cy.contains(randomAddress).should('be.visible');
+
+        cy.contains(randomName).parent().parent().parent().find('#post-actions').click({ force: true });
+        cy.get('#edit-post').click({ force: true });
+
+        const updatedTitle = 'Updated Title';
+        const updatedContent = 'Updated Content';
+        const updatedCost = 100; 
+        const updatedAddress = 'Updated Address';
+
+        cy.get('#newTitle').clear(); 
+        cy.get('#newContent').clear().type(updatedContent); 
+        cy.get('#cost').clear().type(updatedCost); 
+        cy.get('#address').clear().type(updatedAddress);
+
+        cy.contains('Save').click();
+
+        cy.get('#toast', { timeout: 1000 })
+            .should('exist')
+            .contains(/cannot be empty/i);
+
+        cy.contains(updatedTitle).should('not.exist');
+
+        cy.contains('Cancel').click();
+
+        cy.contains(randomName).parent().parent().parent().find('#post-actions').click({ force: true });
+        cy.get('#delete-btn').click({ force: true });
+    })
+
 
     it('Adding a post fails when a field is missing', () => {
         cy.get('#see-posts').click();
