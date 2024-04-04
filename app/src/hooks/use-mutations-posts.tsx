@@ -53,7 +53,7 @@ function useMutationPosts() {
         cost?: number,
         address?: string,
         type?: PostType,
-        image?: string,
+        image?: string, // TODO: change to images: string[]
     ) => {
         try {
             const postEdited = await editPost(postId, title, content, cost, address, image, type);

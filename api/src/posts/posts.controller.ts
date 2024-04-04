@@ -113,6 +113,7 @@ export class PostsController {
     @Param('id') id: string,
     @Body() updatePostDto: UpdatePostDto,
   ): Promise<PostResponseDto> {
+    // TODO: logic for deleting images and adding new images (Image entity and mark for Supabase batch delete"
     const post = await this.postsService.update(id, updatePostDto);
     if (!post) {
       throw new NotFoundException(`Post with ID ${id} not found`);

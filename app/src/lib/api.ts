@@ -219,7 +219,7 @@ export const register = async (
     content?: string,
     cost?: number,
     address?: string,
-    image?: string,
+    image?: string, // change to images: string[]
     type?: PostType,
   ): Promise<PostWithUserData | undefined> => {
     const user = getAuthenticatedUser();
