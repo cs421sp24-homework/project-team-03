@@ -54,16 +54,17 @@
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  flex-wrap: wrap;
-  max-height: 200px;
-  overflow-y: auto;
   margin-top: 10px;
+  max-height: 200px;
+  flex-wrap: wrap;
+  overflow-y: auto;
+  /* padding: 0; */
 }
 .card .container .image{
   width: 75px;
-  margin-right: 5px;
   height: 75px;
   position: relative;
+  margin-right: 5px;
   margin-bottom: 8px;
 }
 .card .container .image img{

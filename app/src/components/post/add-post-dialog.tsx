@@ -77,6 +77,7 @@ export const AddPostDialog = () => {
   }
 
   const deleteImage = (index: number) => {
+    setImageFiles(imageFiles.filter((_, i) => i !== index));
     setPreviews(previews.filter((_, i) => i !== index));
   }
 
