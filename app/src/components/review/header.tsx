@@ -1,5 +1,4 @@
 import SearchInput from "../catalog/search-input";
-import Filter from "../catalog/filter";
 import { AddReviewDialog } from "./add-review-dialog";
 
   
@@ -12,7 +11,6 @@ const Header = ({ housingId }: { housingId: string }) => {
             <div style={{ paddingRight: '2%' }}>
                 <SearchInput />
             </div>
-            <Filter />
             <AddReviewDialog housingId={housingId} />
         </div>
     );

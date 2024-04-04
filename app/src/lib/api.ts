@@ -79,18 +79,39 @@ export const logout = async (): Promise<void> => {
 
 // Register a new user
 export const register = async (
+  email: string,
+  password: string,
+  firstName: string,
+  lastName: string,
+  avatar?: string,
+): Promise<void> => {
+  const response = await fetch(`${API_URL}/users/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password, firstName, lastName, avatar }),
+  });
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      `Error: ${response.status} - ${responseJson.message || response.statusText
+      }`,
+    );
+  }
+};
+
+  export const verifyEmail = async (
     email: string,
-    password: string,
-    firstName: string,
-    lastName: string,
-    avatar?: string,
+    verificationToken: string
   ): Promise<void> => {
-    const response = await fetch(`${API_URL}/users/register`, {
+    const response = await fetch(`${API_URL}/users/verify`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password, firstName, lastName, avatar }),
+      body: JSON.stringify({ email, verificationToken }),
     });
     const responseJson = await response.json();
   
@@ -253,22 +274,21 @@ export const register = async (
     const response = await fetch(url)
     const responseJson = await response.json();
 
-    if (!response.ok) {
-        throw new Error(
-          `Error: ${response.status} - ${
-            responseJson.message || response.statusText
-          }`,
-        );
-    }
+  if (!response.ok) {
+    throw new Error(
+      `Error: ${response.status} - ${responseJson.message || response.statusText
+      }`,
+    );
+  }
 
-    const housingItems = responseJson.data.map((item: HousingItem) => ({
-      ...item,
-      latitude: typeof item.latitude === 'number' ? item.latitude : parseFloat(item.latitude || '0'),
-      longitude: typeof item.longitude === 'number' ? item.longitude : parseFloat(item.longitude || '0'), 
+  const housingItems = responseJson.data.map((item: HousingItem) => ({
+    ...item,
+    latitude: typeof item.latitude === 'number' ? item.latitude : parseFloat(item.latitude || '0'),
+    longitude: typeof item.longitude === 'number' ? item.longitude : parseFloat(item.longitude || '0'),
   }));
-  
 
-    return housingItems;
+
+  return housingItems;
 };
 
   // Fetch one housing item
@@ -278,15 +298,14 @@ export const register = async (
     const response = await fetch(`${API_URL}/housings/${id}`)
     const responseJson = await response.json();
 
-    if (!response.ok) {
-        throw new Error(
-          `Error: ${response.status} - ${
-            responseJson.message || response.statusText
-          }`,
-        );
-    }
+  if (!response.ok) {
+    throw new Error(
+      `Error: ${response.status} - ${responseJson.message || response.statusText
+      }`,
+    );
+  }
 
-    return responseJson.data;
+  return responseJson.data;
 };
 
 // NOT consistent with backend
@@ -354,8 +373,12 @@ export const createHousingItem = async (
     };
   };
   
-  export const fetchReviews = async (housingId: string): Promise<ReviewWithUserData[]> => {
-    const response = await fetch(`${API_URL}/housings/${housingId}/reviews?withUserData=true`);
+  export const fetchReviews = async (housingId: string, query?: string): Promise<ReviewWithUserData[]> => {
+    let url = `${API_URL}/housings/${housingId}/reviews?withUserData=true`;
+    if (query) {
+      url += `&${query}`;
+    }
+    const response = await fetch(url);
     const responseJson = await response.json();
     if (!response.ok) {
       throw new Error(
@@ -363,7 +386,7 @@ export const createHousingItem = async (
       );
     }
     return responseJson.data; // Assuming the server responds with an array of reviews
-  };
+  };  
   
   export const deleteReview = async (housingId: string, id: string): Promise<void> => {
     const token = getAuthenticatedUserToken();
@@ -434,3 +457,182 @@ export const createHousingItem = async (
 
   // Store image to backend
 */
+
+
+
+
+  export const sendEmail = async (
+    name: string,
+    email: string,
+    subject: string,
+    message: string,
+    emailTo: User,
+  ) => {
+    const apiKey = "api-CE75802CDC984ECA988EAA1C66B5A40F";
+    const url = "https://api.smtp2go.com/v3/email/send";
+
+    const emailData = {
+      to: [`${emailTo.firstName} ${emailTo.lastName} <${emailTo.email}>, ${name} <${email}>`],
+      sender: "Off Campus Housing <ooseoffcampushousing@outlook.com>",
+      subject: `${subject}`,
+      text_body: `${message}`
+    };
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          api_key: apiKey,
+          ...emailData
+        })
+      });
+
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        throw new Error(`Error: ${response.status} - ${errorResponse.message}`);
+      }
+
+      const responseData = await response.json();
+      console.log("Email sent successfully:", responseData);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+  };
+
+  export const incrementNotifications = async (
+    email: string,
+  ): Promise<User> => {
+    const response = await fetch(
+      `${API_URL}/users/${email}/notifications`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    const responseJson = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText
+        }`,
+      );
+    }
+
+    return responseJson.data;
+  };
+
+  export const clearNotifs = async (
+    email: string,
+  ): Promise<User> => {
+    const response = await fetch(
+      `${API_URL}/users/${email}/clearNotifs`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    const responseJson = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText
+        }`,
+      );
+    }
+
+    return responseJson.data;
+  };
+
+  export const getNotifications = async (
+    email: string
+  ): Promise<number> => {
+    const token = getAuthenticatedUserToken();
+    const response = await fetch(`${API_URL}/users/${email}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const responseJson = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText
+        }`,
+      );
+    }
+
+    return responseJson.data.notifications;
+  };
+
+
+
+  export const upvoteReview = async (reviewId: string, housingId: string): Promise<void> => { 
+    const user = getAuthenticatedUser();
+    const response = await fetch(`${API_URL}/housings/${housingId}/reviews/${reviewId}/upvote/${user.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ reviewId, housingId, userId: user.id }),
+    });
+  
+    const responseJson = await response.json();
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  };
+  
+  export const undoUpvoteReview = async (reviewId: string, housingId: string): Promise<void> => {
+    const user = getAuthenticatedUser();
+    const response = await fetch(`${API_URL}/housings/${housingId}/reviews/${reviewId}/upvoteUndo/${user.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ reviewId, housingId, userId: user.id }),
+    });
+  
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  };
+
+  export const getLikedBy = async (reviewId: string, housingId: string): Promise<number[]> => {
+    const response = await fetch(`${API_URL}/housings/${housingId}/reviews/${reviewId}/likedBy`);
+    const responseJson = await response.json();
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+    return responseJson.data.likedBy;
+  };
+  
+   // Fetch all posts with user data
+   export const fetchReviewsForSort = async (housingId: string, query?: string): Promise<ReviewWithUserData[]> => {
+    let url = `${API_URL}/housings/${housingId}/reviews?withUserData=true`;
+    if (query) {
+      url += `${query}`;
+    }  
+    const response = await fetch(url);
+    const responseJson = await response.json();
+    return responseJson.data;
+  };

@@ -69,6 +69,7 @@ describe('ReviewsController', () => {
     posts: [],
     reviews: [],
     bio: null,
+    notifications: 0,
   };
 
   const mockHousing: Housing = {
@@ -83,6 +84,7 @@ describe('ReviewsController', () => {
     avgRating: 4,
     reviewCount: 1,
     reviews: [], // Assuming reviews are an array of Review entities
+    aggregateReview: null
   };
 
   const review: Review = {
@@ -93,6 +95,7 @@ describe('ReviewsController', () => {
     upvoteCount: 0,
     user: mockUser,
     userId: 1,
+    likedBy: [],
     housing: mockHousing,
     housingId: '1',
     ensureRatingNonNegative: function (): void {

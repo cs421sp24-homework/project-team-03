@@ -36,6 +36,7 @@ describe('PostsController', () => {
     posts: [],
     reviews: [],
     bio: null,
+    notifications: 0,
   };
 
   const mockPost: Post = {
