@@ -137,11 +137,12 @@ export const AddPostDialog = () => {
       handleCancel()
       return;
     }
+    console.log('Pre-upload images', imageFiles);
     let imageURLs: string[] = [];
     if (imageFiles.length !== 0) {
       imageURLs = await postImagesToURLs(imageFiles);
     }
-    console.log(imageURLs);
+    console.log('Pre-save urls', imageURLs);
     await makeNewPost(title, content, cost, address, type, imageURLs);
     setImageFiles([]);
     setPreviews([]);
