@@ -64,7 +64,7 @@ describe('PostsService', () => {
     timestamp: new Date(), // Current date and time
     cost: 1200,
     address: '123 Main Street, CityTown',
-    images: 'http://example.com/image1.jpg', // Array of image URLs, can be empty
+    images: ['http://example.com/image1.jpg'], // Array of image URLs, can be empty
     user: mockUser, // This should be a mock User entity
     userId: 1, // Mock user ID
     type: 'Housing', // Must be 'Roommate', 'Sublet', or 'Housing'
@@ -78,7 +78,7 @@ describe('PostsService', () => {
           'A lovely two-bedroom apartment in the heart of the city, close to amenities. Fully furnished and ready to move in.',
         cost: 1200,
         address: '123 Main Street, CityTown',
-        image: 'http://example.com/apartment.jpg', // This field is optional
+        images: ['http://example.com/apartment.jpg'], // This field is optional
         type: 'Housing', // Must be one of ['Roommate', 'Sublet', 'Housing']
       };
       const userId = 1;
@@ -167,7 +167,7 @@ describe('PostsService', () => {
       content: 'Updated content with more detailed information.',
       cost: 1500,
       address: '321 Updated Address Lane',
-      image: 'http://example.com/updated-image.jpg',
+      images: ['http://example.com/updated-image.jpg'],
       type: 'Sublet',
     };
     it('should update a post', async () => {
@@ -178,8 +178,8 @@ describe('PostsService', () => {
       resultPost.cost = updatePostDto.cost ?? resultPost.cost;
       resultPost.address = updatePostDto.address ?? resultPost.address;
       // Assuming image is now a single string rather than an array
-      resultPost.images = updatePostDto.image
-        ? updatePostDto.image
+      resultPost.images = updatePostDto.images
+        ? updatePostDto.images
         : resultPost.images;
       resultPost.type = updatePostDto.type ?? resultPost.type;
 

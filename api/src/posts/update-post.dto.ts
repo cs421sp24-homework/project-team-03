@@ -1,4 +1,4 @@
-import { IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
 import { PostType } from './post.entity';
 
 export class UpdatePostDto {
@@ -18,9 +18,11 @@ export class UpdatePostDto {
     @IsString()
     address?: string;
 
+    @IsArray()
     @IsOptional()
-    @IsString()
-    image?: string;
+    @IsString({ each: true })
+    // image?: string; // TODO: change to images: string[]
+    images: string[]
 
     @IsOptional()
     @IsString()
