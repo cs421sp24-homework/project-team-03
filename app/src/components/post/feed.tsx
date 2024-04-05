@@ -5,7 +5,7 @@ import Filter from "./filter";
 
 const Feed = () => {
   return (
-    <div className="flex flex-col w-full min-h-screen border-x-2 border-slate-400 md:max-w-4xl">
+    <div className="flex flex-col w-full h-full min-h-screen border-x-2 border-slate-400 md:max-w-4xl">
       <div style={{ fontSize: '50px', fontWeight: 'bold', paddingLeft: '10%', paddingTop: '5%', textDecoration: 'underline' }}>
         Community Posts
       </div>
