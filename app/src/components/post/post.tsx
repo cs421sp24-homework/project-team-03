@@ -14,7 +14,7 @@ const Post = ({ post }: { post: PostWithUserData }) => {
           user={user}
         />
       </div>
-      <div className="text-sm py-2 px-4 overflow-y-auto" style={{ height: '80%', scrollbarWidth: 'none', }}>
+      <div className="px-4 py-2 overflow-y-auto text-sm" style={{ height: '80%', scrollbarWidth: 'none', }}>
         <div className="pb-2 text-base font-bold underline">{title}</div>
           <div className="pl-2">
             <div className="pb-2">{content}</div>
@@ -29,7 +29,7 @@ const Post = ({ post }: { post: PostWithUserData }) => {
             </div>
           </div>
           {images.length > 0 &&
-            <div className="mx-8 flex justify-center py-2">
+            <div className="flex justify-center py-2 mx-8">
               <Carousel>
                 <CarouselContent>
                   <CarouselItem className="flex justify-centerm">
@@ -48,8 +48,13 @@ const Post = ({ post }: { post: PostWithUserData }) => {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
+                
+                {images.length > 1 && (
+              <>
+                  <CarouselPrevious />
+                  <CarouselNext />
+              </>
+          )}
               </Carousel>
             </div>
           }
