@@ -18,7 +18,7 @@ import useMutationPosts from "@/hooks/use-mutations-posts";
 import { PostWithUserData } from "@/lib/types";
 import { PostType } from "@/lib/types";
 import { DropdownMenuItem } from "../ui/dropdown-menu";
-
+//TODO: handle image updates
 export const EditPostDialog = ({
   post,
   setDropdownState,
