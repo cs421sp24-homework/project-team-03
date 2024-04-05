@@ -10,6 +10,7 @@ import { CreateUserDTO } from './create-user.dto';
 import { UserResponseDTO } from './user-response.dto';
 import { UserLoginDTO } from './user-login.dto';
 import { UpdateUserDTO } from './update-user.dto';
+import { BadRequestException } from '@nestjs/common';
 
 describe('UserController', () => {
   let controller: UserController;
@@ -135,6 +136,24 @@ describe('UserController', () => {
     expect(result).toEqual(exampleUser);
   });
 
+
+  it('should verify email successfully', async () => {
+    const verifyEmailDto = { email: 'test@example.com', verificationToken: 'randomToken' };
+    jest.spyOn(userService, 'verifyEmail').mockResolvedValueOnce(true);
+
+    const result = await controller.verifyEmail(verifyEmailDto);
+
+    expect(result).toEqual({ statusCode: 200, message: 'Email verified. You may now log in.' });
+  });
+
+  it('should throw BadRequestException on failed email verification', async () => {
+    const verifyEmailDto = { email: 'test@example.com', verificationToken: 'randomToken' };
+    jest.spyOn(userService, 'verifyEmail').mockResolvedValueOnce(false);
+
+    await expect(controller.verifyEmail(verifyEmailDto)).rejects.toThrow(BadRequestException);
+  });
+
+
   // Test for login
   it('should login a user', async () => {
     const userDto: UserLoginDTO = {
@@ -157,6 +176,8 @@ describe('UserController', () => {
     expect(userService.update).toHaveBeenCalledWith(1, updateUserDto);
     expect(result).toEqual(exampleUser);
   });
+
+
 
   // // test for incremement notifications
   // it('should increment notifications for a user', async () => {
