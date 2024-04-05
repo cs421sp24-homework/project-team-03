@@ -73,7 +73,7 @@ export const AddPostDialog = () => {
     // Add unique images to state variable
     setImageFiles([...imageFiles, ...uniqueImages]);
     setPreviews([...previews, ...uniquePreviews]);
-    console.log('Selected files', [...uniqueImages]);
+    //console.log('Selected files', [...uniqueImages]);
   }
 
   const deleteImage = (index: number) => {
@@ -116,7 +116,7 @@ export const AddPostDialog = () => {
     // Add unique images to state variable
     setImageFiles([...imageFiles, ...uniqueImages]);
     setPreviews([...previews, ...uniquePreviews]);
-    console.log('Dropped files', [...uniqueImages]);
+    //console.log('Dropped files', [...uniqueImages]);
   }
 
   const handleSave = async () => {
@@ -138,12 +138,12 @@ export const AddPostDialog = () => {
       handleCancel()
       return;
     }
-    console.log('Pre-upload images', imageFiles);
+    //console.log('Pre-upload images', imageFiles);
     let imageURLs: string[] = [];
     if (imageFiles.length !== 0) {
       imageURLs = await postImagesToURLs(imageFiles);
     }
-    console.log('Pre-save urls', imageURLs);
+    //console.log('Pre-save urls', imageURLs);
     await makeNewPost(title, content, cost, address, type, imageURLs);
     setImageFiles([]);
     setPreviews([]);
