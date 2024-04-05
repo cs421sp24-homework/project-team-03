@@ -266,7 +266,7 @@ export const AddPostDialog = () => {
           </div>
         </div>
         <Label htmlFor="upload">
-          Upload Images
+          Upload Images JPG or PNG only
         </Label>
         <div className='card'>
           <div className='drag-area' onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={onDrop}>
