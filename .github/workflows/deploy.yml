@@ -69,6 +69,12 @@ jobs:
       - name: Set VITE_API_URL
         run: echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> $GITHUB_ENV
 
+      - name: Set VITE_SUPABASE_URL
+        run: echo "VITE_SUPABASE_URL=${{ secrets.VITE_SUPABASE_URL }}" >> $GITHUB_ENV
+
+      - name: Set VITE_SUPABASE_ANON_KEY
+        run: echo "VITE_SUPABASE_ANON_KEY=${{ secrets.VITE_SUPABASE_ANON_KEY }}" >> $GITHUB_ENV
+
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
 
