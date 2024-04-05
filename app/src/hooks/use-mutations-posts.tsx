@@ -30,10 +30,10 @@ function useMutationPosts() {
         cost: number,
         address: string,
         type: PostType,
-        image?: string,
+        images: string[],
     ) => {
         try {
-            const newPost = await createPost(title, content, cost, address, type, image);
+            const newPost = await createPost(title, content, cost, address, type, images);
             addPost(newPost);
         } catch (error) {
             toast({
@@ -53,7 +53,7 @@ function useMutationPosts() {
         cost?: number,
         address?: string,
         type?: PostType,
-        image?: string,
+        image?: string, // TODO: change to images: string[]
     ) => {
         try {
             const postEdited = await editPost(postId, title, content, cost, address, image, type);

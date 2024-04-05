@@ -1,4 +1,4 @@
-import { IsIn, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsIn, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { PostType } from './post.entity';
 
 export class CreatePostDto {
@@ -18,9 +18,9 @@ export class CreatePostDto {
     @IsNotEmpty({ message: 'Address cannot be empty' })
     address: string;
 
-    @IsOptional()
-    @IsString()
-    image?: string;
+    @IsArray()
+    @IsString({ each: true })
+    images: string[];
 
     @IsString()
     @IsNotEmpty({ message: 'Type cannot be empty' })

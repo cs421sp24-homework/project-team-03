@@ -81,10 +81,10 @@ export const useStore = create<State & Action>()(
 
     clearSelectedHousing: () => set({ selectedHousing: null }),
 
-    addPosts: (post) => {
-      const newPosts = [...get().posts, post];
-      set({ posts: newPosts });
-    },
+  addPosts: (post) => {
+    const newPosts = [post, ...get().posts];
+    set({ posts: newPosts });
+  },
 
     setEditPosts: (editedPost) => {
       set((state) => ({

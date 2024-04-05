@@ -8,7 +8,7 @@ export class PostResponseDto {
     timestamp: Date;
     cost: number;
     address: string;
-    image?: string;
+    image?: string[];
     type: PostType;
     user?: UserResponseDTO;
 }
