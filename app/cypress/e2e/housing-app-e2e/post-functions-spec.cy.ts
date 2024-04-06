@@ -65,6 +65,31 @@ describe('test post functionality', () => {
         
     })
 
+    it('Adding an image while creating a post saves', () => {
+        cy.get('#see-posts').click();
+        cy.get('#add-posts').click();
+
+        cy.get('#type').select('Roommate');
+        cy.get('#title').type(randomTitle);
+        cy.get('#content').type(randomContent);
+        cy.get('#cost').type(randomCost);
+        cy.get('#address').type(randomAddress);
+
+        //Browse
+        const img = 'cypress/fixtures/House_Test_Image.jpeg';
+        cy.get('[name="file"]').selectFile(img);
+        cy.contains('Submit').click();
+
+        cy.contains(randomTitle).should('be.visible');
+        cy.contains(randomContent).should('be.visible');
+        cy.contains(randomCost).should('be.visible');
+        cy.contains(randomAddress).should('be.visible');
+        cy.contains(randomName).parent().parent().parent().find('#post-actions').click({ force: true });
+        cy.get('#edit-post').should('exist');
+        cy.get('#delete-btn').click({ force: true });
+        
+    })
+
     it('Deletes post successfully', () => {
         cy.get('#see-posts').click();
         cy.get('#add-posts').click();
