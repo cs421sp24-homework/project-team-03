@@ -282,7 +282,8 @@ export const AddPostDialog = () => {
                 </span>
               </>
             )}
-            <input 
+            <input
+              id = 'file'
               name='file' 
               type='file' 
               className='file' 

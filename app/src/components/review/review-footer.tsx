@@ -56,7 +56,7 @@ const ReviewFooter = ({ review }: { review: ReviewWithUserData }) => {
         <div className="px-2 py-3 flex justify-between items-center">
         <div className="flex items-center">
           <span className="text-black p-2">Was this helpful?</span>
-          <Button variant={"ghost"} className="hover:bg-blue-100" onClick={handleLike}>
+          <Button id="upvote-button" variant={"ghost"} className="hover:bg-blue-100" onClick={handleLike}>
               {/* Change arrow color based on liked state */}
               <ArrowUpIcon className={`ml-1 h-5 w-5 ${liked ? 'text-blue-500' : 'text-gray-500'}`} /> {`(${upvoteCount})`}
           </Button>

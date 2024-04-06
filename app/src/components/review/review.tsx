@@ -28,7 +28,7 @@ const Review = ({ review }: { review: ReviewWithUserData }) => {
                           {`${firstName} ${lastName}`}
                         </div>
                       </Link>
-                      <div className="inline-block align-baseline text-sm text-muted-foreground">
+                      <div id='timestamp' className="inline-block align-baseline text-sm text-muted-foreground">
                         {formattedTimestamp}
                       </div>
                     </div>  

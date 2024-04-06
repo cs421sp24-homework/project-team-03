@@ -84,7 +84,7 @@ describe('ReviewsController', () => {
     avgRating: 4,
     reviewCount: 1,
     reviews: [], // Assuming reviews are an array of Review entities
-    aggregateReview: null
+    aggregateReview: null,
   };
 
   const review: Review = {
@@ -102,6 +102,11 @@ describe('ReviewsController', () => {
       throw new Error('Function not implemented.');
     },
   };
+
+  // Define mock data (for easy access for upvoting/sorting)
+  const reviewId = 'uuid-id';
+  const housingId = '1';
+  const userId = 1;
 
   // Test for create
   describe('create', () => {
@@ -136,10 +141,10 @@ describe('ReviewsController', () => {
     it('should retrieve a single review by ID', async () => {
       jest.spyOn(reviewsService, 'findOne').mockResolvedValue(review);
 
-      const newuser = new ReviewResponseDto;
+      const newuser = new ReviewResponseDto();
       expect(newuser instanceof ReviewResponseDto).toBe(true);
 
-      const newuse = new FindReviewsResponseDTO;
+      const newuse = new FindReviewsResponseDTO();
       expect(newuse instanceof FindReviewsResponseDTO).toBe(true);
 
       const reviewId = 'uuid-id';
@@ -205,6 +210,86 @@ describe('ReviewsController', () => {
           return review;
         }),
       );
+    });
+  });
+
+  // Test for upvote method
+  describe('upvote', () => {
+    it('should upvote a review and return success message', async () => {
+      // Mock the upvote method of reviewsService to return a review
+      jest.spyOn(reviewsService, 'upvote').mockResolvedValue(review);
+
+      const result = await controller.upvote(reviewId, housingId, userId);
+
+      expect(result).toEqual({
+        statusCode: 200,
+        message: 'Review upvoted successfully',
+      });
+      expect(reviewsService.upvote).toHaveBeenCalledWith(
+        reviewId,
+        housingId,
+        userId,
+      );
+    });
+
+    it('should throw NotFoundException if review not found', async () => {
+      jest.spyOn(reviewsService, 'upvote').mockResolvedValue(undefined);
+
+      await expect(
+        controller.upvote('non-existent-id', 'non-existent-id', userId),
+      ).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  // Test for upvoteUndo method
+  describe('upvoteUndo', () => {
+    it('should undo upvote of a review and return success message', async () => {
+      // Mock the upvoteUndo method of reviewsService to return a review
+      jest.spyOn(reviewsService, 'upvoteUndo').mockResolvedValue(review);
+
+      const result = await controller.upvoteUndo(reviewId, housingId, userId);
+
+      expect(result).toEqual({
+        statusCode: 200,
+        message: 'Review upvote undone successfully',
+      });
+      expect(reviewsService.upvoteUndo).toHaveBeenCalledWith(
+        reviewId,
+        housingId,
+        userId,
+      );
+    });
+
+    it('should throw NotFoundException if review not found', async () => {
+      jest.spyOn(reviewsService, 'upvoteUndo').mockResolvedValue(undefined);
+
+      await expect(
+        controller.upvoteUndo('non-existent-id', 'non-existent-id', userId),
+      ).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  // Test for getLikedBy method
+  describe('getLikedBy', () => {
+    it('should retrieve users who liked a review', async () => {
+      const likedBy = [1, 2, 3]; // Mock likedBy array
+      jest.spyOn(reviewsService, 'findLikedBy').mockResolvedValue(likedBy);
+
+      const result = await controller.getLikedBy(reviewId, housingId);
+
+      expect(result).toEqual({ likedBy });
+      expect(reviewsService.findLikedBy).toHaveBeenCalledWith(
+        reviewId,
+        housingId
+      );
+    });
+
+    it('should throw NotFoundException if review not found', async () => {
+      jest.spyOn(reviewsService, 'findLikedBy').mockResolvedValue(undefined);
+
+      await expect(
+        controller.getLikedBy('non-existent-id', 'non-existent-id'),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 });

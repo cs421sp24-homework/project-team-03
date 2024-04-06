@@ -6,7 +6,7 @@ const Post = ({ post }: { post: PostWithUserData }) => {
   const { title, content, user, images } = post;
 
   return (
-    <div className="p-1 rounded-lg" style={{ width: '340px', height: '360px', backgroundColor: 'rgb( 244, 241, 232 )' }}>
+    <div id="post" className="p-1 rounded-lg" style={{ width: '340px', height: '360px', backgroundColor: 'rgb( 244, 241, 232 )' }}>
       <div className="px-2">
         <PostHeader
           post={post}
