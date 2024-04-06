@@ -47,6 +47,7 @@ const HousingItemWithReviews = ({ housingItem }: HousingProps) => {
       <Header housingId={housingItem.id} />
         <div className="px-4 py-2">
           <select
+            id='sort'
             className="sort-button rounded text-center"
             aria-label="Sort"
             style={{ width: "60px", backgroundColor: "", border: "1px solid black"}}

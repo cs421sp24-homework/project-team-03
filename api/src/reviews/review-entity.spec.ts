@@ -16,6 +16,5 @@ describe('Review', () => {
       expect(review.rating).toBe(5);
     });
   });
-
   // Additional tests for other methods and hooks...
 });

@@ -91,7 +91,7 @@ describe('ReviewsService', () => {
     avgRating: 4,
     reviewCount: 1,
     reviews: [], // Assuming reviews are an array of Review entities
-    aggregateReview: null
+    aggregateReview: null,
   };
 
   const review: Review = {
@@ -105,8 +105,10 @@ describe('ReviewsService', () => {
     likedBy: [],
     housing: mockHousing,
     housingId: '1',
-    ensureRatingNonNegative: function (): void {
-      throw new Error('Function not implemented.');
+    ensureRatingNonNegative() {
+      if (this.rating < 0) {
+        this.rating = 0; // set rating to 0 if negative
+      }
     },
   };
 
@@ -122,7 +124,7 @@ describe('ReviewsService', () => {
     avgRating: 4,
     reviewCount: 2,
     reviews: [review], // Assuming reviews are an array of Review entities
-    aggregateReview: null
+    aggregateReview: null,
   };
 
   const updatedHousingAfterDeleteReview: Housing = {
@@ -137,8 +139,7 @@ describe('ReviewsService', () => {
     avgRating: 4,
     reviewCount: 1,
     reviews: [review], // Assuming reviews are an array of Review entities
-    aggregateReview: null
-
+    aggregateReview: null,
   };
 
   describe('findOne', () => {
@@ -187,7 +188,9 @@ describe('ReviewsService', () => {
           Promise.resolve(updatedHousingAfterAddReview),
         );
 
-        jest.spyOn(housingService, 'updateAggregateReviewAfterCreate').mockResolvedValueOnce(undefined);
+      jest
+        .spyOn(housingService, 'updateAggregateReviewAfterCreate')
+        .mockResolvedValueOnce(undefined);
 
       // Call create method of ReviewsService
       const createdReview = await service.create(
@@ -205,7 +208,9 @@ describe('ReviewsService', () => {
         housingId,
         userId,
       });
-      expect(housingService.updateAggregateReviewAfterCreate).toHaveBeenCalledWith(review.content, housingId);
+      expect(
+        housingService.updateAggregateReviewAfterCreate,
+      ).toHaveBeenCalledWith(review.content, housingId);
 
       // Assert that save method of reviewRepository is called with correct parameters
       expect(repository.save).toHaveBeenCalledWith(review);
@@ -222,27 +227,36 @@ describe('ReviewsService', () => {
     it('should remove a review and update average rating for housing', async () => {
       const reviewId = 'uuid-id';
       const housingId = '1';
-  
+
       // Mock findOne method to return the review
       jest.spyOn(service, 'findOne').mockResolvedValueOnce(review);
-  
+
       // Mock housingService methods
-      jest.spyOn(housingService, 'updateAggregateReviewAfterDelete').mockResolvedValueOnce(undefined);
-      jest.spyOn(housingService, 'updateAvgReviewAfterDelete').mockResolvedValueOnce(undefined);
-  
+      jest
+        .spyOn(housingService, 'updateAggregateReviewAfterDelete')
+        .mockResolvedValueOnce(undefined);
+      jest
+        .spyOn(housingService, 'updateAvgReviewAfterDelete')
+        .mockResolvedValueOnce(undefined);
+
       // Mock reviewRepository.remove method to return the removed review
       jest.spyOn(repository, 'remove').mockResolvedValueOnce(review);
-  
+
       // Execute the remove method
       const removedReview = await service.remove(reviewId, housingId);
-  
+
       // Assert the review was removed and returned
       expect(removedReview).toEqual(review);
-  
+
       // Assert the service methods were called with the correct parameters
       expect(service.findOne).toHaveBeenCalledWith(reviewId, housingId);
-      expect(housingService.updateAggregateReviewAfterDelete).toHaveBeenCalledWith(review, housingId);
-      expect(housingService.updateAvgReviewAfterDelete).toHaveBeenCalledWith(review.rating, housingId);
+      expect(
+        housingService.updateAggregateReviewAfterDelete,
+      ).toHaveBeenCalledWith(review, housingId);
+      expect(housingService.updateAvgReviewAfterDelete).toHaveBeenCalledWith(
+        review.rating,
+        housingId,
+      );
       expect(repository.remove).toHaveBeenCalledWith(review);
     });
 
@@ -334,6 +348,297 @@ describe('ReviewsService', () => {
       // Assert that the reviews are retrieved correctly
       expect(queryBuilder.getMany).toHaveBeenCalled();
       expect(foundReviews).toEqual(resultReviewArray);
+    });
+    it('should return reviews sorted by popularity when sortBy is "popularity"', async () => {
+      const sortBy = 'popularity'; // Sort by popularity
+
+      // Call findAll method of ReviewsService with sortBy parameter
+      await service.findAll(10, 0, '1', 'Review', sortBy, true);
+
+      // Assert that the reviewRepository.createQueryBuilder is called with correct parameters
+      expect(repository.createQueryBuilder).toHaveBeenCalledWith('review');
+      expect(repository.createQueryBuilder().orderBy).toHaveBeenCalledWith(
+        'review.upvoteCount',
+        'DESC',
+      );
+    });
+
+    it('should return reviews sorted by recency when sortBy is "recency"', async () => {
+      const sortBy = 'recency'; // Sort by recency
+
+      // Call findAll method of ReviewsService with sortBy parameter
+      await service.findAll(10, 0, '1', 'Review', sortBy, true);
+
+      // Assert that the reviewRepository.createQueryBuilder is called with correct parameters
+      expect(repository.createQueryBuilder).toHaveBeenCalledWith('review');
+      expect(repository.createQueryBuilder().orderBy).toHaveBeenCalledWith(
+        'review.timestamp',
+        'DESC',
+      );
+    });
+
+    it('should return reviews sorted by timestamp by default when sortBy is not provided', async () => {
+      const sortBy = undefined; // No sortBy parameter provided
+
+      // Call findAll method of ReviewsService without sortBy parameter
+      await service.findAll(10, 0, '1', 'Review', sortBy, true);
+
+      // Assert that the reviewRepository.createQueryBuilder is called with correct parameters
+      expect(repository.createQueryBuilder).toHaveBeenCalledWith('review');
+      expect(repository.createQueryBuilder().orderBy).toHaveBeenCalledWith(
+        'review.timestamp',
+        'DESC',
+      );
+    });
+
+    it('should return reviews sorted by timestamp by default when sortBy is not recognized', async () => {
+      const invalidSortBy = 'invalid'; // An invalid sortBy parameter
+
+      // Call findAll method of ReviewsService with an invalid sortBy parameter
+      await service.findAll(10, 0, '1', 'Review', invalidSortBy, true);
+
+      // Assert that the reviewRepository.createQueryBuilder is called with correct parameters
+      expect(repository.createQueryBuilder).toHaveBeenCalledWith('review');
+      expect(repository.createQueryBuilder().orderBy).toHaveBeenCalledWith(
+        'review.timestamp',
+        'DESC',
+      );
+    });
+  });
+
+  describe('upvote', () => {
+    it('should upvote a review', async () => {
+      const reviewId = 'uuid-id';
+      const housingId = '1';
+      const userId = 1;
+
+      const review: Review = {
+        id: reviewId,
+        content: 'Great place to stay!',
+        timestamp: new Date(),
+        rating: 4,
+        upvoteCount: 0,
+        user: mockUser,
+        userId: 1,
+        likedBy: [],
+        housing: mockHousing,
+        housingId: '1',
+        ensureRatingNonNegative() {
+          if (this.rating < 0) {
+            this.rating = 0; // set rating to 0 if negative
+          }
+        },
+      };
+
+      jest.spyOn(service, 'findOne').mockResolvedValueOnce(review);
+      jest.spyOn(repository, 'save').mockResolvedValueOnce(review);
+
+      const upvotedReview = await service.upvote(reviewId, housingId, userId);
+
+      expect(upvotedReview.upvoteCount).toEqual(1);
+      expect(upvotedReview.likedBy).toContain(userId);
+      expect(repository.save).toHaveBeenCalledWith(review);
+    });
+
+    it('should throw error if user has already upvoted the review', async () => {
+      const reviewId = 'uuid-id';
+      const housingId = '1';
+      const userId = 1;
+
+      const review: Review = {
+        id: reviewId,
+        content: 'Great place to stay!',
+        timestamp: new Date(),
+        rating: 4,
+        upvoteCount: 1,
+        user: mockUser,
+        userId: 1,
+        likedBy: [userId], // Assume user has already upvoted
+        housing: mockHousing,
+        housingId: '1',
+        ensureRatingNonNegative() {
+          if (this.rating < 0) {
+            this.rating = 0; // set rating to 0 if negative
+          }
+        },
+      };
+
+      jest.spyOn(service, 'findOne').mockResolvedValueOnce(review);
+
+      await expect(service.upvote(reviewId, housingId, userId)).rejects.toThrow(
+        'You have already upvoted this review',
+      );
+
+      // Assert that findOne method was called with correct parameters
+      expect(service.findOne).toHaveBeenCalledWith(reviewId, housingId);
+      // Assert that save method was not called
+      expect(repository.save).not.toHaveBeenCalled();
+    });
+
+    it('should return null if review is not found', async () => {
+      const reviewId = 'uuid-id';
+      const housingId = '1';
+      const userId = 1;
+  
+      // Mock findOne method of ReviewsService to return null
+      jest.spyOn(service, 'findOne').mockResolvedValueOnce(null);
+
+      // Call upvote method of ReviewsService
+      const result = await service.upvote(reviewId, housingId, userId);
+  
+      // Assert that result is null
+      expect(result).toBeNull();
+  
+      // Assert that findOne method of ReviewsService is called with correct parameters
+      expect(service.findOne).toHaveBeenCalledWith(reviewId, housingId);
+  
+      // Assert that save method was not called
+      expect(repository.save).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('upvoteUndo', () => {
+    it('should undo upvote for a review', async () => {
+      const reviewId = 'uuid-id';
+      const housingId = '1';
+      const userId = 1;
+
+      const review: Review = {
+        id: reviewId,
+        content: 'Great place to stay!',
+        timestamp: new Date(),
+        rating: 4,
+        upvoteCount: 1, // Assume review already has one upvote
+        user: mockUser,
+        userId: 1,
+        likedBy: [userId], // Assume user has already upvoted
+        housing: mockHousing,
+        housingId: '1',
+        ensureRatingNonNegative() {
+          if (this.rating < 0) {
+            this.rating = 0; // set rating to 0 if negative
+          }
+        },
+      };
+
+      jest.spyOn(service, 'findOne').mockResolvedValueOnce(review);
+      jest.spyOn(repository, 'save').mockResolvedValueOnce(review);
+
+      const upvoteUndoneReview = await service.upvoteUndo(
+        reviewId,
+        housingId,
+        userId,
+      );
+
+      expect(upvoteUndoneReview.upvoteCount).toEqual(0);
+      expect(upvoteUndoneReview.likedBy).not.toContain(userId);
+      expect(repository.save).toHaveBeenCalledWith(review);
+    });
+
+    it('should throw error if user has not upvoted the review', async () => {
+      const reviewId = 'uuid-id';
+      const housingId = '1';
+      const userId = 1;
+
+      const review: Review = {
+        id: reviewId,
+        content: 'Great place to stay!',
+        timestamp: new Date(),
+        rating: 4,
+        upvoteCount: 0,
+        user: mockUser,
+        userId: 1,
+        likedBy: [], // Assume user has not upvoted
+        housing: mockHousing,
+        housingId: '1',
+        ensureRatingNonNegative() {
+          if (this.rating < 0) {
+            this.rating = 0; // set rating to 0 if negative
+          }
+        },
+      };
+
+      jest.spyOn(service, 'findOne').mockResolvedValueOnce(review);
+
+      await expect(
+        service.upvoteUndo(reviewId, housingId, userId),
+      ).rejects.toThrow('You have not upvoted this review');
+
+      // Assert that findOne method was called with correct parameters
+      expect(service.findOne).toHaveBeenCalledWith(reviewId, housingId);
+      // Assert that save method was not called
+      expect(repository.save).not.toHaveBeenCalled();
+    });
+
+    it('should return null if review is not found', async () => {
+      const reviewId = 'uuid-id';
+      const housingId = '1';
+      const userId = 1;
+  
+      // Mock findOne method of ReviewsService to return null
+      jest.spyOn(service, 'findOne').mockResolvedValueOnce(null);
+  
+      // Call upvoteUndo method of ReviewsService
+      const result = await service.upvoteUndo(reviewId, housingId, userId);
+  
+      // Assert that result is null
+      expect(result).toBeNull();
+  
+      // Assert that findOne method of ReviewsService is called with correct parameters
+      expect(service.findOne).toHaveBeenCalledWith(reviewId, housingId);
+  
+      // Assert that save method was not called
+      expect(repository.save).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('findLikedBy', () => {
+    it('should return an array of user IDs who liked the review', async () => {
+      const reviewId = 'uuid-id';
+      const housingId = '1';
+
+      const userIds: number[] = [1, 2, 3]; // Assume these are the user IDs who liked the review
+
+      const review: Review = {
+        id: reviewId,
+        content: 'Great place to stay!',
+        timestamp: new Date(),
+        rating: 4,
+        upvoteCount: 3, // Assume review has 3 upvotes
+        user: mockUser,
+        userId: 1,
+        likedBy: userIds,
+        housing: mockHousing,
+        housingId: '1',
+        ensureRatingNonNegative() {
+          if (this.rating < 0) {
+            this.rating = 0; // set rating to 0 if negative
+          }
+        },
+      };
+
+      jest.spyOn(service, 'findOne').mockResolvedValueOnce(review);
+
+      const likedByUserIds = await service.findLikedBy(reviewId, housingId);
+
+      expect(likedByUserIds).toEqual(userIds);
+    });
+
+    it('should return null if review is not found', async () => {
+      const reviewId = 'uuid-id';
+      const housingId = '1';
+  
+      // Mock findOne method of ReviewsService to return null
+      jest.spyOn(service, 'findOne').mockResolvedValueOnce(null);
+  
+      // Call findLikedBy method of ReviewsService
+      const result = await service.findLikedBy(reviewId, housingId);
+  
+      // Assert that result is null
+      expect(result).toBeNull();
+  
+      // Assert that findOne method of ReviewsService is called with correct parameters
+      expect(service.findOne).toHaveBeenCalledWith(reviewId, housingId);
     });
   });
 });

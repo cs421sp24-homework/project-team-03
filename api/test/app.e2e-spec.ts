@@ -18,8 +18,8 @@ describe('AppController (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
     const response = await request(app.getHttpServer())
-    .post('/users/login')
-    .send({ email: 'user@jhu.edu', password: 'validPassword' });
+      .post('/users/login')
+      .send({ email: 'user@jhu.edu', password: 'validPassword' });
 
     token = response.body.access_token;
   });
@@ -38,7 +38,7 @@ describe('AppController (e2e)', () => {
       .expect('Hello World!');
   });
 
-    // Example data for UserLoginDTO
+  // Example data for UserLoginDTO
   const loginDto: UserLoginDTO = {
     email: 'test@jhu.edu',
     password: 'password123',
@@ -57,11 +57,11 @@ describe('AppController (e2e)', () => {
   const userResponseDto = {
     email: 'newuser@jhu.edu',
     avatar: 'http://example.com/avatar.jpg',
-      firstName: 'New',
-      lastName: 'User',
-      verificationToken: null,
-      id: 1,
-      isEmailVerified: false
+    firstName: 'New',
+    lastName: 'User',
+    verificationToken: null,
+    id: 1,
+    isEmailVerified: false
   };
 
   // Test for GET one user by email
@@ -72,7 +72,6 @@ describe('AppController (e2e)', () => {
   });
 
   it('/users/register (POST)', () => {
-  
     return request(app.getHttpServer())
       .post('/users/register')
       .send(createUserDto)
@@ -91,6 +90,7 @@ describe('AppController (e2e)', () => {
       });
   });
 
+  
   // ... (rest of the imports and setup)
 
 });
