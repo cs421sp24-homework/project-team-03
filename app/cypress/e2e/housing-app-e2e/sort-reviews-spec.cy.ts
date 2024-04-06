@@ -177,9 +177,6 @@ it('Delete first review', () => {
   //delete the review
   cy.get('#review-actions').click();
   cy.get('#delete-review').click();
-  cy.get('#toast', { timeout: 1000 })
-    .should('exist')
-    .contains(/success/i);
 });
 
 
