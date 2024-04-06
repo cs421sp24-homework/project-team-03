@@ -225,6 +225,85 @@ describe('HousingService', () => {
   
     // Additional test cases if necessary
   });
+
+  describe('updateAvgReviewAfterCreate', () => {
+    const newRating = 4.5;
+    const id = 'uuid-id';
+
+    it('should update average review after creating a review', async () => {
+      const housing = { ...resultHousing, avgRating: 3.5, reviewCount: 5 };
+      jest.spyOn(service, 'findOne').mockResolvedValue(housing);
+      jest.spyOn(housingRepository, 'save').mockResolvedValue(housing);
+
+      const result = await service.updateAvgReviewAfterCreate(newRating, id);
+
+      expect(service.findOne).toHaveBeenCalledWith(id);
+      expect(housing.avgRating).toBe((3.5 * 5 + newRating) / 6);
+      expect(housing.reviewCount).toBe(6);
+      expect(housingRepository.save).toHaveBeenCalledWith(housing);
+      expect(result).toEqual(housing);
+    });
+
+    it('should return null if housing entity is not found', async () => {
+      jest.spyOn(service, 'findOne').mockResolvedValue(null);
+
+      const result = await service.updateAvgReviewAfterCreate(newRating, id);
+
+      expect(service.findOne).toHaveBeenCalledWith(id);
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('updateAvgReviewAfterDelete', () => {
+    const deletedRating = 2.5;
+    const id = 'uuid-id';
+
+    it('should update average review after deleting a review', async () => {
+      const housing = { ...resultHousing, avgRating: 3.5, reviewCount: 5 };
+      jest.spyOn(service, 'findOne').mockResolvedValue(housing);
+      jest.spyOn(housingRepository, 'save').mockResolvedValue(housing);
+
+      const result = await service.updateAvgReviewAfterDelete(
+        deletedRating,
+        id,
+      );
+
+      expect(service.findOne).toHaveBeenCalledWith(id);
+      expect(housing.avgRating).toBe((3.5 * 5 - deletedRating) / 4);
+      expect(housing.reviewCount).toBe(4);
+      expect(housingRepository.save).toHaveBeenCalledWith(housing);
+      expect(result).toEqual(housing);
+    });
+
+    it('should set average review to 0 if there are no reviews after deleting', async () => {
+      const housing = { ...resultHousing, avgRating: 3.5, reviewCount: 1 };
+      jest.spyOn(service, 'findOne').mockResolvedValue(housing);
+      jest.spyOn(housingRepository, 'save').mockResolvedValue(housing);
+
+      const result = await service.updateAvgReviewAfterDelete(
+        deletedRating,
+        id,
+      );
+
+      expect(service.findOne).toHaveBeenCalledWith(id);
+      expect(housing.avgRating).toBe(0);
+      expect(housing.reviewCount).toBe(0);
+      expect(housingRepository.save).toHaveBeenCalledWith(housing);
+      expect(result).toEqual(housing);
+    });
+
+    it('should return null if housing entity is not found', async () => {
+      jest.spyOn(service, 'findOne').mockResolvedValue(null);
+
+      const result = await service.updateAvgReviewAfterDelete(
+        deletedRating,
+        id,
+      );
+
+      expect(service.findOne).toHaveBeenCalledWith(id);
+      expect(result).toBeNull();
+    });
+  });
   
 
 });
