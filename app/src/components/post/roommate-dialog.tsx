@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,7 +10,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "../ui/textarea";
-import { PlusCircledIcon } from "@radix-ui/react-icons";
 import useMutationPosts from "@/hooks/use-mutations-posts";
 import { useToast } from "@/components/ui/use-toast";
 import { useStore } from "@/lib/store";
@@ -27,7 +25,9 @@ type PreviewType = {
   name: string
 }
 
-export const AddPostDialog = () => {
+export const RoommateDialog = (
+    {setTypeDialogState}: {setTypeDialogState: (b: boolean) => void;}
+) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [cost, setCost] = useState(0);
@@ -145,12 +145,7 @@ export const AddPostDialog = () => {
     }
     //console.log('Pre-save urls', imageURLs);
     await makeNewPost(title, content, cost, address, type, imageURLs);
-    setImageFiles([]);
-    setPreviews([]);
-    setTitle("");
-    setContent("");
-    setCost(0);
-    setAddress("");
+    handleCancel()
   };
 
   const handleCancel = () => {
@@ -160,13 +155,14 @@ export const AddPostDialog = () => {
     setContent("");
     setCost(0);
     setAddress("");
+    setTypeDialogState(false);
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button id="add-posts" aria-label={"Make a Post"} variant="default" size="sm">
-          <PlusCircledIcon className="w-5 h-5" />
+        <Button id="add-posts" aria-label={"Make a Post"} variant="default" >
+          Next
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[525px]" style={{ maxHeight: '600px', overflowY: 'auto' }}>

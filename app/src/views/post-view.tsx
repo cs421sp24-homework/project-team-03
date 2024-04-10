@@ -1,7 +1,6 @@
 
-import Aside from "@/components/aside";
 import Feed from "@/components/post/feed";
-import Sidebar from "@/components/sidebar";
+import PostSidebar from "@/components/post/post-sidebar";
 import { useStore } from "@/lib/store";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -18,11 +17,12 @@ const PostView = () => {
   }, [user, navigate]);
 
   return (
-    <>
-      <Sidebar isPostsView={true} />
-      <Feed />
-      <Aside />
-    </>
+    <div className="flex flex-col h-screen">
+      <PostSidebar isPostsView={true} />
+      <div>
+        <Feed />
+      </div>
+    </div>
   );
 };
 

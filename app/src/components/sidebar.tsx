@@ -1,10 +1,10 @@
 import { AvatarIcon, HomeIcon, Pencil2Icon } from "@radix-ui/react-icons";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
-import { AddPostDialog } from "./post/add-post-dialog";
 import { useStore } from "@/lib/store";
 import { useToast } from "./ui/use-toast";
 import Inbox from "./email/inbox";
+import { PostTypeDialog } from "./post/post-type-dialog";
 
 type SideBarProps = {
   isPostsView: true | false;
@@ -46,14 +46,14 @@ function Sidebar({ isPostsView }: SideBarProps) {
   };
   
   return (
-    <div className="flex flex-col gap-2 p-4">
+    <div className="flex flex-col gap-2 p-4 ">
       <Button variant={"ghost"} size="sm" onClick={handleClickHome}>
         <HomeIcon className="w-5 h-5" />
       </Button>
       {!isPostsView && <Button id="see-posts" variant={"ghost"} size="sm" onClick={handleClickAddPost}>
         <Pencil2Icon className="w-5 h-5" />
       </Button>}
-      {isPostsView && <AddPostDialog />}
+      {isPostsView && <PostTypeDialog />}
       {user && <Button id="profile" variant="ghost" size="sm" onClick={handleClickProfile}><AvatarIcon className="w-5 h-5" /></Button>}
       {user && <Inbox />} 
     </div>
