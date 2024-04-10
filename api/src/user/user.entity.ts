@@ -40,5 +40,4 @@ export class User {
 
   @Column({ default: 0 })
   notifications: number;
-
 }

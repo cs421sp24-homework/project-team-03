@@ -6,6 +6,7 @@ export type User = {
     avatar?: string;
     bio?: string;
     notifications: number,
+    reviews?: ReviewWithUserData[]
   }
 
   export type PostType = "Roommate" | "Sublet" | "Housing" | null;

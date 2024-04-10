@@ -7,8 +7,9 @@ import { useStore } from "@/lib/store";
 import useMutationUser from "@/hooks/use-mutations-users";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../ui/use-toast";
-
+import useQueryUserReviews from "@/hooks/use-query-user-reviews";
 import { EmailDialog } from "../email/send-email-dialog";
+import UserReview from "./user-reviews";
 
 export const UserProfile = ({ user }: { user: User }) => {
     const { toast } = useToast();
@@ -19,6 +20,8 @@ export const UserProfile = ({ user }: { user: User }) => {
     const [lastName, setLastName] = useState(user.lastName);
     const [bio, setBio] = useState(user.bio);
     const [avatar, setAvatar] = useState(user.avatar);
+    // const [userReviews] = useState(user.reviews);
+    const { userReviews } = useQueryUserReviews(user.email)
     const navigate = useNavigate();
 
     if (!loggedUser) {
@@ -68,6 +71,8 @@ export const UserProfile = ({ user }: { user: User }) => {
                     </div>
                 </div>
             </div>
+            <div>
+        </div>
             <div className="p-4 pl-8 pr-8">
                 <h2 className="text-xl font-semibold mb-2">Bio</h2>
                 {isEditing ? (
@@ -110,6 +115,10 @@ export const UserProfile = ({ user }: { user: User }) => {
                         {bio}
                     </div>
                 )}
+                <h2 className="text-xl font-semibold mt-10 mb-2">Your Reviews</h2>
+                {userReviews && userReviews.map((review) => (
+                    <UserReview review={review} housingId={review.housingId} key={review.id} />
+                ))}
             </div>
         </div>
     )
