@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "../ui/textarea"
 import { useState } from "react"
 import { useToast } from "../ui/use-toast"
-import { incrementNotifications, sendEmail } from "@/lib/api"
+import { sendEmail } from "@/lib/api"
 import { User } from "@/lib/types"
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons"
 
@@ -51,7 +51,6 @@ export function ContactDialog() {
             title: "Email Sent!",
             description: `Your email was successfully sent`,
         });
-        await incrementNotifications(userProf.email);
         clearForm();
     }
 
@@ -65,7 +64,7 @@ export function ContactDialog() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button id="send-email" variant="ghost"><QuestionMarkCircledIcon className="w-5 h-5"  /></Button>
+                <Button id="contact" variant="ghost"><QuestionMarkCircledIcon className="w-5 h-5"  /></Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
