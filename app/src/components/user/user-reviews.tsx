@@ -8,12 +8,11 @@ const UserReview = ({ review, housingId }: { review: ReviewWithUserData, housing
   const [housing, setHousing] = useState<HousingItem | null>(null);
 
   useEffect(() => {
-    const getUser = async () => {
+    const getHousingItem = async () => {
       const housingItem = await fetchHousingItem(housingId);
       setHousing(housingItem);
     };
-
-    getUser();
+    getHousingItem();
   }, []);
 
   const {content, timestamp, rating} = review;

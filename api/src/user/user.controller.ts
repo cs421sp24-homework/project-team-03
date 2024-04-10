@@ -43,7 +43,6 @@ export class UserController {
     }
 
     delete user.password;
-    console.log(user.reviews);
     return user;
   }
 
