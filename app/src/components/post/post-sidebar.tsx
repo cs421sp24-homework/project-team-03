@@ -1,4 +1,4 @@
-import { AvatarIcon, HomeIcon, Pencil2Icon } from "@radix-ui/react-icons";
+import { AvatarIcon, Pencil2Icon } from "@radix-ui/react-icons";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "@/lib/store";
 import Inbox from "../email/inbox";
@@ -51,13 +51,12 @@ function PostSidebar({ isPostsView }: SideBarProps) {
     <div className="sticky top-0 z-10 px-10 py-5 text-black bg-white border-b border-gray-200">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
+        <Button variant={"ghost"} size="sm" onClick={handleClickHome}>
           <span className="text-lg font-bold text-slate-500 ">Our App</span>
+          </Button>
         </div>
         <div className="flex gap-2">
           {isPostsView && <PostTypeDialog />}
-          <Button variant={"ghost"} size="sm" onClick={handleClickHome}>
-            <HomeIcon className="w-5 h-5" />
-          </Button>
           {!isPostsView && (
             <Button id="see-posts" variant={"ghost"} size="sm" onClick={handleClickAddPost}>
               <Pencil2Icon className="w-5 h-5" />

@@ -1,14 +1,11 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel";
 import PostHeader from "./post-header";
 import type { PostWithUserData } from "@/lib/types";
-import SubletPost from "./sublet-post";
 
-const Post = ({ post }: { post: PostWithUserData }) => {
+const SubletPost = ({ post }: { post: PostWithUserData }) => {
   const { title, content, user, images } = post;
 
-  if (post.type == "Sublet") return (
-    <SubletPost post={post}/>
-  );
+
 
   return (
     <div id="post" className="rounded-lg" style={{ width: '340px', height: '360px'}}>
@@ -53,6 +50,8 @@ const Post = ({ post }: { post: PostWithUserData }) => {
           }
         <div className="pb-2 text-base font-bold underline">{title}</div>
           <div className="pl-2">
+            <div className=""><strong>Address:</strong> {post.address}</div>
+            <div className=""><strong>Cost:</strong> {post.cost}</div>
             <div className="pb-2">{content}</div>
           </div>
     
@@ -61,4 +60,4 @@ const Post = ({ post }: { post: PostWithUserData }) => {
   );
 };
 
-export default Post;
+export default SubletPost;

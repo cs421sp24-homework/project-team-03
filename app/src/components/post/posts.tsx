@@ -10,7 +10,7 @@ const Posts = ({type}: {type: PostType}) => {
 
 
   return (
-    <div className="flex gap-4 px-10 py-5">
+    <div className="flex gap-10">
       {filteredPosts.map((post) => (
         <div key={post.id} className="flex justify-center py-5">
           <Post post={post} />
