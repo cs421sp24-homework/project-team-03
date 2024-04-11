@@ -12,7 +12,6 @@ const Feed = () => {
       </div>
       <div className="gap-5" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <SearchInput />
-        {/*<Filter /> */}
       </div>
       
 
