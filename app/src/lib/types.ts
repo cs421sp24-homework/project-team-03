@@ -7,6 +7,18 @@ export type User = {
     bio?: string;
     notifications: number,
     reviews?: ReviewWithUserData[]
+    age?: string,
+    gender?: string,
+    major?: string,
+    gradYear?: string,
+    stayLength?: string,
+    budget?: string,
+    idealDistance?: string,
+    petPreference?: string,
+    cleanliness?: string,
+    smoker?: string,
+    socialPreference?: string,
+    peakProductivity?: string,
   }
 
   export type PostType = "Roommate" | "Sublet" | "Housing" | null;

@@ -10,6 +10,8 @@ import { useToast } from "../ui/use-toast";
 import useQueryUserReviews from "@/hooks/use-query-user-reviews";
 import { EmailDialog } from "../email/send-email-dialog";
 import UserReview from "./user-reviews";
+import { UpdateProfileDialog } from "./update-profile-dialog";
+import useQueryUser from "@/hooks/use-query-user";
 
 export const UserProfile = ({ user }: { user: User }) => {
     const { toast } = useToast();
@@ -20,8 +22,8 @@ export const UserProfile = ({ user }: { user: User }) => {
     const [lastName, setLastName] = useState(user.lastName);
     const [bio, setBio] = useState(user.bio);
     const [avatar, setAvatar] = useState(user.avatar);
-    // const [userReviews] = useState(user.reviews);
     const { userReviews } = useQueryUserReviews(user.email)
+    const { currentUser } = useQueryUser(user.email)
     const navigate = useNavigate();
 
     if (!loggedUser) {
@@ -69,9 +71,48 @@ export const UserProfile = ({ user }: { user: User }) => {
                     <div>
                         <EmailDialog userProf={user}/>
                     </div>
+                    <div>
+                        <UpdateProfileDialog user={user}/>
+                    </div>
                 </div>
             </div>
-            <div>
+            {currentUser?.age !== null && (
+                <div> Age: {currentUser?.age} </div>
+            )}
+            {currentUser?.age !== null && (
+                <div> Gender: {currentUser?.gender} </div>
+            )}
+            {currentUser?.age !== null && (
+                <div> Major: {currentUser?.major} </div>
+            )}
+            {currentUser?.age !== null && (
+                <div> Grad Year: {currentUser?.gradYear} </div>
+            )}
+            {currentUser?.stayLength !== null && (
+                <div> Length of Stay: {currentUser?.stayLength} </div>
+            )}
+            {currentUser?.budget !== null && (
+                <div> Monthly Rent Budget: {currentUser?.budget} </div>
+            )}
+            {currentUser?.idealDistance !== null && (
+                <div> Ideal Distance from Campus: {currentUser?.idealDistance} </div>
+            )}
+            {currentUser?.petPreference !== null && (
+                <div> Pet Preference: {currentUser?.petPreference} </div>
+            )}
+            {currentUser?.cleanliness !== null && (
+                <div> Cleanliness: {currentUser?.cleanliness} </div>
+            )}
+            {currentUser?.smoker !== null && (
+                <div> Smoking Habits: {currentUser?.smoker} </div>
+            )}
+            {currentUser?.socialPreference !== null && (
+                <div> Personality Type: {currentUser?.socialPreference} </div>
+            )}
+            {currentUser?.peakProductivity !== null && (
+                <div> Peak Productivity Time: {currentUser?.peakProductivity} </div>
+            )}
+        <div>
         </div>
             <div className="p-4 pl-8 pr-8">
                 <h2 className="text-xl font-semibold mb-2">Bio</h2>
@@ -115,7 +156,7 @@ export const UserProfile = ({ user }: { user: User }) => {
                         {bio}
                     </div>
                 )}
-                <h2 className="text-xl font-semibold mt-10 mb-2">Your Reviews</h2>
+                <h2 className="text-xl font-semibold mt-10 mb-2">Reviews</h2>
                 {userReviews && userReviews.map((review) => (
                     <UserReview review={review} housingId={review.housingId} key={review.id} />
                 ))}

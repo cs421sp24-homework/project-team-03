@@ -29,7 +29,6 @@ function useQueryUserReviews(email : string) {
     }
   };
 
-  
   useInterval(() => {
     loadUserReviews();
   }, 300);
