@@ -16,7 +16,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import useMutationPosts from "@/hooks/use-mutations-posts";
 import { PostWithUserData } from "@/lib/types";
-import { PostType } from "@/lib/types";
 import { DropdownMenuItem } from "../ui/dropdown-menu";
 //TODO: handle image updates
 export const EditPostDialog = ({
@@ -30,7 +29,6 @@ export const EditPostDialog = ({
   const [newContent, setNewContent] = useState(post.content);
   const [newCost, setNewCost] = useState(post.cost);
   const [newAddress, setNewAddress] = useState(post.address);
-  const [newType, setNewType] = useState(post.type);
   
   const { editPostById } = useMutationPosts();
   const { toast } = useToast();
@@ -53,7 +51,7 @@ export const EditPostDialog = ({
       return;
     }
 
-    await editPostById(post.id, newTitle, newContent, newCost, newAddress, newType );
+    await editPostById(post.id, newTitle, newContent, newCost, newAddress, post.type );
     setNewTitle("");
     setNewContent("");
     setNewAddress("");
@@ -114,45 +112,30 @@ export const EditPostDialog = ({
               }}
             />
           </div>
-            <div className="grid items-center grid-cols-4 gap-4">
+
+          {post.type == "Sublet" &&
+            <><div className="grid items-center grid-cols-4 gap-4">
               <Label htmlFor="cost">New Cost
                 <div>(Please enter an integer)</div>
               </Label>
               <Input
                 id="cost"
                 type="number"
-                onChange={(e) => setNewCost(Number(e.target.value))}
-              />
-          </div>
-          <div className="grid items-center grid-cols-4 gap-4">
-              <Label htmlFor="address"> New Address</Label>
-              <Textarea
-                id="address"
-                value={newAddress}
-                className="col-span-4"
-                style={{ resize: 'none' }}
-                placeholder="Type your address here."
-                onChange={(e) => {
-                  setNewAddress(e.target.value);
-                }}
-              />
-            </div>
-
-            <div className="grid items-center grid-cols-4 gap-4">
-              <Label htmlFor="type">New Type</Label>
-              <select
-                id="type"
-                className="col-span-4"
-                onChange={(e) => {
-                  setNewType(e.target.value as PostType);
-                }}
-              >
-                <option value="">Select a post type...</option>
-                <option id="Roommate" value="Roommate">Looking for Roommate</option>
-                <option id="Sublet" value="Sublet">Looking for Subletter</option>
-                <option id="Housing" value="Housing">Looking for Housing</option>
-              </select>
-            </div>
+                onChange={(e) => setNewCost(Number(e.target.value))} />
+            </div><div className="grid items-center grid-cols-4 gap-4">
+                <Label htmlFor="address"> New Address</Label>
+                <Textarea
+                  id="address"
+                  value={newAddress}
+                  className="col-span-4"
+                  style={{ resize: 'none' }}
+                  placeholder="Type your address here."
+                  onChange={(e) => {
+                    setNewAddress(e.target.value);
+                  } } />
+              </div></>
+        }
+            
         </div>
 
         <DialogFooter>
