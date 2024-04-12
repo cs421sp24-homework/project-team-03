@@ -8,7 +8,7 @@ const SubletPost = ({ post }: { post: PostWithUserData }) => {
 
 
   return (
-    <div id="post" className="rounded-lg" style={{ width: '340px', height: '360px'}}>
+    <div id="post" className="border border-gray-300 rounded-lg" style={{ width: '340px', height: '360px'}}>
       <div className="">
         <PostHeader
           post={post}
@@ -18,7 +18,7 @@ const SubletPost = ({ post }: { post: PostWithUserData }) => {
       </div>
       <div className="overflow-y-auto text-sm" style={{ height: '80%', scrollbarWidth: 'none', }}>
         {images.length > 0 &&
-          <div className="relative py-2 ">
+          <div className="relative">
           <Carousel>
             <CarouselContent>
               <CarouselItem className="flex justify-center">
@@ -48,10 +48,10 @@ const SubletPost = ({ post }: { post: PostWithUserData }) => {
         </div>
         
           }
-        <div className="pb-2 text-base font-bold underline">{title}</div>
-            <div className=""><strong>Address:</strong> {post.address}</div>
-            <div className=""><strong>Cost:</strong> {post.cost}</div>
-            <div className="pb-2">{content}</div>
+        <div className="px-4 pb-2 mt-4 text-base font-bold underline">{title}</div>
+            <div className="px-4"><strong>Address:</strong> {post.address}</div>
+            <div className="px-4"><strong>Cost:</strong> {post.cost}</div>
+            <div className="px-4 pb-2">{content}</div>
     
       </div>
     </div>

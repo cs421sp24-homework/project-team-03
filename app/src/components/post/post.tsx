@@ -21,7 +21,7 @@ const Post = ({ post }: { post: PostWithUserData }) => {
       </div>
       <div className="overflow-y-auto text-sm" style={{ height: '80%', scrollbarWidth: 'none', }}>
         {images.length > 0 &&
-          <div className="relative py-2 ">
+          <div className="relative ">
           <Carousel>
             <CarouselContent>
               <CarouselItem className="flex justify-center">
