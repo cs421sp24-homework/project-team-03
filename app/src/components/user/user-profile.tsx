@@ -12,6 +12,10 @@ import { EmailDialog } from "../email/send-email-dialog";
 import UserReview from "./user-reviews";
 import { UpdateProfileDialog } from "./update-profile-dialog";
 import useQueryUser from "@/hooks/use-query-user";
+import { FaSoap } from "react-icons/fa6";
+import { TbSunMoon } from "react-icons/tb";
+import { IoPeopleSharp } from "react-icons/io5";
+import { LuCigarette } from "react-icons/lu";
 
 export const UserProfile = ({ user }: { user: User }) => {
     const { toast } = useToast();
@@ -76,42 +80,17 @@ export const UserProfile = ({ user }: { user: User }) => {
                     </div>
                     <div className="mx-5" style={{ fontSize: '18px', color: 'grey', lineHeight: '1.2' }}>
                         {currentUser?.age !== null && currentUser?.gender !== null && (
-                            <div> {currentUser?.age}, {currentUser?.gender} </div>
+                            <div><em>{currentUser?.age}, {currentUser?.gender}</em></div>
                         )}
                         {currentUser?.gradYear !== null && (
-                            <div> Class of {currentUser?.gradYear}</div>
+                            <div><em>Class of {currentUser?.gradYear}</em></div>
                         )}
                         {currentUser?.major !== null && (
-                            <div>{currentUser?.major} </div>
+                            <div><em>{currentUser?.major}</em></div>
                         )}
                     </div>
                 </div>
             </div>
-
-            {currentUser?.stayLength !== null && (
-                <div> Length of Stay: {currentUser?.stayLength} </div>
-            )}
-            {currentUser?.budget !== null && (
-                <div> Monthly Rent Budget: {currentUser?.budget} </div>
-            )}
-            {currentUser?.idealDistance !== null && (
-                <div> Ideal Distance from Campus: {currentUser?.idealDistance} </div>
-            )}
-            {currentUser?.petPreference !== null && (
-                <div> Pet Preference: {currentUser?.petPreference} </div>
-            )}
-            {currentUser?.cleanliness !== null && (
-                <div> Cleanliness: {currentUser?.cleanliness} </div>
-            )}
-            {currentUser?.smoker !== null && (
-                <div> Smoking Habits: {currentUser?.smoker} </div>
-            )}
-            {currentUser?.socialPreference !== null && (
-                <div> Personality Type: {currentUser?.socialPreference} </div>
-            )}
-            {currentUser?.peakProductivity !== null && (
-                <div> Peak Productivity Time: {currentUser?.peakProductivity} </div>
-            )}
         <div>
         </div>
             <div className="p-4 pl-8 pr-8">
@@ -156,22 +135,59 @@ export const UserProfile = ({ user }: { user: User }) => {
                         {currentUser?.bio}
                     </div>
                 )}
-                <div className="grid grid-cols-2 py-5 mt-5">
+                <div className="grid grid-cols-2 py-1 mt-5">
                     <div className="pr-100">
-                        <div className="text-xl font-semibold mt-5 mb-2">Housing Preferences</div>
+                        <div className="text-xl font-semibold mt-5 mb-2">Lifestyle Preferences</div>
                         <div className="flex py-5 bg-white border border-gray-300 rounded-lg shadow" style={{ width: '380px', height: '400px' }}>
-                            <div className="w-12 h-12 bg-gray-400 rounded-full ml-8 mt-3 mb-4">
-                                <div className="ml-20 mt-2 mb-2" style={{ fontSize: '18px', fontWeight: '400' }}>hi</div>
+                            <div>
+                                <div className="w-14 h-14 bg-gray-300 rounded-full ml-8 mt-5 mb-4">
+                                    <div><IoPeopleSharp className="pl-3 pt-3 w-11 h-11"/></div>
+                                </div>
+                                <div className="w-14 h-14 bg-gray-300 rounded-full ml-8 mt-8 mb-4">
+                                    <div><TbSunMoon className="pl-3 pt-3 w-11 h-11"/></div>
+                                </div>
+                                <div className="w-14 h-14 bg-gray-300 rounded-full ml-8 mt-8 mb-4">
+                                    <div><FaSoap className="pl-3 pt-3 w-11 h-11"/></div>
+                                </div>
+                                <div className="w-14 h-14 bg-gray-300 rounded-full ml-8 mt-8 mb-4">
+                                    <div><LuCigarette className="pl-3 pt-3 w-11 h-11"/></div> 
+                                </div>
                             </div>
-                            <div className="w-12 h-12 bg-gray-400 rounded-full ml-8 mt-3 mb-4"></div>
+                            <div>
+                                <div className="pl-8 mt-8 mb-4" style={{ fontSize: '18px', fontWeight: '400' }}><em>{currentUser?.socialPreference}</em></div>
+                                <div className="pl-8 mt-9 pt-7" style={{ fontSize: '18px', fontWeight: '400' }}><em>{currentUser?.peakProductivity}</em></div>
+                                <div className="pl-8 mt-7 pt-8" style={{ fontSize: '18px', fontWeight: '400' }}><em>{currentUser?.cleanliness}</em></div>
+                                <div className="pl-8 mt-7 pt-8" style={{ fontSize: '18px', fontWeight: '400' }}><em>{currentUser?.smoker}</em></div>
+                            </div>
                         </div>
                     </div>
                     <div className="pl-8">
-                        <div className="text-xl font-semibold mt-5 mb-2 ml-30">Lifestyle Preferences</div>
-                        <div className="flex justify-end py-5 bg-white border border-gray-300 rounded-lg shadow" style={{ width: '380px', height: '400px' }}></div>
+                        <div className="text-xl font-semibold mt-5 mb-2 ml-30">Housing Preferences</div>
+                        <div className="flex bg-white border border-gray-300 rounded-lg shadow" style={{ width: '380px', height: '400px' }}>
+                        <div>
+                            <div className="pl-8 mt-5 pt-5">
+                                <div className="" style={{ fontSize: '18px', fontWeight: '400' }}><em>I am looking for a...</em></div>
+                                <div className="" style={{ fontSize: '18px', fontWeight: '700' }}><em>{currentUser?.stayLength}</em></div>
+                            </div>
+                            <div className="pl-8 mt-5 pt-4">
+                                <div className="" style={{ fontSize: '18px', fontWeight: '400' }}><em>My monthly rent budget is...</em></div>
+                                <div className="" style={{ fontSize: '18px', fontWeight: '700' }}><em>{currentUser?.budget}</em></div>
+                            </div>
+                            <div className="pl-8 mt-5 pt-3">
+                                <div className="" style={{ fontSize: '18px', fontWeight: '400' }}><em>My ideal distance away from campus is...</em></div>
+                                <div className="" style={{ fontSize: '18px', fontWeight: '700' }}><em>{currentUser?.idealDistance}</em></div>
+                            </div>
+                            <div className="pl-8 mt-5 pt-3">
+                                <div className="" style={{ fontSize: '18px', fontWeight: '400' }}><em>I prefer my housing to be...</em></div>
+                                <div className="" style={{ fontSize: '18px', fontWeight: '700' }}><em>{currentUser?.petPreference}</em></div>
+                            </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <h2 className="text-xl font-semibold mt-5 mb-2">Reviews</h2>
+                {userReviews.length !== 0 && (
+                    <h2 className="text-xl font-semibold mt-10 mb-2">Reviews</h2>
+                )}
                 {userReviews && userReviews.map((review) => (
                     <UserReview review={review} housingId={review.housingId} key={review.id} />
                 ))}

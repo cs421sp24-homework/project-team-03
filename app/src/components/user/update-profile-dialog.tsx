@@ -15,6 +15,7 @@ import { ChangeEvent, useState } from "react"
 import { useToast } from "../ui/use-toast"
 import useMutationUser from "@/hooks/use-mutations-users"
 import { User } from "@/lib/types"
+import { Textarea } from "../ui/textarea"
 
 export function UpdateProfileDialog({ user }: { user: User }) {
     const { toast } = useToast();
@@ -92,6 +93,14 @@ export function UpdateProfileDialog({ user }: { user: User }) {
             [name]: value,
         }));
     };
+
+    const handleTextAreaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+        const { name, value } = event.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
     
     const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = event.target;
@@ -116,7 +125,7 @@ export function UpdateProfileDialog({ user }: { user: User }) {
                 <Input type="text" id="avatar" name="avatar" value={formData.avatar} onChange={handleInputChange} placeholder="Please enter a URL" />
                 <br />
                 <label htmlFor="bio">Bio:</label>
-                <Input type="text" id="bio" name="bio" value={formData.bio} onChange={handleInputChange} placeholder="Please enter your bio" />
+                <Textarea id="bio" name="bio" value={formData.bio} onChange={handleTextAreaChange} placeholder="Please enter your bio" />
               </>
             ),
           },
@@ -146,7 +155,7 @@ export function UpdateProfileDialog({ user }: { user: User }) {
                 <label htmlFor="stayLength" style={{ marginRight: "7px" }}>{'Length of Stay:  '}</label>
                         <select id="stayLength" name="stayLength" color="indigo" value={formData.stayLength} onChange={handleSelectChange}>
                             <option value="">Select</option>
-                            <option value="Summer">Summer</option>
+                            <option value="Summer Lease">Summer Lease</option>
                             <option value="6-Month Lease">6-Month Lease</option>
                             <option value="9-Month Lease">9-Month Lease</option>
                             <option value="12-Month Lease">12-Month Lease</option>
