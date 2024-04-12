@@ -22,6 +22,10 @@ export function UpdateProfileDialog({ user }: { user: User }) {
 
     const [currentDialogIndex, setCurrentDialogIndex] = useState(0);
     const [formData, setFormData] = useState({
+        firstName: user.firstName || '' ,
+        lastName: user.lastName || '' ,
+        avatar: user.avatar || '' ,
+        bio: user.bio || '' ,
         age: user.age || '' ,
         gender: user.gender || '',
         major: user.major || '',
@@ -45,8 +49,8 @@ export function UpdateProfileDialog({ user }: { user: User }) {
     };
 
     const handleSave = async () => {
-        const { age, gender, major, gradYear, stayLength, budget, idealDistance, petPreference, cleanliness, smoker, socialPreference, peakProductivity } = formData
-        if (!age || !gender || !major || !gradYear || !stayLength || !budget || !idealDistance || !petPreference || !cleanliness || !smoker || !socialPreference || !peakProductivity) {
+        const { firstName, lastName, avatar, bio, age, gender, major, gradYear, stayLength, budget, idealDistance, petPreference, cleanliness, smoker, socialPreference, peakProductivity } = formData
+        if (!firstName || !lastName || !age || !gender || !major || !gradYear || !stayLength || !budget || !idealDistance || !petPreference || !cleanliness || !smoker || !socialPreference || !peakProductivity) {
             toast({
                 variant: "destructive",
                 title: "Sorry! All fields must be completed! 🙁",
@@ -55,12 +59,16 @@ export function UpdateProfileDialog({ user }: { user: User }) {
             clearForm()
             return;
         }
-        editUsers(user.id, user.firstName, user.lastName, user.avatar, user.bio, age, gender, major, gradYear, stayLength, budget, idealDistance, petPreference, cleanliness, smoker, socialPreference, peakProductivity)
+        editUsers(user.id, firstName, lastName, avatar, bio, age, gender, major, gradYear, stayLength, budget, idealDistance, petPreference, cleanliness, smoker, socialPreference, peakProductivity)
         clearForm();
     }
     
     const clearForm = () => {
         setFormData({
+            firstName: formData.firstName || '' ,
+            lastName: formData.lastName || '' ,
+            avatar: formData.avatar || '' ,
+            bio: formData.bio || '' ,
             age: formData.age || '' ,
             gender: formData.gender || '',
             major: formData.major || '',
@@ -95,7 +103,25 @@ export function UpdateProfileDialog({ user }: { user: User }) {
 
     const dialogs = [
         {
-          title: 'Basic Info',
+            title: 'Basic Info',
+            content: (
+              <>
+                <label htmlFor="firstName">First Name:</label>
+                <Input type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleInputChange} placeholder="Please enter your first name"/>
+                <br />
+                <label htmlFor="lastName">Last Name:</label>
+                <Input type="text" id="lastName" name="lastName" value={formData.lastName} onChange={handleInputChange} placeholder="Please enter your last name" />
+                <br />
+                <label htmlFor="avatar">Avatar URL:</label>
+                <Input type="text" id="avatar" name="avatar" value={formData.avatar} onChange={handleInputChange} placeholder="Please enter a URL" />
+                <br />
+                <label htmlFor="bio">Bio:</label>
+                <Input type="text" id="bio" name="bio" value={formData.bio} onChange={handleInputChange} placeholder="Please enter your bio" />
+              </>
+            ),
+          },
+        {
+          title: 'Demographics & Education',
           content: (
             <>
               <label htmlFor="age">Age:</label>
@@ -111,8 +137,6 @@ export function UpdateProfileDialog({ user }: { user: User }) {
               <Input type="text" id="gradYear" name="gradYear" value={formData.gradYear} onChange={handleInputChange} placeholder="Please enter your grad year" />
             </>
           ),
-          buttonText: 'Next',
-          buttonAction: handleNextDialog,
         },
         {
           title: 'Housing Preferences',
@@ -159,8 +183,6 @@ export function UpdateProfileDialog({ user }: { user: User }) {
                 <br />
             </>
           ),
-          buttonText: 'Previous',
-          buttonAction: handlePrevDialog,
         },
         {
             title: 'Lifestyle Preferences',
@@ -204,8 +226,6 @@ export function UpdateProfileDialog({ user }: { user: User }) {
                     </select>
                 </>
             ),
-            buttonText: 'Previous',
-            buttonAction: handleNextDialog,
           },
       ];
 
@@ -218,7 +238,12 @@ export function UpdateProfileDialog({ user }: { user: User }) {
                 <DialogContent>
                 <DialogHeader>
                     <DialogTitle>{dialogs[currentDialogIndex].title}</DialogTitle>
-                        <DialogDescription> All fields required to be filled in.</DialogDescription>
+                        {currentDialogIndex === 0 && (
+                            <DialogDescription> First name and last name are required to be filled in.</DialogDescription>
+                        )}
+                        {currentDialogIndex !== 0 && (
+                            <DialogDescription> All fields required to be filled in.</DialogDescription>
+                        )}
                 </DialogHeader>
                     <form onSubmit={(e) => e.preventDefault()}>
                         {dialogs[currentDialogIndex].content}
@@ -228,13 +253,13 @@ export function UpdateProfileDialog({ user }: { user: User }) {
                             {currentDialogIndex === 0 && (
                                 <Button type="button" onClick={handleNextDialog} style={{ backgroundColor: "lightgrey", color: "black" }}><ArrowRightIcon/></Button>
                             )}
-                            {currentDialogIndex === 1 && (
+                            {(currentDialogIndex === 1 || currentDialogIndex ===  2) && (
                             <>
                                 <Button type="button" variant="ghost" onClick={handlePrevDialog} style={{ backgroundColor: "lightgrey", color: "black", marginRight: "10px" }}><ArrowLeftIcon/></Button>
                                 <Button type="button" variant="ghost" onClick={handleNextDialog} style={{ backgroundColor: "lightgrey", color: "black" }}><ArrowRightIcon/></Button>
                             </>
                             )}
-                            {currentDialogIndex === 2 && (
+                            {currentDialogIndex === 3 && (
                                 <Button type="button" variant="ghost" onClick={handlePrevDialog} style={{ backgroundColor: "lightgrey", color: "black" }}><ArrowLeftIcon/></Button>
                             )}
                         </div>

@@ -60,34 +60,34 @@ export const UserProfile = ({ user }: { user: User }) => {
     return (
         <div className="flex flex-col w-screen min-h-screen border-x-2 border-slate-400 md:max-w-4xl">
             <div className="flex">
-                <div className="p-4 pl-8">
-                    <UserAvatar imageUrl={avatar} displayName={`${firstName} ${lastName}`} />
+                <div className="p-4 pl-10 pt-10">
+                    <UserAvatar imageUrl={currentUser?.avatar} displayName={`${currentUser?.firstName} ${currentUser?.lastName}`} />
                 </div>
-                <div className="w-full pt-10 pr-8 text-3xl flex flex-col">
+                <div className="w-full pt-10 text-3xl flex flex-col">
                     <div className="flex items-center">
-                        <div>{`${firstName} ${lastName}`}</div>
-                        {(loggedUser?.email == user.email) && <Button id="edit-profile" variant="ghost" size="sm" onClick={handleEdit}><Pencil1Icon /></Button>}
+                        <div className="mx-5 mt-10 mb-2" style={{ fontSize: '35px', fontWeight: '600' }}>
+                            <div>{`${currentUser?.firstName} ${currentUser?.lastName}`}</div>
+                        </div>
+                        <div className="mt-10 mb-2">
+                            {(loggedUser?.email == user.email) && <Button id="edit-profile" variant="ghost" size="sm" onClick={handleEdit}><Pencil1Icon /></Button>}
+                            <EmailDialog userProf={user}/>
+                            <UpdateProfileDialog user={user}/>
+                        </div>
                     </div>
-                    <div>
-                        <EmailDialog userProf={user}/>
-                    </div>
-                    <div>
-                        <UpdateProfileDialog user={user}/>
+                    <div className="mx-5" style={{ fontSize: '18px', color: 'grey', lineHeight: '1.2' }}>
+                        {currentUser?.age !== null && currentUser?.gender !== null && (
+                            <div> {currentUser?.age}, {currentUser?.gender} </div>
+                        )}
+                        {currentUser?.gradYear !== null && (
+                            <div> Class of {currentUser?.gradYear}</div>
+                        )}
+                        {currentUser?.major !== null && (
+                            <div>{currentUser?.major} </div>
+                        )}
                     </div>
                 </div>
             </div>
-            {currentUser?.age !== null && (
-                <div> Age: {currentUser?.age} </div>
-            )}
-            {currentUser?.age !== null && (
-                <div> Gender: {currentUser?.gender} </div>
-            )}
-            {currentUser?.age !== null && (
-                <div> Major: {currentUser?.major} </div>
-            )}
-            {currentUser?.age !== null && (
-                <div> Grad Year: {currentUser?.gradYear} </div>
-            )}
+
             {currentUser?.stayLength !== null && (
                 <div> Length of Stay: {currentUser?.stayLength} </div>
             )}
@@ -153,10 +153,25 @@ export const UserProfile = ({ user }: { user: User }) => {
                     </>
                 ) : (
                     <div className="bg-white p-12 border border-gray-300 rounded-lg shadow">
-                        {bio}
+                        {currentUser?.bio}
                     </div>
                 )}
-                <h2 className="text-xl font-semibold mt-10 mb-2">Reviews</h2>
+                <div className="grid grid-cols-2 py-5 mt-5">
+                    <div className="pr-100">
+                        <div className="text-xl font-semibold mt-5 mb-2">Housing Preferences</div>
+                        <div className="flex py-5 bg-white border border-gray-300 rounded-lg shadow" style={{ width: '380px', height: '400px' }}>
+                            <div className="w-12 h-12 bg-gray-400 rounded-full ml-8 mt-3 mb-4">
+                                <div className="ml-20 mt-2 mb-2" style={{ fontSize: '18px', fontWeight: '400' }}>hi</div>
+                            </div>
+                            <div className="w-12 h-12 bg-gray-400 rounded-full ml-8 mt-3 mb-4"></div>
+                        </div>
+                    </div>
+                    <div className="pl-8">
+                        <div className="text-xl font-semibold mt-5 mb-2 ml-30">Lifestyle Preferences</div>
+                        <div className="flex justify-end py-5 bg-white border border-gray-300 rounded-lg shadow" style={{ width: '380px', height: '400px' }}></div>
+                    </div>
+                </div>
+                <h2 className="text-xl font-semibold mt-5 mb-2">Reviews</h2>
                 {userReviews && userReviews.map((review) => (
                     <UserReview review={review} housingId={review.housingId} key={review.id} />
                 ))}

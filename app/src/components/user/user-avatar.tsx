@@ -8,9 +8,9 @@ type UserAvatarProps = {
 
 function UserAvatar({ imageUrl, displayName }: UserAvatarProps) {
   return (
-    <Avatar style={{ width: '100px', height: '100px', border: '1px solid #000'}}>
+    <Avatar style={{ width: '200px', height: '200px', border: '1px solid #000'}}>
       <AvatarImage src={imageUrl} style={{ width: '100%', height: '100%' }} />
-      <AvatarFallback style={{ fontSize: '44px' }}>{getInitials(displayName)}</AvatarFallback>
+      <AvatarFallback style={{ fontSize: '75px' }}>{getInitials(displayName)}</AvatarFallback>
     </Avatar>
   );
 }
