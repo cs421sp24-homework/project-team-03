@@ -11,7 +11,7 @@ const Post = ({ post }: { post: PostWithUserData }) => {
   );
 
   return (
-    <div id="post" className="rounded-lg" style={{ width: '340px', height: '360px'}}>
+    <div id="post" className="border border-gray-300 rounded-lg" style={{ width: '340px', height: '360px'}}>
       <div className="">
         <PostHeader
           post={post}
@@ -50,8 +50,8 @@ const Post = ({ post }: { post: PostWithUserData }) => {
           </Carousel>
         </div>
       }
-        <div className="pb-2 text-base font-bold underline">{title}</div>
-            <div className="pb-2">{content}</div>
+        <div className="px-4 pb-2 text-base font-bold underline">{title}</div>
+            <div className="px-4 pb-2">{content}</div>
     
       </div>
     </div>
