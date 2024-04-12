@@ -60,56 +60,58 @@ export const UserProfile = ({ user }: { user: User }) => {
                 <div className="bg-white p-12 border border-gray-300 rounded-lg shadow">
                     {currentUser?.bio}
                 </div>
-                <div className="grid grid-cols-2 py-1 mt-5">
-                    <div className="pr-100">
-                        <div className="text-xl font-semibold mt-5 mb-2">Lifestyle Preferences</div>
-                        <div className="flex py-5 bg-white border border-gray-300 rounded-lg shadow" style={{ width: '380px', height: '400px' }}>
-                            <div>
-                                <div className="w-14 h-14 bg-gray-300 rounded-full ml-8 mt-5 mb-4">
-                                    <div><IoPeopleSharp className="pl-3 pt-3 w-11 h-11"/></div>
+                {currentUser?.socialPreference !== null && (
+                    <div className="grid grid-cols-2 py-1 mt-5">
+                        <div className="pr-100">
+                            <div className="text-xl font-semibold mt-5 mb-2">Lifestyle Preferences</div>
+                            <div className="flex py-5 bg-white border border-gray-300 rounded-lg shadow" style={{ width: '380px', height: '400px' }}>
+                                <div>
+                                    <div className="w-14 h-14 bg-gray-300 rounded-full ml-8 mt-5 mb-4">
+                                        <div><IoPeopleSharp className="pl-3 pt-3 w-11 h-11"/></div>
+                                    </div>
+                                    <div className="w-14 h-14 bg-gray-300 rounded-full ml-8 mt-8 mb-4">
+                                        <div><TbSunMoon className="pl-3 pt-3 w-11 h-11"/></div>
+                                    </div>
+                                    <div className="w-14 h-14 bg-gray-300 rounded-full ml-8 mt-8 mb-4">
+                                        <div><FaSoap className="pl-3 pt-3 w-11 h-11"/></div>
+                                    </div>
+                                    <div className="w-14 h-14 bg-gray-300 rounded-full ml-8 mt-8 mb-4">
+                                        <div><LuCigarette className="pl-3 pt-3 w-11 h-11"/></div> 
+                                    </div>
                                 </div>
-                                <div className="w-14 h-14 bg-gray-300 rounded-full ml-8 mt-8 mb-4">
-                                    <div><TbSunMoon className="pl-3 pt-3 w-11 h-11"/></div>
-                                </div>
-                                <div className="w-14 h-14 bg-gray-300 rounded-full ml-8 mt-8 mb-4">
-                                    <div><FaSoap className="pl-3 pt-3 w-11 h-11"/></div>
-                                </div>
-                                <div className="w-14 h-14 bg-gray-300 rounded-full ml-8 mt-8 mb-4">
-                                    <div><LuCigarette className="pl-3 pt-3 w-11 h-11"/></div> 
+                                <div>
+                                    <div className="pl-8 mt-8 mb-4" style={{ fontSize: '18px', fontWeight: '400' }}><em>{currentUser?.socialPreference}</em></div>
+                                    <div className="pl-8 mt-9 pt-7" style={{ fontSize: '18px', fontWeight: '400' }}><em>{currentUser?.peakProductivity}</em></div>
+                                    <div className="pl-8 mt-7 pt-8" style={{ fontSize: '18px', fontWeight: '400' }}><em>{currentUser?.cleanliness}</em></div>
+                                    <div className="pl-8 mt-7 pt-8" style={{ fontSize: '18px', fontWeight: '400' }}><em>{currentUser?.smoker}</em></div>
                                 </div>
                             </div>
+                        </div>
+                        <div className="pl-8">
+                            <div className="text-xl font-semibold mt-5 mb-2 ml-30">Housing Preferences</div>
+                            <div className="flex bg-white border border-gray-300 rounded-lg shadow" style={{ width: '380px', height: '400px' }}>
                             <div>
-                                <div className="pl-8 mt-8 mb-4" style={{ fontSize: '18px', fontWeight: '400' }}><em>{currentUser?.socialPreference}</em></div>
-                                <div className="pl-8 mt-9 pt-7" style={{ fontSize: '18px', fontWeight: '400' }}><em>{currentUser?.peakProductivity}</em></div>
-                                <div className="pl-8 mt-7 pt-8" style={{ fontSize: '18px', fontWeight: '400' }}><em>{currentUser?.cleanliness}</em></div>
-                                <div className="pl-8 mt-7 pt-8" style={{ fontSize: '18px', fontWeight: '400' }}><em>{currentUser?.smoker}</em></div>
+                                <div className="pl-8 mt-5 pt-5">
+                                    <div className="" style={{ fontSize: '18px', fontWeight: '400' }}><em>I am looking for a...</em></div>
+                                    <div className="" style={{ fontSize: '18px', fontWeight: '700' }}><em>{currentUser?.stayLength}</em></div>
+                                </div>
+                                <div className="pl-8 mt-5 pt-4">
+                                    <div className="" style={{ fontSize: '18px', fontWeight: '400' }}><em>My monthly rent budget is...</em></div>
+                                    <div className="" style={{ fontSize: '18px', fontWeight: '700' }}><em>{currentUser?.budget}</em></div>
+                                </div>
+                                <div className="pl-8 mt-5 pt-3">
+                                    <div className="" style={{ fontSize: '18px', fontWeight: '400' }}><em>My ideal distance away from campus is...</em></div>
+                                    <div className="" style={{ fontSize: '18px', fontWeight: '700' }}><em>{currentUser?.idealDistance}</em></div>
+                                </div>
+                                <div className="pl-8 mt-5 pt-3">
+                                    <div className="" style={{ fontSize: '18px', fontWeight: '400' }}><em>I prefer my housing to be...</em></div>
+                                    <div className="" style={{ fontSize: '18px', fontWeight: '700' }}><em>{currentUser?.petPreference}</em></div>
+                                </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div className="pl-8">
-                        <div className="text-xl font-semibold mt-5 mb-2 ml-30">Housing Preferences</div>
-                        <div className="flex bg-white border border-gray-300 rounded-lg shadow" style={{ width: '380px', height: '400px' }}>
-                        <div>
-                            <div className="pl-8 mt-5 pt-5">
-                                <div className="" style={{ fontSize: '18px', fontWeight: '400' }}><em>I am looking for a...</em></div>
-                                <div className="" style={{ fontSize: '18px', fontWeight: '700' }}><em>{currentUser?.stayLength}</em></div>
-                            </div>
-                            <div className="pl-8 mt-5 pt-4">
-                                <div className="" style={{ fontSize: '18px', fontWeight: '400' }}><em>My monthly rent budget is...</em></div>
-                                <div className="" style={{ fontSize: '18px', fontWeight: '700' }}><em>{currentUser?.budget}</em></div>
-                            </div>
-                            <div className="pl-8 mt-5 pt-3">
-                                <div className="" style={{ fontSize: '18px', fontWeight: '400' }}><em>My ideal distance away from campus is...</em></div>
-                                <div className="" style={{ fontSize: '18px', fontWeight: '700' }}><em>{currentUser?.idealDistance}</em></div>
-                            </div>
-                            <div className="pl-8 mt-5 pt-3">
-                                <div className="" style={{ fontSize: '18px', fontWeight: '400' }}><em>I prefer my housing to be...</em></div>
-                                <div className="" style={{ fontSize: '18px', fontWeight: '700' }}><em>{currentUser?.petPreference}</em></div>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                )}
                 {userReviews.length !== 0 && (
                     <h2 className="text-xl font-semibold mt-10 mb-2">Reviews</h2>
                 )}
