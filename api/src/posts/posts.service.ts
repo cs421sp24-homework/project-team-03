@@ -43,7 +43,7 @@ export class PostsService {
     let hasWhereCondition = false;
 
     if (search !== undefined) {
-      queryBuilder.where('posts.content ILIKE :search', {
+      queryBuilder.where('posts.content ILIKE :search OR posts.title ILIKE :search', {
         search: `%${search}%`,
       });
       hasWhereCondition = true;

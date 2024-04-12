@@ -12,6 +12,8 @@ import HousingView from "./views/housing-view";
 import { LoadScript } from '@react-google-maps/api';
 import { VerifyEmailDialog } from "./auth/verify-email-dialog";
 import SubletView from "./views/sublet-view";
+import RoommateView from "./views/roommate-view";
+import HousingsPostView from "./views/post-housings-view";
 
 function App() {
   const clearUser = useStore((state) => state.clearUser);
@@ -71,6 +73,8 @@ function App() {
           <Route path="/housings/:id" element={<HousingView />} errorElement={<ErrorPage />} />
           <Route path="/verify" element={<VerifyEmailDialog />} errorElement={<ErrorPage />} />
           <Route path="/posts/sublets" element={<SubletView />} errorElement={<ErrorPage />} />
+          <Route path="/posts/roommates" element={<RoommateView />} errorElement={<ErrorPage />} />
+          <Route path="/posts/housings" element={<HousingsPostView />} errorElement={<ErrorPage />} />
         </Routes>
         </LoadScript>
       </HashRouter>

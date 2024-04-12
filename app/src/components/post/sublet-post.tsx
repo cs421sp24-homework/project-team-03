@@ -49,11 +49,9 @@ const SubletPost = ({ post }: { post: PostWithUserData }) => {
         
           }
         <div className="pb-2 text-base font-bold underline">{title}</div>
-          <div className="pl-2">
             <div className=""><strong>Address:</strong> {post.address}</div>
             <div className=""><strong>Cost:</strong> {post.cost}</div>
             <div className="pb-2">{content}</div>
-          </div>
     
       </div>
     </div>

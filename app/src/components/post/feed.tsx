@@ -19,9 +19,11 @@ const Feed = () => {
  {/* Posts section */}
       <div className= "px-16 py-5">
         <div className="mt-5">
-          <div className="whitespace-nowrap" style={{ fontSize: '20px', fontWeight: 'bold'}}>
+        <Link to={`/posts/roommates`}>
+          <div className="whitespace-nowrap hover:underline" style={{ fontSize: '20px', fontWeight: 'bold'}}>
             Roommates:
           </div>
+          </Link>
           <div className="flex overflow-x-auto">
             <Posts type={"Roommate"}/>
           </div>
@@ -39,9 +41,11 @@ const Feed = () => {
         </div>
 
         <div className="mt-10">
-          <div className="whitespace-nowrap" style={{ fontSize: '20px', fontWeight: 'bold' }}>
+        <Link to={`/posts/housings`}>
+          <div className="whitespace-nowrap hover:underline" style={{ fontSize: '20px', fontWeight: 'bold' }}>
             Housing:
           </div>
+          </Link>
           <div className="flex overflow-x-auto">
             <Posts type={"Housing"}/>
           </div>

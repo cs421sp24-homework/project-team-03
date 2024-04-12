@@ -49,12 +49,9 @@ const Post = ({ post }: { post: PostWithUserData }) => {
       )}
           </Carousel>
         </div>
-        
-          }
+      }
         <div className="pb-2 text-base font-bold underline">{title}</div>
-          <div className="pl-2">
             <div className="pb-2">{content}</div>
-          </div>
     
       </div>
     </div>
