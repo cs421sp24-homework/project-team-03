@@ -64,7 +64,7 @@ export function ContactDialog() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button id="contact" variant="ghost"><QuestionMarkCircledIcon className="w-5 h-5"  /></Button>
+                <Button id="contact" variant="ghost" size="sm"><QuestionMarkCircledIcon className="w-5 h-5"  /></Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

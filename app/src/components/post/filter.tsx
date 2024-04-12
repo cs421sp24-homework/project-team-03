@@ -49,7 +49,7 @@ const Filters = () => {
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button id="filter-button" aria-label={"Filter"} variant="default" size="sm">
+          <Button id="filter-button" aria-label={"Filter"} variant="outline" size="sm">
             Filter
           </Button>
         </DialogTrigger>

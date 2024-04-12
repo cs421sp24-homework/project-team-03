@@ -1,14 +1,11 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel";
 import PostHeader from "./post-header";
 import type { PostWithUserData } from "@/lib/types";
-import SubletPost from "./sublet-post";
 
-const Post = ({ post }: { post: PostWithUserData }) => {
+const SubletPost = ({ post }: { post: PostWithUserData }) => {
   const { title, content, user, images } = post;
 
-  if (post.type == "Sublet") return (
-    <SubletPost post={post}/>
-  );
+
 
   return (
     <div id="post" className="border border-gray-300 rounded-lg" style={{ width: '340px', height: '360px'}}>
@@ -21,7 +18,7 @@ const Post = ({ post }: { post: PostWithUserData }) => {
       </div>
       <div className="overflow-y-auto text-sm" style={{ height: '80%', scrollbarWidth: 'none', }}>
         {images.length > 0 &&
-          <div className="relative ">
+          <div className="relative">
           <Carousel>
             <CarouselContent>
               <CarouselItem className="flex justify-center">
@@ -49,8 +46,11 @@ const Post = ({ post }: { post: PostWithUserData }) => {
       )}
           </Carousel>
         </div>
-      }
-        <div className="px-4 pb-2 mt-2 text-base font-bold underline">{title}</div>
+        
+          }
+        <div className="px-4 pb-2 mt-4 text-base font-bold underline">{title}</div>
+            <div className="px-4"><strong>Address:</strong> {post.address}</div>
+            <div className="px-4"><strong>Cost:</strong> {post.cost}</div>
             <div className="px-4 pb-2">{content}</div>
     
       </div>
@@ -58,4 +58,4 @@ const Post = ({ post }: { post: PostWithUserData }) => {
   );
 };
 
-export default Post;
+export default SubletPost;
