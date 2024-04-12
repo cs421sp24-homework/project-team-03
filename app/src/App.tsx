@@ -20,32 +20,6 @@ function App() {
   const { toast } = useToast();
   const MAP_API_KEY = "AIzaSyD3WSswaxt-32s42qTRaXfvOVsKONzPZzg"; 
 
-
-
-  // const router = createHashRouter([
-  //   {
-  //     path: "/project-team-03/",
-  //     element: <MainView />,
-  //     errorElement: <ErrorPage />,
-  //   },
-  //   {
-  //     path: "/project-team-03/users/:jhed",
-  //     element: <User />,
-  //     errorElement: <ErrorPage />,
-  //   },
-  //   {
-  //     path: "/project-team-03/posts",
-  //     element: <PostView />,
-  //     errorElement: <ErrorPage />
-  //   },
-  //   {
-  //     path: "/project-team-03/housings/:id",
-  //     element: <HousingView />,
-  //     errorElement: <ErrorPage />
-  //   }
-  // ]);
-
-
   useEffect(() => {
     const token = getAuthenticatedUserToken();
     if (token) {

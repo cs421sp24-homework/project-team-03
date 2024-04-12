@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { useToast } from "../ui/use-toast";
 import { PostTypeDialog } from "./post-type-dialog";
 import PostAside from "./post-aside";
+import { ContactDialog } from "../email/contact-dialog";
 
 type SideBarProps = {
   isPostsView: true | false;
@@ -55,19 +56,23 @@ function PostSidebar({ isPostsView }: SideBarProps) {
           <span className="text-lg font-bold text-slate-500 ">Our App</span>
           </Button>
         </div>
-        <div className="flex gap-2">
+        <div className="flex">
           {isPostsView && <PostTypeDialog />}
           {!isPostsView && (
             <Button id="see-posts" variant={"ghost"} size="sm" onClick={handleClickAddPost}>
               <Pencil2Icon className="w-5 h-5" />
             </Button>
           )}
-          {user && <Inbox />}
+          
+          
           {user && (
             <Button id="profile" variant="ghost" size="sm" onClick={handleClickProfile}>
               <AvatarIcon className="w-5 h-5" />
             </Button>
           )}
+          <ContactDialog/>
+          <div className="flex px-2">{user && <Inbox />}</div>
+          
           <PostAside />
         </div>
       </div>
