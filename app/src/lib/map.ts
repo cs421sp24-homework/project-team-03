@@ -1,19 +1,34 @@
 export const getAddressCoordinates = async (address: string) => {
-    const MAP_API_KEY = 'AIzaSyD3WSswaxt-32s42qTRaXfvOVsKONzPZzg';
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${MAP_API_KEY}`;
-  
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      
-      if (data.results && data.results.length > 0) {
-        const location = data.results[0].geometry.location;
-        return { lat: location.lat, lng: location.lng };
-      } else {
-        throw new Error('No results found');
-      }
-    } catch (error) {
-      //console.error('Error geocoding address:', error);
-      return null;
+  const MAP_API_KEY = 'AIzaSyD3WSswaxt-32s42qTRaXfvOVsKONzPZzg';
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${MAP_API_KEY}`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.results && data.results.length > 0) {
+      const location = data.results[0].geometry.location;
+      return { lat: location.lat, lng: location.lng };
+    } else {
+      throw new Error('No results found');
     }
-  };
+  } catch (error) {
+    //console.error('Error geocoding address:', error);
+    return null;
+  }
+};
+
+export const fetchGroceryStores = async (address: string) => {
+  const MAP_API_KEY = 'AIzaSyD3WSswaxt-32s42qTRaXfvOVsKONzPZzg';
+  const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?address=${encodeURIComponent(address)}&radius=500&type=grocery_or_supermarket&key=${MAP_API_KEY}`
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching nearby grocery stores:", error);
+    return null;
+  }
+};
+
