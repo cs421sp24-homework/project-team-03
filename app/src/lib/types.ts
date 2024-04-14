@@ -63,4 +63,6 @@ export type Locations = {
   formattedAddress: string;
   latitude?: number;
   longitude?: number;
+  distance: number;
+  rating: number;
 }

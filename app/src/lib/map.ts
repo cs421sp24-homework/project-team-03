@@ -24,7 +24,7 @@ export const fetchGroceryStores = async (latitude?: number, longitude?: number):
   const MAP_API_KEY = 'AIzaSyB7cNWX7H_HmeOKF_NHQID2olOawRJ7o_s';
 
   const requestBody = {
-    includedTypes: ["grocery_store"],
+    includedTypes: ["supermarket"],
     maxResultCount: 10,
     locationRestriction: {
       circle: {
@@ -34,7 +34,8 @@ export const fetchGroceryStores = async (latitude?: number, longitude?: number):
         },
         radius: 5000.0
       }
-    }
+    },
+    "rankPreference": "DISTANCE"
   };
 
   const fetchOptions: RequestInit = {
@@ -42,7 +43,7 @@ export const fetchGroceryStores = async (latitude?: number, longitude?: number):
     headers: {
       'Content-Type': 'application/json',
       'X-Goog-Api-Key': MAP_API_KEY,
-      'X-Goog-FieldMask': 'places.displayName,places.formattedAddress' 
+      'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.priceLevel,places.rating' 
     },
     body: JSON.stringify(requestBody)
   };
@@ -57,8 +58,10 @@ export const fetchGroceryStores = async (latitude?: number, longitude?: number):
         }`,
       );
     }
+    console.log(responseJson);
 
-    return formatPlacesData(responseJson);;
+    
+    // return formatPlacesData(responseJson);
 
 
 };
@@ -68,9 +71,28 @@ const formatPlacesData = (data: { places: { formattedAddress: any; displayName: 
     return [];
   }
 
-  return data.places.map((place: { formattedAddress: string, displayName: {text: string}}) => ({
+  return data.places.map((place) => ({
     formattedAddress: place.formattedAddress,
     displayName: place.displayName.text
   }));
 };
+
+function getDistanceFromLatLonInMiles(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const earthRadiusMiles = 3958.8; // Radius of the earth in miles
+  const dLat = deg2rad(lat2 - lat1);
+  const dLon = deg2rad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = earthRadiusMiles * c; // Distance in miles
+  return distance;
+}
+
+function deg2rad(deg: number): number {
+  return deg * (Math.PI / 180);
+}
+
+
 

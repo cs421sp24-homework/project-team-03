@@ -3,7 +3,7 @@ import { HousingItem as HousingItemType } from "@/lib/types";
 import StarRating from "../catalog/star-rating";
 import { useStore } from "@/lib/store";
 import HousingCarousel from "./housing-carousel";
-import SingleHousingContainer from "../map/single-housing-map";
+import SingleHousingContainer from "../map/single-housing-container";
 import NearbyPlaces from "@/housing/nearby-places";
 
 type HousingItemProps = {
