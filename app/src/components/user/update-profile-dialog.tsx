@@ -13,13 +13,12 @@ import { Input } from "@/components/ui/input"
 import { GearIcon, ArrowRightIcon, ArrowLeftIcon } from "@radix-ui/react-icons"
 import { ChangeEvent, useState } from "react"
 import { useToast } from "../ui/use-toast"
-import useMutationUser from "@/hooks/use-mutations-users"
 import { User } from "@/lib/types"
 import { Textarea } from "../ui/textarea"
+import { editUser } from "@/lib/api"
 
-export function UpdateProfileDialog({ user }: { user: User }) {
+export function UpdateProfileDialog({ user, onUpdateProfile }: { user: User, onUpdateProfile: (updatedUserData: User | void) => void  }) {
     const { toast } = useToast();
-    const { editUsers } = useMutationUser();
 
     const [currentDialogIndex, setCurrentDialogIndex] = useState(0);
     const [formData, setFormData] = useState({
@@ -60,7 +59,8 @@ export function UpdateProfileDialog({ user }: { user: User }) {
             clearForm()
             return;
         }
-        editUsers(user.id, firstName, lastName, avatar, bio, age, gender, major, gradYear, stayLength, budget, idealDistance, petPreference, cleanliness, smoker, socialPreference, peakProductivity)
+        const updatedUserData = await editUser(user.id, firstName, lastName, avatar, bio, age, gender, major, gradYear, stayLength, budget, idealDistance, petPreference, cleanliness, smoker, socialPreference, peakProductivity)
+        onUpdateProfile(updatedUserData);
         clearForm();
     }
     

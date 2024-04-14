@@ -7,12 +7,13 @@ import useInterval from "./use-intervals";
 function useQueryUser(email : string) {
   const { toast } = useToast();
   const currentUser = useStore((state) => state.user);
-  const setUser = useStore((state) => state.setUser);
+  // const setUser = useStore((state) => state.setUser);
 
   const loadUser = async () => {
     try {
-      const fetchedUser = await fetchUser(email);
-      setUser(fetchedUser)
+      await fetchUser(email);
+      // const fetchedUser = await fetchUser(email);
+      // setUser(fetchedUser)
     } catch (error) {
       toast({
         variant: "destructive",

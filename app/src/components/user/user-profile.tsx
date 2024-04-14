@@ -6,49 +6,53 @@ import useQueryUserReviews from "@/hooks/use-query-user-reviews";
 import { EmailDialog } from "../email/send-email-dialog";
 import UserReview from "./user-reviews";
 import { UpdateProfileDialog } from "./update-profile-dialog";
-import useQueryUser from "@/hooks/use-query-user";
 import { FaSoap } from "react-icons/fa6";
 import { TbSunMoon } from "react-icons/tb";
 import { IoPeopleSharp } from "react-icons/io5";
 import { LuCigarette } from "react-icons/lu";
+import { useState } from "react";
 
 export const UserProfile = ({ user }: { user: User }) => {
     const loggedUser = useStore((state) => state.user);
     const { userReviews } = useQueryUserReviews(user.email)
-    const { currentUser } = useQueryUser(user.email)
     const navigate = useNavigate();
+    const [updatedUser, setUpdatedUser] = useState<User | void>(user);
 
     if (!loggedUser) {
         navigate("/");
+    }
+
+    const handleUpdateProfile = (updatedUserData: User | void) => {
+        setUpdatedUser(updatedUserData);
     }
 
     return (
         <div className="flex flex-col w-screen min-h-screen border-x-2 border-slate-400 md:max-w-4xl">
             <div className="flex">
                 <div className="p-4 pl-10 pt-10">
-                    <UserAvatar imageUrl={currentUser?.avatar} displayName={`${currentUser?.firstName} ${currentUser?.lastName}`} />
+                    <UserAvatar imageUrl={updatedUser?.avatar} displayName={`${updatedUser?.firstName} ${updatedUser?.lastName}`} />
                 </div>
                 <div className="w-full pt-10 text-3xl flex flex-col">
                     <div className="flex items-center">
                         <div className="mx-5 mt-10 mb-2" style={{ fontSize: '35px', fontWeight: '600' }}>
-                            <div>{`${currentUser?.firstName} ${currentUser?.lastName}`}</div>
+                            <div>{`${updatedUser?.firstName} ${updatedUser?.lastName}`}</div>
                         </div>
                         <div className="mt-10 mb-2">
                             <div>
                                 <EmailDialog userProf={user}/>
-                                <UpdateProfileDialog user={user}/>
+                                {(loggedUser?.email == updatedUser?.email) && <UpdateProfileDialog user={user} onUpdateProfile={handleUpdateProfile}/>}
                             </div>
                         </div>
                     </div>
                     <div className="mx-5" style={{ fontSize: '18px', color: 'grey', lineHeight: '1.2' }}>
-                        {currentUser?.age !== null && currentUser?.gender !== null && (
-                            <div><em>{currentUser?.age}, {currentUser?.gender}</em></div>
+                        {updatedUser?.age !== null && updatedUser?.gender !== null && (
+                            <div><em>{updatedUser?.age}, {updatedUser?.gender}</em></div>
                         )}
-                        {currentUser?.gradYear !== null && (
-                            <div><em>Class of {currentUser?.gradYear}</em></div>
+                        {updatedUser?.gradYear !== null && (
+                            <div><em>Class of {updatedUser?.gradYear}</em></div>
                         )}
-                        {currentUser?.major !== null && (
-                            <div><em>{currentUser?.major}</em></div>
+                        {updatedUser?.major !== null && (
+                            <div><em>{updatedUser?.major}</em></div>
                         )}
                     </div>
                 </div>
@@ -58,9 +62,9 @@ export const UserProfile = ({ user }: { user: User }) => {
             <div className="p-4 pl-8 pr-8">
                 <h2 className="text-xl font-semibold mb-2">Bio</h2>
                 <div className="bg-white p-12 border border-gray-300 rounded-lg shadow">
-                    {currentUser?.bio}
+                    {updatedUser?.bio}
                 </div>
-                {currentUser?.socialPreference !== null && (
+                {updatedUser?.socialPreference !== null && (
                     <div className="grid grid-cols-2 py-1 mt-5">
                         <div className="pr-100">
                             <div className="text-xl font-semibold mt-5 mb-2">Lifestyle Preferences</div>
@@ -80,10 +84,10 @@ export const UserProfile = ({ user }: { user: User }) => {
                                     </div>
                                 </div>
                                 <div>
-                                    <div className="pl-8 mt-8 mb-4" style={{ fontSize: '18px', fontWeight: '400' }}><em>{currentUser?.socialPreference}</em></div>
-                                    <div className="pl-8 mt-9 pt-7" style={{ fontSize: '18px', fontWeight: '400' }}><em>{currentUser?.peakProductivity}</em></div>
-                                    <div className="pl-8 mt-7 pt-8" style={{ fontSize: '18px', fontWeight: '400' }}><em>{currentUser?.cleanliness}</em></div>
-                                    <div className="pl-8 mt-7 pt-8" style={{ fontSize: '18px', fontWeight: '400' }}><em>{currentUser?.smoker}</em></div>
+                                    <div className="pl-8 mt-8 mb-4" style={{ fontSize: '18px', fontWeight: '400' }}><em>{updatedUser?.socialPreference}</em></div>
+                                    <div className="pl-8 mt-9 pt-7" style={{ fontSize: '18px', fontWeight: '400' }}><em>{updatedUser?.peakProductivity}</em></div>
+                                    <div className="pl-8 mt-7 pt-8" style={{ fontSize: '18px', fontWeight: '400' }}><em>{updatedUser?.cleanliness}</em></div>
+                                    <div className="pl-8 mt-7 pt-8" style={{ fontSize: '18px', fontWeight: '400' }}><em>{updatedUser?.smoker}</em></div>
                                 </div>
                             </div>
                         </div>
@@ -93,19 +97,19 @@ export const UserProfile = ({ user }: { user: User }) => {
                             <div>
                                 <div className="pl-8 mt-5 pt-5">
                                     <div className="" style={{ fontSize: '18px', fontWeight: '400' }}><em>I am looking for a...</em></div>
-                                    <div className="" style={{ fontSize: '18px', fontWeight: '700' }}><em>{currentUser?.stayLength}</em></div>
+                                    <div className="" style={{ fontSize: '18px', fontWeight: '700' }}><em>{updatedUser?.stayLength}</em></div>
                                 </div>
                                 <div className="pl-8 mt-5 pt-4">
                                     <div className="" style={{ fontSize: '18px', fontWeight: '400' }}><em>My monthly rent budget is...</em></div>
-                                    <div className="" style={{ fontSize: '18px', fontWeight: '700' }}><em>{currentUser?.budget}</em></div>
+                                    <div className="" style={{ fontSize: '18px', fontWeight: '700' }}><em>{updatedUser?.budget}</em></div>
                                 </div>
                                 <div className="pl-8 mt-5 pt-3">
                                     <div className="" style={{ fontSize: '18px', fontWeight: '400' }}><em>My ideal distance away from campus is...</em></div>
-                                    <div className="" style={{ fontSize: '18px', fontWeight: '700' }}><em>{currentUser?.idealDistance}</em></div>
+                                    <div className="" style={{ fontSize: '18px', fontWeight: '700' }}><em>{updatedUser?.idealDistance}</em></div>
                                 </div>
                                 <div className="pl-8 mt-5 pt-3">
                                     <div className="" style={{ fontSize: '18px', fontWeight: '400' }}><em>I prefer my housing to be...</em></div>
-                                    <div className="" style={{ fontSize: '18px', fontWeight: '700' }}><em>{currentUser?.petPreference}</em></div>
+                                    <div className="" style={{ fontSize: '18px', fontWeight: '700' }}><em>{updatedUser?.petPreference}</em></div>
                                 </div>
                                 </div>
                             </div>
