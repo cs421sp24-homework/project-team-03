@@ -10,7 +10,7 @@ import { FaSoap } from "react-icons/fa6";
 import { TbSunMoon } from "react-icons/tb";
 import { IoPeopleSharp } from "react-icons/io5";
 import { LuCigarette } from "react-icons/lu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const UserProfile = ({ user }: { user: User }) => {
     const loggedUser = useStore((state) => state.user);
@@ -18,10 +18,12 @@ export const UserProfile = ({ user }: { user: User }) => {
     const navigate = useNavigate();
     const [updatedUser, setUpdatedUser] = useState<User | void>(user);
 
-    if (!loggedUser) {
-        navigate("/");
-    }
-
+    useEffect(() => {
+        if (!loggedUser) {
+            navigate("/");
+        }
+    }, [loggedUser, navigate]);
+    
     const handleUpdateProfile = (updatedUserData: User | void) => {
         setUpdatedUser(updatedUserData);
     }
