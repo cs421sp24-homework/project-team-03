@@ -4,6 +4,7 @@ import StarRating from "../catalog/star-rating";
 import { useStore } from "@/lib/store";
 import HousingCarousel from "./housing-carousel";
 import SingleHousingContainer from "../map/single-housing-map";
+import NearbyPlaces from "@/housing/nearby-places";
 
 type HousingItemProps = {
     housingItem: HousingItemType;
@@ -59,6 +60,7 @@ const HousingExpanded = (props: HousingItemProps) => {
                 <div className="flex justify-center"> 
                     {expanded && <SingleHousingContainer item={housingItem} />}
                 </div>
+                <div> <NearbyPlaces item={housingItem} /> </div>
                 </div>
         </div>
     );

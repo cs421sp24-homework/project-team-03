@@ -20,7 +20,7 @@ export const getAddressCoordinates = async (address: string) => {
 
 export const fetchGroceryStores = async (address: string) => {
   const MAP_API_KEY = 'AIzaSyD3WSswaxt-32s42qTRaXfvOVsKONzPZzg';
-  const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?address=${encodeURIComponent(address)}&radius=500&type=grocery_or_supermarket&key=${MAP_API_KEY}`
+  const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?address=${encodeURIComponent(address)}&radius=500&type=supermarket&key=${MAP_API_KEY}`
 
   try {
     const response = await fetch(url);
