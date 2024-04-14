@@ -59,6 +59,17 @@ export function UpdateProfileDialog({ user, onUpdateProfile }: { user: User, onU
             clearForm()
             return;
         }
+
+        // grad year should only be four digits
+        if (!/^\d+$/.test(age) || !/^\d{4}$/.test(gradYear)) {
+            toast({
+                variant: "destructive",
+                title: "Sorry! Age and graduation year must be valid numbers! 🙁",
+                description: "Please enter valid numbers for age and graduation year.",
+            });
+            clearForm();
+            return;
+        }
         const updatedUserData = await editUser(user.id, firstName, lastName, avatar, bio, age, gender, major, gradYear, stayLength, budget, idealDistance, petPreference, cleanliness, smoker, socialPreference, peakProductivity)
         onUpdateProfile(updatedUserData);
         clearForm();
