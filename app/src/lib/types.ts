@@ -61,4 +61,6 @@ export type Like = {
 export type Locations = {
   displayName: string;
   formattedAddress: string;
+  latitude?: number;
+  longitude?: number;
 }
