@@ -4,7 +4,6 @@ import { Locations, HousingItem as HousingItemType } from "@/lib/types";
 import HousingInfoWindow from "../catalog/housing-info-window";
 import { fetchGroceryStores, getAddressCoordinates } from "@/lib/map";
 
- 
 const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
     const [hoveredHousing, setHoveredHousing] = useState<HousingItemType | null>(null);
     const [groceryStores, setGroceryStores] = useState<Locations[]>([]);
@@ -21,7 +20,16 @@ const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
             try {
                 const data = await fetchGroceryStores(latitude, longitude);
                 if (data) {
-                    setGroceryStores(data);
+                    const coordinatesPromises = data.map(async (store) => {
+                        const coordinates = await getAddressCoordinates(store.formattedAddress);
+                        return {
+                            ...store,
+                            latitude: coordinates?.lat,
+                            longitude: coordinates?.lng
+                        };
+                    });
+                    const storesWithCoordinates = await Promise.all(coordinatesPromises);
+                    setGroceryStores(storesWithCoordinates);
                 } else {
                     throw new Error('No results found');
                 }
@@ -30,8 +38,7 @@ const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
             }
         };
         fetchStores();
-    }, [latitude, longitude, setGroceryStores]);
-
+    }, [latitude, longitude]);
 
     if (latitude !== undefined && longitude !== undefined) {
         return (
@@ -53,13 +60,19 @@ const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
                         </InfoWindowF>
                     }
                 </Marker>
-                {groceryStores.map((store, index) => (
-                <Marker
-                    key={index}
-                    position={getAddressCoordinates(store.formattedAddress)}
-                    title={store.displayName}
-                />
-            ))}
+                {groceryStores.map((store, index) => {
+                    if (typeof store.latitude === 'number' && typeof store.longitude === 'number') {
+                        return (
+                            <Marker
+                                key={index}
+                                position={{ lat: store.latitude, lng: store.longitude }}
+                                title={store.displayName}
+                            />
+                        );
+                    } else {
+                        return null;
+                    }
+                })}
             </GoogleMap>
         );
     } else {
