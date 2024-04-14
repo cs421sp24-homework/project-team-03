@@ -36,13 +36,13 @@ const PostHeader = ({
               {`${firstName} ${lastName}`}
             </div>
           </Link>
-          <div className="inline-block align-baseline text-sm text-muted-foreground">
+          <div className="inline-block text-sm align-baseline text-muted-foreground">
             {formattedTimestamp}
           </div>
         </div>  
       </div>
       {(user?.id === userLogged?.id) && (
-        <div className="p-2">
+        <div className="p-2 ">
           <PostActions post={post} userId={post.userId} />
         </div>
       )}

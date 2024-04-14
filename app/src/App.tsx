@@ -11,37 +11,14 @@ import PostView from "./views/post-view";
 import HousingView from "./views/housing-view";
 import { LoadScript } from '@react-google-maps/api';
 import { VerifyEmailDialog } from "./auth/verify-email-dialog";
+import SubletView from "./views/sublet-view";
+import RoommateView from "./views/roommate-view";
+import HousingsPostView from "./views/post-housings-view";
 
 function App() {
   const clearUser = useStore((state) => state.clearUser);
   const { toast } = useToast();
   const MAP_API_KEY = "AIzaSyD3WSswaxt-32s42qTRaXfvOVsKONzPZzg"; 
-
-
-
-  // const router = createHashRouter([
-  //   {
-  //     path: "/project-team-03/",
-  //     element: <MainView />,
-  //     errorElement: <ErrorPage />,
-  //   },
-  //   {
-  //     path: "/project-team-03/users/:jhed",
-  //     element: <User />,
-  //     errorElement: <ErrorPage />,
-  //   },
-  //   {
-  //     path: "/project-team-03/posts",
-  //     element: <PostView />,
-  //     errorElement: <ErrorPage />
-  //   },
-  //   {
-  //     path: "/project-team-03/housings/:id",
-  //     element: <HousingView />,
-  //     errorElement: <ErrorPage />
-  //   }
-  // ]);
-
 
   useEffect(() => {
     const token = getAuthenticatedUserToken();
@@ -69,6 +46,9 @@ function App() {
           <Route path= "/users/:jhed" element= {<User />} errorElement={<ErrorPage />} />
           <Route path="/housings/:id" element={<HousingView />} errorElement={<ErrorPage />} />
           <Route path="/verify" element={<VerifyEmailDialog />} errorElement={<ErrorPage />} />
+          <Route path="/posts/sublets" element={<SubletView />} errorElement={<ErrorPage />} />
+          <Route path="/posts/roommates" element={<RoommateView />} errorElement={<ErrorPage />} />
+          <Route path="/posts/housings" element={<HousingsPostView />} errorElement={<ErrorPage />} />
         </Routes>
         </LoadScript>
       </HashRouter>

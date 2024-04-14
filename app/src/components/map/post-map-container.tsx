@@ -15,12 +15,13 @@ const PostMapContainer = () => {
 
   return (
     <GoogleMap
-      mapContainerStyle={{ height: "400px", width: "800px" }}
-      center={{ lat: 39.330420, lng: -76.618050 }}
+      mapContainerStyle={{ height: "500px", width: "1000px" }}
+      center={{ lat: 39.329100, lng: -76.619370 }}
       options={{ controlSize: 25 }}
-      zoom={13}
+      zoom={14}
     >
     {posts.map((item: PostWithUserData, index: number) => (
+      item.type == "Sublet" && 
       item.latitude !== undefined &&
       item.longitude !== undefined && (
         <React.Fragment key={index}>
