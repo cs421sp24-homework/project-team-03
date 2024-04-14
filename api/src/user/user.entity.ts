@@ -1,6 +1,8 @@
 import { Post } from 'src/posts/post.entity';
 import { Review } from 'src/reviews/review.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { favoriteHousing } from 'src/favorite-housing/favorite-housing.entity';
+import { favoritePost } from 'src/favorite-post/favorite-post.entity';
 
 @Entity()
 export class User {
@@ -41,4 +43,9 @@ export class User {
   @Column({ default: 0 })
   notifications: number;
 
+  @OneToMany(() => favoriteHousing, (favoriteHousings) => favoriteHousings.user)
+  favoriteHousings: favoriteHousing[];
+
+  @OneToMany(() => favoritePost, (favoritePosts) => favoritePosts.user)
+  favoritePosts: favoritePost[];
 }

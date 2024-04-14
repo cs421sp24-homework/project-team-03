@@ -14,6 +14,8 @@ import { JwtStrategy } from './auth/jwt.strategy';
 import { HousingModule } from './housing/housing.module';
 import { PostsModule } from './posts/posts.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { FavoritePostModule } from './favorite-post/favorite-post.module';
+import { FavoriteHousingModule } from './favorite-housing/favorite-housing.module';
 
 @Module({
   imports: [
@@ -47,6 +49,8 @@ import { ReviewsModule } from './reviews/reviews.module';
     HousingModule,
     PostsModule,
     ReviewsModule,
+    FavoritePostModule,
+    FavoriteHousingModule,
   ],
   controllers: [AppController, UserController],
   providers: [AppService, AuthService, LocalStrategy, JwtStrategy, UserService],
