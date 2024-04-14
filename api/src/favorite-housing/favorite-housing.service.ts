@@ -42,16 +42,10 @@ export class FavoriteHousingService {
     return this.favoriteHousingRepostiory.remove(favorite_housing);
   }
 
-  async findAll(
-    limit: number,
-    offset: number,
-    housingId: string,
-  ): Promise<favoriteHousing[] | null> {
+  async findAll(userId: number): Promise<favoriteHousing[] | null> {
     const query = this.favoriteHousingRepostiory
       .createQueryBuilder('favoriteHousing')
-      .where('favoriteHousing.housingId = :housingId', { housingId })
-      .limit(limit)
-      .offset(offset)
+      .where('favoriteHousing.userId = :userId', { userId })
 
     const favoriteHousings = await query.getMany();
 

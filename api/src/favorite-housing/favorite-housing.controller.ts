@@ -1,9 +1,10 @@
-import { Controller, Param, Post, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, NotFoundException, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { FavoriteHousingService } from './favorite-housing.service';
 import { HousingExistsGuard } from 'src/guards/housing-exists.guard';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { UserId } from 'src/decorators/user-id.decorator';
 import { favoriteHousingResponseDto } from './favoriteHousing-response.dto';
+import { favoriteHousing } from './favorite-housing.entity';
 
 @Controller('housings/:housingId/favoriteHousings')
 export class FavoriteHousingController {
@@ -28,10 +29,10 @@ export class FavoriteHousingController {
  
   @Get(':housingId')
   async findOne(
-    @Param('reviewId') id: string,
+    @Param('faovriteHousingId') id: string,
     @Param('housingId') housingId: string,
-  ): Promise<ReviewResponseDto> {
-    const review = await this.reviewsService.findOne(id, housingId);
+  ): Promise<favoriteHousingResponseDto> {
+    const review = await this.favoriteHousingService.findOne(id, housingId);
     if (!review) {
       throw new NotFoundException(
         `Review with ID ${id} not found in housing item with ID ${housingId}`,
@@ -41,17 +42,19 @@ export class FavoriteHousingController {
     return review;
   }
 
-  @UseGuards(ReviewOwnershipGuard)
   @UseGuards(JwtAuthGuard)
-  @Delete(':reviewId')
+  @Delete(':favoriteHousingId')
   async remove(
-    @Param('reviewId') reviewId: string,
+    @Param('favoriteHousingId') favoriteHousingId: string,
     @Param('housingId') housingId: string,
   ): Promise<{ statusCode: number; message: string }> {
-    const review = await this.reviewsService.remove(reviewId, housingId);
-    if (!review) {
+    const favorite_housing = await this.favoriteHousingService.remove(
+      favoriteHousingId,
+      housingId,
+    );
+    if (!favorite_housing) {
       throw new NotFoundException(
-        `Review with ID ${reviewId} not found in housing item with ID ${housingId}`,
+        `Review with ID ${favoriteHousingId} not found in housing item with ID ${housingId}`,
       );
     }
 
@@ -64,34 +67,14 @@ export class FavoriteHousingController {
   }
 
   @UseGuards(HousingExistsGuard)
-  @Get()
+  @Get(':userId')
   async findAll(
-    @Param('housingId') housingId: string,
-    @Query() query: FindReviewsQueryDTO,
-  ): Promise<FindReviewsResponseDTO> {
-    const { limit, offset, search, sortBy, withUserData } = query;
-
-    const reviews = await this.reviewsService.findAll(
-      limit,
-      offset,
-      housingId,
-      search,
-      sortBy,
-      withUserData,
-    );
-
-    return {
-      limit,
-      offset,
-      search,
-      withUserData,
-      data: reviews.map((review) => {
-        delete review.userId;
-        if (review.user) {
-          delete review.user.password;
-        }
-        return review;
-      }),
-    };
+    @Param('userId') userId: number,
+  ): Promise<favoriteHousing[] | null> {
+    console.log("Hello!")
+    const favorite_housings = await this.favoriteHousingService.findAll(userId);
+    console.log(userId)
+    console.log(favorite_housings);
+    return favorite_housings;
   }
 }
