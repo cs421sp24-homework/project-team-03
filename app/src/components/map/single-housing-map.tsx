@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { GoogleMap, InfoWindowF, Marker } from "@react-google-maps/api";
-import { HousingItem as HousingItemType } from "@/lib/types";
+import { Locations, HousingItem as HousingItemType } from "@/lib/types";
 import HousingInfoWindow from "../catalog/housing-info-window";
-import { fetchGroceryStores } from "@/lib/map";
+import { fetchGroceryStores, getAddressCoordinates } from "@/lib/map";
 
+ 
 const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
     const [hoveredHousing, setHoveredHousing] = useState<HousingItemType | null>(null);
-    const [groceryStores, setGroceryStores] = useState<any[]>([]);
+    const [groceryStores, setGroceryStores] = useState<Locations[]>([]);
 
     const handleMarkerHover = (item: HousingItemType) => {
         setHoveredHousing(item);
@@ -18,15 +19,19 @@ const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
     useEffect(() => {
         const fetchStores = async () => {
             try {
-                    const data = await fetchGroceryStores(item.address);
-                    console.log("Data from fetchGroceryStores:", data);
-                    setGroceryStores(data.results);
+                const data = await fetchGroceryStores(latitude, longitude);
+                if (data) {
+                    setGroceryStores(data);
+                } else {
+                    throw new Error('No results found');
+                }
             } catch (error) {
                 console.error("Error fetching nearby grocery stores:", error);
             }
         };
         fetchStores();
-    }, [item.address]);
+    }, [latitude, longitude, setGroceryStores]);
+
 
     if (latitude !== undefined && longitude !== undefined) {
         return (
@@ -51,8 +56,8 @@ const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
                 {groceryStores.map((store, index) => (
                 <Marker
                     key={index}
-                    position={{ lat: store.geometry.location.lat, lng: store.geometry.location.lng }}
-                    title={store.name}
+                    position={getAddressCoordinates(store.formattedAddress)}
+                    title={store.displayName}
                 />
             ))}
             </GoogleMap>
