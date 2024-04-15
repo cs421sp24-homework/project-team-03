@@ -7,43 +7,46 @@ import { Repository } from 'typeorm';
 export class FavoriteHousingService {
   constructor(
     @InjectRepository(favoriteHousing)
-    private favoriteHousingRepostiory: Repository<favoriteHousing>,
+    private favoriteHousingRepository: Repository<favoriteHousing>,
   ) {}
 
   async create(
     housingId: string,
     userId: number,
   ): Promise<favoriteHousing | null> {
-    const favorite_housing = await this.favoriteHousingRepostiory.create({
+    const favorite_housing = await this.favoriteHousingRepository.create({
       housingId,
       userId,
     });
 
-    return this.favoriteHousingRepostiory.save(favorite_housing);
+    return this.favoriteHousingRepository.save(favorite_housing);
   }
 
   async findOne(
-    id: string,
+    userId: number,
     housingId: string,
   ): Promise<favoriteHousing | null> {
-    return this.favoriteHousingRepostiory.findOne({
+    return this.favoriteHousingRepository.findOne({
       where: {
-        id,
+        userId,
         housingId,
       },
     });
   }
 
-  async remove(id: string, housingId: string): Promise<favoriteHousing | null> {
-    const favorite_housing = await this.findOne(id, housingId);
+  async remove(
+    userId: number,
+    housingId: string,
+  ): Promise<favoriteHousing | null> {
+    const favorite_housing = await this.findOne(userId, housingId);
     if (!favorite_housing) {
       return null;
     }
-    return this.favoriteHousingRepostiory.remove(favorite_housing);
+    return this.favoriteHousingRepository.remove(favorite_housing);
   }
 
   async findAll(userId: number): Promise<favoriteHousing[] | null> {
-    const query = this.favoriteHousingRepostiory
+    const query = this.favoriteHousingRepository
       .createQueryBuilder('favoriteHousing')
       .where('favoriteHousing.userId = :userId', { userId })
 
@@ -51,6 +54,4 @@ export class FavoriteHousingService {
 
     return favoriteHousings;
   }
-
-  
 }
