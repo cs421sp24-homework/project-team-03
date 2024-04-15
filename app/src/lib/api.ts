@@ -636,3 +636,83 @@ export const createHousingItem = async (
     const responseJson = await response.json();
     return responseJson.data;
   };
+
+  export const favoritePost = async (userId: number, postId: string): Promise<void> => {
+    const token = getAuthenticatedUserToken();
+    const response = await fetch(`${API_URL}/users/${userId}/favoritePosts/${postId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  };
+
+  export const unfavoritePost = async (userId: number, postId: string): Promise<void> => {
+    const token = getAuthenticatedUserToken();
+    const response = await fetch(`${API_URL}/users/${userId}/favoritePosts/${postId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  };
+
+  export const findAllFavoritePosts = async (userId: number): Promise<void> => {
+    const response = await fetch(`${API_URL}/users/${userId}/favoritePosts`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  };
+
+  export const checkIfFavorite = async (userId: number, postId: string): Promise<boolean> => {
+    try {
+      const response = await fetch(`${API_URL}/users/${userId}/favoritePosts/${postId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        // If the response is successful (status code 200), it means the user has liked the post
+        return true;
+      } else if (response.status === 404) {
+        // If the response is a 404 Not Found error, it means the user has not liked the post
+        return false;
+      } else {
+        // For other error statuses, throw an error
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
+  }
