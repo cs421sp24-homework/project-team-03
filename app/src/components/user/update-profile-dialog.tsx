@@ -177,11 +177,13 @@ export function UpdateProfileDialog({ user, onUpdateProfile }: { user: User, onU
                 <label htmlFor="budget" style={{ marginRight: "7px" }}>Monthly Rent Budget: </label>
                     <select id="budget" name="budget" value={formData.budget} onChange={handleSelectChange}>
                         <option value="">Select</option>
+                        <option value="<$900">{'<$900'}</option>
                         <option value="$900-$1200">$900-$1200</option>
                         <option value="$1200-$1600">$1200-$1600</option>
                         <option value="$1600-$2000">$1600-$2000</option>
+                        <option value=">$2000">{'>$2000'}</option>
                     </select>
-             </div>
+            </div>
             <br />
             <div style={{ marginBottom: "0.1px" }}>
                 <label htmlFor="idealDistance" style={{ marginRight: "7px" }}>Ideal Distance from Campus: </label>
@@ -283,9 +285,16 @@ export function UpdateProfileDialog({ user, onUpdateProfile }: { user: User, onU
                                 <Button type="button" variant="ghost" onClick={handlePrevDialog} style={{ backgroundColor: "lightgrey", color: "black" }}><ArrowLeftIcon/></Button>
                             )}
                         </div>
+                        {currentDialogIndex === 3 && (
+                            <DialogClose asChild>
+                                <Button type="submit" onClick={handleSave}>
+                                    Done
+                                </Button>
+                            </DialogClose>
+                        )}
                         <DialogClose asChild>
-                            <Button type="submit" onClick={handleSave}>
-                                Done
+                             <Button variant="secondary" type="reset" onClick={clearForm}>
+                                Cancel
                             </Button>
                         </DialogClose>
                     </DialogFooter>

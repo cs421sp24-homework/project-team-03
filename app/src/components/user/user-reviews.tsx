@@ -2,6 +2,7 @@ import { HousingItem, ReviewWithUserData } from "@/lib/types";
 import StarRating from "../catalog/star-rating";
 import { fetchHousingItem } from "@/lib/api";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const UserReview = ({ review, housingId }: { review: ReviewWithUserData, housingId: string }) => {
 
@@ -25,9 +26,11 @@ const UserReview = ({ review, housingId }: { review: ReviewWithUserData, housing
         </div>
         <div className="flex-grow text-black">
           {housing?.name && (
-            <div id='housingName' className="inline-block align-baseline font-medium text-base">
-              {housing.name}
-            </div>
+            <Link to={`/housings/${housingId}`}>
+              <div id='housingName' className="inline-block align-baseline font-medium text-base underline">
+                {housing.name}
+              </div>
+            </Link>
           )}
           <div className="flex items-center justify-between">
             <div className="flex">
