@@ -1,5 +1,5 @@
 import { getAuthenticatedUser, getAuthenticatedUserToken, removeAuthenticatedUserToken, storeAuthenticatedUserToken } from "./auth";
-import { PostType, PostWithUserData, User, HousingItem, ReviewWithUserData } from "./types";
+import { PostType, PostWithUserData, User, HousingItem, ReviewWithUserData, ImageMetadata } from "./types";
 import { createClient } from "@supabase/supabase-js";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -165,7 +165,8 @@ export const register = async (
     cost: number,
     address: string,
     type: PostType,
-    images: string[],
+    imgData: ImageMetadata[],
+    // images: string[],
   ): Promise<PostWithUserData> => {
     const user = getAuthenticatedUser();
     const token = getAuthenticatedUserToken();
@@ -176,7 +177,7 @@ export const register = async (
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ title, content, cost, address, images, type }),
+      body: JSON.stringify({ title, content, cost, address, imgData, type }),
     });
   
     const responseJson = await response.json();
@@ -426,9 +427,12 @@ export const createHousingItem = async (
     return data.path;
   }
 
-  export const getPostImageURL = (path: string): string => {
+  export const getPostImageData = (path: string): ImageMetadata => {
     const { data } = supabase.storage.from('post-images').getPublicUrl(path); 
-    return data.publicUrl;
+    return { 
+      path, 
+      url: data.publicUrl 
+    };
   }
 
   export const deletePostImage = async () => {

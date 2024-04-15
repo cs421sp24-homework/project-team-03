@@ -17,6 +17,7 @@ import { useState, useRef } from "react";
 import { Label } from "../ui/label";
 import './drag-drop-image-uploader.css';
 import useMutationImages from "@/hooks/use-mutations-images";
+import { ImageMetadata } from "@/lib/types";
 
 type PreviewType = {
   url: string,
@@ -37,7 +38,7 @@ export const HousingDialog = (
   const [previews, setPreviews] = useState<PreviewType[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const { postImagesToURLs } = useMutationImages();
+  const { postImagesToData } = useMutationImages();
 
   const selectFiles = () => {
     fileInputRef.current?.click();
@@ -127,12 +128,12 @@ export const HousingDialog = (
     }
 
     //console.log('Pre-upload images', imageFiles);
-    let imageURLs: string[] = [];
+    let imgDataArray: ImageMetadata[] = [];
     if (imageFiles.length !== 0) {
-      imageURLs = await postImagesToURLs(imageFiles);
+      imgDataArray = await postImagesToData(imageFiles);
     }
     //console.log('Pre-save urls', imageURLs);
-    await makeNewPost(title, content, 0, "random", "Housing", imageURLs);
+    await makeNewPost(title, content, 0, "random", "Housing", imgDataArray);
     handleCancel()
   };
 

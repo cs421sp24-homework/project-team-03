@@ -5,8 +5,10 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { PostImage } from './post-images/post-image.entity';
 
 export type PostType = 'Roommate' | 'Sublet' | 'Housing';
 
@@ -30,8 +32,10 @@ export class Post {
   @Column()
   address: string;
 
-  @Column('text', { array: true, default: {} })
-  images: string[];
+  // @Column('text', { array: true, default: {} })
+  // images: string[];
+  @OneToMany(() => PostImage, (postImage) => postImage.post)
+  images: PostImage;
 
   @ManyToOne(() => User, (user) => user.posts,  {
     onDelete: 'CASCADE',

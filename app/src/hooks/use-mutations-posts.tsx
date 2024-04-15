@@ -1,7 +1,7 @@
 import { useToast } from "@/components/ui/use-toast";
 import { createPost, deletePost, editPost } from "@/lib/api";
 import { useStore } from "@/lib/store";
-import { PostType } from "@/lib/types";
+import { ImageMetadata, PostType } from "@/lib/types";
 
 function useMutationPosts() {
     const { toast } = useToast();
@@ -30,10 +30,11 @@ function useMutationPosts() {
         cost: number,
         address: string,
         type: PostType,
-        images: string[],
+        imgData: ImageMetadata[],
+        // images: string[],
     ) => {
         try {
-            const newPost = await createPost(title, content, cost, address, type, images);
+            const newPost = await createPost(title, content, cost, address, type, imgData);
             addPost(newPost);
         } catch (error) {
             toast({

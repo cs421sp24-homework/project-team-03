@@ -57,3 +57,8 @@ export type Like = {
   reviewId: string;
   userId: string;
 };
+
+export type ImageMetadata = {
+  url: string;
+  path: string;
+}

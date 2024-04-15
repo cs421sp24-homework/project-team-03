@@ -4,17 +4,32 @@ import { Repository } from 'typeorm';
 import { Post, PostType } from './post.entity';
 import { CreatePostDto } from './create-post.dto';
 import { UpdatePostDto } from './update-post.dto';
+import { PostImageService } from './post-images/post-image.service';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectRepository(Post)
     private postRepository: Repository<Post>,
+    private postImageService: PostImageService,
   ) {}
 
   async create(createPostDto: CreatePostDto, userId: number): Promise<Post> {
+    const post = await this.makePost(createPostDto, userId);
+    const { imgDataArray } = createPostDto;
+    await this.postImageService.addBatch(imgDataArray, post.id);
+    // return this.postRepository.save(post);
+    return post;
+  }
+
+  async makePost(createPostDto: CreatePostDto, userId: number): Promise<Post> {
+    const { title, content, cost, address, type } = createPostDto;
     const post = await this.postRepository.create({
-      ...createPostDto,
+      title,
+      content,
+      cost,
+      address,
+      type,
       userId,
     });
     return this.postRepository.save(post);
@@ -84,13 +99,13 @@ export class PostsService {
     return await queryBuilder.getMany();
   }
 
-  async update(id: string, updatePostDto: UpdatePostDto): Promise<Post | null> {
-    const post = await this.postRepository.preload({ id, ...updatePostDto });
-    if (!post) {
-      return null;
-    }
-    return this.postRepository.save(post);
-  }
+  // async update(id: string, updatePostDto: UpdatePostDto): Promise<Post | null> {
+  //   const post = await this.postRepository.preload({ id, ...updatePostDto });
+  //   if (!post) {
+  //     return null;
+  //   }
+  //   return this.postRepository.save(post);
+  // }
 
   async remove(id: string): Promise<Post | null> {
     const post = await this.findOne(id);
