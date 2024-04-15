@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,12 +10,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "../ui/textarea";
-import { PlusCircledIcon } from "@radix-ui/react-icons";
 import useMutationPosts from "@/hooks/use-mutations-posts";
 import { useToast } from "@/components/ui/use-toast";
 import { useStore } from "@/lib/store";
 import { useState, useRef } from "react";
-import { PostType } from "@/lib/types";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import './drag-drop-image-uploader.css';
@@ -27,12 +24,13 @@ type PreviewType = {
   name: string
 }
 
-export const AddPostDialog = () => {
+export const SubletDialog = (
+    {setTypeDialogState}: {setTypeDialogState: (b: boolean) => void;}
+) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [cost, setCost] = useState(0);
   const [address, setAddress] = useState("");
-  const [type, setType] = useState<PostType | null>(null);
   const { makeNewPost } = useMutationPosts();
   const { toast } = useToast();
   const user = useStore((state) => state.user);
@@ -120,10 +118,11 @@ export const AddPostDialog = () => {
   }
 
   const handleSave = async () => {
-    if (!title || !content || !address || !type) {
+    setTypeDialogState(false);
+    if (!title || !content || !address ) {
       toast({
         variant: "destructive",
-        title: "Sorry! All fields (except Image URL) must be completed! 🙁",
+        title: "Sorry! All fields must be completed! 🙁",
         description: `Please enter the missing fields of the post.`,
       });
       handleCancel()
@@ -144,13 +143,8 @@ export const AddPostDialog = () => {
       imageURLs = await postImagesToURLs(imageFiles);
     }
     //console.log('Pre-save urls', imageURLs);
-    await makeNewPost(title, content, cost, address, type, imageURLs);
-    setImageFiles([]);
-    setPreviews([]);
-    setTitle("");
-    setContent("");
-    setCost(0);
-    setAddress("");
+    await makeNewPost(title, content, cost, address, "Sublet", imageURLs);
+    handleCancel()
   };
 
   const handleCancel = () => {
@@ -160,13 +154,14 @@ export const AddPostDialog = () => {
     setContent("");
     setCost(0);
     setAddress("");
+    setTypeDialogState(false);
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button id="add-posts" aria-label={"Make a Post"} variant="default" size="sm">
-          <PlusCircledIcon className="w-5 h-5" />
+        <Button id="add-posts" aria-label={"Make a Post"} variant="default" >
+          Next
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[525px]" style={{ maxHeight: '600px', overflowY: 'auto' }}>
@@ -177,34 +172,15 @@ export const AddPostDialog = () => {
               ? 
                 <>
                   Provide the information of your post here.<br/>
-                  Required fields <span className="text-red-500">*</span>
                 </>
               : "Please login to make a post."}
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 mb-4">
-          <div className="grid items-center grid-cols-4 gap-4">
-            <Label htmlFor="type">
-              Type <span className="text-red-500 ">*</span>
-            </Label>
-            <select
-              id="type"
-              className="col-span-4"
-              onChange={(e) => {
-                setType(e.target.value as PostType);
-              }}
-            >
-              <option value="">Select a post type...</option>
-              <option id="Roommate" value="Roommate">Looking for Roommate</option>
-              <option id="Sublet" value="Sublet">Looking for Subletter</option>
-              <option id="Housing" value="Housing">Looking for Housing</option>
-            </select>
-          </div>
-        </div>
+        
         <div className="grid gap-4 mb-4">
           <div className="grid items-center grid-cols-4 gap-4">
             <Label htmlFor="title">
-              Title <span className="text-red-500 ">*</span>
+              Title 
             </Label>
             <Textarea
               id="title"
@@ -221,7 +197,7 @@ export const AddPostDialog = () => {
         <div className="grid gap-4 mb-4">
           <div className="grid items-center grid-cols-4 gap-4">
             <Label htmlFor="content">
-              Content <span className="text-red-500 ">*</span>
+              Content 
             </Label>
             <Textarea
               id="content"
@@ -238,7 +214,7 @@ export const AddPostDialog = () => {
         <div className="grid gap-4 mb-4">
           <div className="grid items-center gap-4">
             <Label htmlFor="cost">
-              Monthly Cost <span className="text-red-500 ">*</span>
+              Monthly Cost 
             </Label>
             <Input
               id="cost"
@@ -251,7 +227,7 @@ export const AddPostDialog = () => {
         <div className="grid gap-4 mb-4">
           <div className="grid items-center gap-4">
             <Label htmlFor="address">
-              Address <span className="text-red-500 ">*</span>
+              Address
             </Label>
             <Textarea
               id="address"

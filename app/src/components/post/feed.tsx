@@ -1,25 +1,55 @@
+import { Link } from "react-router-dom";
 import Posts from "./posts";
-import PostMapContainer from "../map/post-map-container";
 import SearchInput from "./search-input";
-import Filter from "./filter";
 
 const Feed = () => {
   return (
-    <div className="flex flex-col w-full h-full min-h-screen border-x-2 border-slate-400 md:max-w-4xl">
-      <div style={{ fontSize: '50px', fontWeight: 'bold', paddingLeft: '10%', paddingTop: '5%', textDecoration: 'underline' }}>
-        Community Posts
-      </div>
-      <div className="flex flex-wrap" style={{ width: '100%', paddingLeft: '8%', paddingTop: '2%' }}>
-        <div style={{ paddingRight: '2%' }}>
-          <SearchInput />
+    <div className="flex flex-col w-screen h-full min-h-screen border-x-2 border-slate-400">
+      <div className="gap-5 mt-5" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>   
+        <div className="whitespace-nowrap" style={{ fontSize: '40px', fontWeight: 'bold' }}>
+              I am looking for...
         </div>
-        <Filter/> 
       </div>
-      <div className="flex justify-center py-4 map-container border-b border-slate-400" style={{ width: '100%', height: '57vh', overflow: 'hidden' }}>
-        < PostMapContainer />
+      <div className="gap-5" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <SearchInput />
       </div>
-      <div style={{ height: '57vh', overflowY: 'auto', scrollbarWidth: 'none' }}>
-        <Posts />
+      
+
+
+ {/* Posts section */}
+      <div className= "px-16 py-5">
+        <div className="mt-5">
+        <Link to={`/posts/roommates`}>
+          <div className="whitespace-nowrap hover:underline" style={{ fontSize: '20px', fontWeight: 'bold'}}>
+            Roommates:
+          </div>
+          </Link>
+          <div className="flex overflow-x-auto">
+            <Posts type={"Roommate"}/>
+          </div>
+        </div>
+
+        <div className="mt-10">
+        <Link to={`/posts/sublets`}>
+          <div className="whitespace-nowrap hover:underline" style={{ fontSize: '20px', fontWeight: 'bold'}}>
+            Subletting:
+          </div>
+          </Link>
+          <div className="flex overflow-x-auto">
+            <Posts type={"Sublet"}/>
+          </div>
+        </div>
+
+        <div className="mt-10">
+        <Link to={`/posts/housings`}>
+          <div className="whitespace-nowrap hover:underline" style={{ fontSize: '20px', fontWeight: 'bold' }}>
+            Housing:
+          </div>
+          </Link>
+          <div className="flex overflow-x-auto">
+            <Posts type={"Housing"}/>
+          </div>
+        </div>
       </div>
     </div>
   );
