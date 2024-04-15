@@ -1,4 +1,4 @@
-import { Locations } from "./types";
+import { GooglePlacesAPIResponse, Locations } from "./types";
 
 export const getAddressCoordinates = async (address: string) => {
   const MAP_API_KEY = 'AIzaSyD3WSswaxt-32s42qTRaXfvOVsKONzPZzg';
@@ -43,7 +43,7 @@ export const fetchGroceryStores = async (latitude?: number, longitude?: number):
     headers: {
       'Content-Type': 'application/json',
       'X-Goog-Api-Key': MAP_API_KEY,
-      'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.priceLevel,places.rating' 
+      'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.rating,places.location' 
     },
     body: JSON.stringify(requestBody)
   };
@@ -58,23 +58,31 @@ export const fetchGroceryStores = async (latitude?: number, longitude?: number):
         }`,
       );
     }
-    console.log(responseJson);
+    //console.log(responseJson);
 
     
-    // return formatPlacesData(responseJson);
+  const formattedPlaces = formatPlacesData(responseJson, latitude, longitude);
 
+  return formattedPlaces;
 
 };
 
-const formatPlacesData = (data: { places: { formattedAddress: any; displayName: { text: any; }; }[]; }) => {
+
+const formatPlacesData = (data: GooglePlacesAPIResponse, housingLat?: number, housingLon?: number) => {
   if (!data || !data.places || !Array.isArray(data.places)) {
     return [];
   }
+  return data.places.map((place) => {
+    // Calculate the distance for each place individually
+    const distance = getDistanceFromLatLonInMiles(housingLat!, housingLon!, place.location.latitude, place.location.longitude);
 
-  return data.places.map((place) => ({
-    formattedAddress: place.formattedAddress,
-    displayName: place.displayName.text
-  }));
+    return {
+      formattedAddress: place.formattedAddress,
+      displayName: place.displayName.text,
+      rating: place.rating,
+      distance // Add distance for each place in the output
+    };
+  });
 };
 
 function getDistanceFromLatLonInMiles(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -87,7 +95,7 @@ function getDistanceFromLatLonInMiles(lat1: number, lon1: number, lat2: number, 
     Math.sin(dLon / 2) * Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const distance = earthRadiusMiles * c; // Distance in miles
-  return distance;
+  return parseFloat(distance.toFixed(1));
 }
 
 function deg2rad(deg: number): number {

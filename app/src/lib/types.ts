@@ -66,3 +66,15 @@ export type Locations = {
   distance: number;
   rating: number;
 }
+
+export type GooglePlacesAPIResponse = {
+  places: {
+    formattedAddress: string;
+    rating: number;
+    displayName: {text:string};
+    location: {
+        latitude: number;
+        longitude: number;
+    };
+  }
+};

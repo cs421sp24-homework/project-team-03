@@ -3,10 +3,13 @@ import { GoogleMap, InfoWindowF, Marker } from "@react-google-maps/api";
 import { Locations, HousingItem as HousingItemType } from "@/lib/types";
 import HousingInfoWindow from "../catalog/housing-info-window";
 import { fetchGroceryStores, getAddressCoordinates } from "@/lib/map";
+import { useStore } from "@/lib/store";
 
 const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
     const [hoveredHousing, setHoveredHousing] = useState<HousingItemType | null>(null);
     const [groceryStores, setGroceryStores] = useState<Locations[]>([]);
+    const setStores = useStore((state) => state.setNearbyStores);
+
 
     const handleMarkerHover = (item: HousingItemType) => {
         setHoveredHousing(item);
@@ -30,6 +33,7 @@ const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
                     });
                     const storesWithCoordinates = await Promise.all(coordinatesPromises);
                     setGroceryStores(storesWithCoordinates);
+                    setStores(storesWithCoordinates);
                 } else {
                     throw new Error('No results found');
                 }
@@ -53,7 +57,7 @@ const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
                     title={`marker-${item.id}`}
                     position={{ lat: latitude, lng: longitude }}
                     onMouseOver={() => handleMarkerHover(item)}
-                >
+                    >
                     {hoveredHousing === item &&
                         <InfoWindowF>
                             <HousingInfoWindow housingItem={item} />

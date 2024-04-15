@@ -60,7 +60,7 @@ const HousingExpanded = (props: HousingItemProps) => {
                 <div className="flex justify-center"> 
                     {expanded && <SingleHousingContainer item={housingItem} />}
                 </div>
-                <div> <NearbyPlaces item={housingItem} /> </div>
+                {expanded && <NearbyPlaces />}
                 </div>
         </div>
     );
