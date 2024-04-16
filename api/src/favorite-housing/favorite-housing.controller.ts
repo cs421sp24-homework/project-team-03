@@ -13,6 +13,7 @@ import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { UserId } from 'src/decorators/user-id.decorator';
 import { favoriteHousingResponseDto } from './favoriteHousing-response.dto';
 import { favoriteHousing } from './favorite-housing.entity';
+import { Housing } from 'src/housing/housing.entity';
 
 @Controller('users/:userId/favoriteHousings')
 export class FavoriteHousingController {
@@ -48,9 +49,7 @@ export class FavoriteHousingController {
       housingId,
     );
     if (!favorite_housing) {
-      throw new NotFoundException(
-        `User with ID ${userId} not found in favorites list of housing item with ID ${housingId}`,
-      );
+      return null;
     }
     delete favorite_housing.userId;
     return favorite_housing;
@@ -81,9 +80,7 @@ export class FavoriteHousingController {
 
   // Find all housings liked by a user
   @Get()
-  async findAll(
-    @Param('userId') userId: number,
-  ): Promise<favoriteHousing[] | null> {
+  async findAll(@Param('userId') userId: number): Promise<Housing[] | null> {
     const favorite_housings = await this.favoriteHousingService.findAll(userId);
     return favorite_housings;
   }

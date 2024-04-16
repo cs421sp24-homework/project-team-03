@@ -1,5 +1,5 @@
 import { getAuthenticatedUser, getAuthenticatedUserToken, removeAuthenticatedUserToken, storeAuthenticatedUserToken } from "./auth";
-import { PostType, PostWithUserData, User, HousingItem, ReviewWithUserData } from "./types";
+import { PostType, PostWithUserData, User, HousingItem, ReviewWithUserData, Post } from "./types";
 import { createClient } from "@supabase/supabase-js";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -675,7 +675,7 @@ export const createHousingItem = async (
     }
   };
 
-  export const findAllFavoritePosts = async (userId: number): Promise<void> => {
+  export const findAllFavoritePosts = async (userId: number): Promise<Post[] | null> => {
     const response = await fetch(`${API_URL}/users/${userId}/favoritePosts`, {
       method: "GET",
       headers: {
@@ -690,6 +690,8 @@ export const createHousingItem = async (
         `Error: ${response.status} - ${responseJson.message || response.statusText}`,
       );
     }
+    console.log(responseJson.data)
+    return responseJson.data;
   };
 
   export const checkIfFavorite = async (userId: number, postId: string): Promise<boolean> => {
@@ -704,15 +706,88 @@ export const createHousingItem = async (
       if (response.ok) {
         // If the response is successful (status code 200), it means the user has liked the post
         return true;
-      } else if (response.status === 404) {
-        // If the response is a 404 Not Found error, it means the user has not liked the post
-        return false;
       } else {
         // For other error statuses, throw an error
-        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        return false;
       }
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      return false;
     }
-  }
+  };
+
+  export const favoriteHousing = async (userId: number, housingId: string): Promise<void> => {
+    const token = getAuthenticatedUserToken();
+    const response = await fetch(`${API_URL}/users/${userId}/favoriteHousings/${housingId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  };
+
+  export const unfavoriteHousing = async (userId: number, housingId: string): Promise<void> => {
+    const token = getAuthenticatedUserToken();
+    const response = await fetch(`${API_URL}/users/${userId}/favoriteHousings/${housingId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  };
+
+  export const findAllFavoriteHousings = async (userId: number): Promise<HousingItem[] | null> => {
+    const response = await fetch(`${API_URL}/users/${userId}/favoriteHousings`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+    return responseJson.data;
+  };
+
+  export const checkIfFavoriteHousing = async (userId: number, housingId: string): Promise<boolean> => {
+    try {
+      const response = await fetch(`${API_URL}/users/${userId}/favoriteHousings/${housingId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      // console.log("This is the response: ", response)
+      if (response.ok) {
+        // If the response is successful (status code 200), it means the user has liked the post
+        return true;
+      } else {
+        // For other error statuses, throw an error
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
+  };

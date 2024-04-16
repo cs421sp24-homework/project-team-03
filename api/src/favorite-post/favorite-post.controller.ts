@@ -11,7 +11,7 @@ import { UserId } from 'src/decorators/user-id.decorator';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { favoritePostResponseDto } from './favoritePost-response.dto';
 import { FavoritePostService } from './favorite-post.service';
-import { favoritePost } from './favorite-post.entity';
+import { Post as PostType } from 'src/posts/post.entity';
 
 @Controller('users/:userId/favoritePosts')
 export class FavoritePostController {
@@ -69,9 +69,7 @@ export class FavoritePostController {
 
   // Find all posts liked by a user
   @Get()
-  async findAll(
-    @Param('userId') userId: number,
-  ): Promise<favoritePost[] | null> {
+  async findAll(@Param('userId') userId: number): Promise<PostType[] | null> {
     const favorite_posts = await this.favoritePostService.findAll(userId);
     return favorite_posts;
   }

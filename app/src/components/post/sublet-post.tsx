@@ -1,4 +1,5 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel";
+import PostFooter from "./post-footer";
 import PostHeader from "./post-header";
 import type { PostWithUserData } from "@/lib/types";
 
@@ -51,8 +52,10 @@ const SubletPost = ({ post }: { post: PostWithUserData }) => {
         <div className="px-4 pb-2 mt-4 text-base font-bold underline">{title}</div>
             <div className="px-4"><strong>Address:</strong> {post.address}</div>
             <div className="px-4"><strong>Cost:</strong> {post.cost}</div>
-            <div className="px-4 pb-2">{content}</div>
-    
+            <div className="px-4 pb-2" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>{content}</div>
+              <div><PostFooter post={post} /></div>
+            </div>
       </div>
     </div>
   );
