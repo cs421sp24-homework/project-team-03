@@ -18,8 +18,8 @@ describe('PostsController', () => {
   let postsService: PostsService;
   let postRepository: Repository<Post>;
   let userService: UserService;
-  let authService: AuthService;
-  let jwtService: JwtService;
+  // let authService: AuthService;
+  // let jwtService: JwtService;
 
   const POST_REPO_TOKEN = getRepositoryToken(Post);
   const USER_REPO_TOKEN = getRepositoryToken(User);
@@ -37,6 +37,18 @@ describe('PostsController', () => {
     reviews: [],
     bio: null,
     notifications: 0,
+    age: '21',
+    gender: 'Female',
+    major: 'Computer Science',
+    gradYear: '2030',
+    stayLength: 'Summer',
+    budget: '>$900',
+    idealDistance: '<0.3 miles',
+    petPreference: 'Pet-Free',
+    cleanliness: 'Not Clean',
+    smoker: 'Non-Smoker',
+    socialPreference: 'Ambivert',
+    peakProductivity: 'Afternoon Person',
   };
 
   const mockPost: Post = {
@@ -96,8 +108,8 @@ describe('PostsController', () => {
     postsService = module.get<PostsService>(PostsService);
     postRepository = module.get<Repository<Post>>(POST_REPO_TOKEN);
     userService = module.get<UserService>(UserService);
-    authService = module.get<AuthService>(AuthService);
-    jwtService = module.get<JwtService>(JwtService);
+    // authService = module.get<AuthService>(AuthService);
+    // jwtService = module.get<JwtService>(JwtService);
   });
 
   it('should be defined', () => {
@@ -148,17 +160,25 @@ describe('PostsController', () => {
   it('should retrieve all posts with pagination, search, and additional filters', async () => {
     const mockPosts = [mockPost];
     jest.spyOn(postsService, 'findAll').mockResolvedValue(mockPosts);
-  
+
     const search = 'sample search';
-    const email = 'user@jhu.edu';
+    // const email = 'user@jhu.edu';
     const withUserData = true;
     const type = 'Housing';
     const cost = 5000;
-    const newuse = new PostResponseDto;
+    const newuse = new PostResponseDto();
     expect(newuse instanceof PostResponseDto).toBe(true);
-  
-    const result = await controller.findAll(10, 0, search,undefined, withUserData, type, cost);
-  
+
+    const result = await controller.findAll(
+      10,
+      0,
+      search,
+      undefined,
+      withUserData,
+      type,
+      cost,
+    );
+
     expect(postsService.findAll).toHaveBeenCalledWith(
       10,
       0,
@@ -166,30 +186,37 @@ describe('PostsController', () => {
       undefined, // Since userId is derived from the email inside the method
       withUserData,
       type,
-      cost
+      cost,
     );
     expect(result.data).toEqual(mockPosts);
     expect(result.pagination).toEqual({ limit: 10, offset: 0 });
     expect(result.search).toEqual(search);
   });
-  
 
   // Test for findAll method
   describe('findAll', () => {
     it('should retrieve posts without email filter', async () => {
       const mockPosts = [mockPost]; // Use your mockPost array
       jest.spyOn(postsService, 'findAll').mockResolvedValue(mockPosts);
-    
-      const result = await controller.findAll(10, 0, '', undefined, false, undefined, undefined);
-    
+
+      const result = await controller.findAll(
+        10,
+        0,
+        '',
+        undefined,
+        false,
+        undefined,
+        undefined,
+      );
+
       expect(postsService.findAll).toHaveBeenCalledWith(
         10,
         0,
         '',
         undefined, // userId is undefined as no email is provided
-        false,     // withUserData is false
+        false, // withUserData is false
         undefined, // type is not provided, so it's undefined
-        undefined
+        undefined,
       );
       expect(result.data).toEqual(
         mockPosts.map((post) => {
@@ -203,16 +230,15 @@ describe('PostsController', () => {
       expect(result.pagination).toEqual({ limit: 10, offset: 0 });
       // Add additional assertions if needed, like for the 'filter' and 'search' fields
     });
-    
 
     it('should retrieve posts with email filter', async () => {
       const mockPosts = [mockPost]; // Use your mockPost array
       const userEmail = 'user@example.com';
       jest.spyOn(userService, 'findOne').mockResolvedValue(mockUser); // Assuming mockUser exists
       jest.spyOn(postsService, 'findAll').mockResolvedValue(mockPosts);
-    
+
       const result = await controller.findAll(10, 0, '', userEmail, false);
-    
+
       expect(userService.findOne).toHaveBeenCalledWith(userEmail);
       expect(postsService.findAll).toHaveBeenCalledWith(
         10,
@@ -221,7 +247,7 @@ describe('PostsController', () => {
         mockUser.id, // Assuming the user exists and mockUser has an id property
         false,
         undefined, // type is not provided, so it's undefined
-        undefined      // default cost value
+        undefined, // default cost value
       );
       expect(result.data).toEqual(
         mockPosts.map((post) => {
@@ -236,7 +262,6 @@ describe('PostsController', () => {
       // The filter should reflect the email used for filtering
       expect(result.filter).toEqual(userEmail);
     });
-    
 
     it('should throw NotFoundException if user not found for provided email', async () => {
       jest.spyOn(userService, 'findOne').mockResolvedValue(undefined);

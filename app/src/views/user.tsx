@@ -15,13 +15,19 @@ function User() {
 
   useEffect(() => {
     const getUser = async () => {
-      const userData = await fetchUser(email);
-      setUser(userData);
-      setIsLoading(false); // Once data is fetched, set loading to false
+      try {
+        const userData = await fetchUser(email);
+        setUser(userData);
+        setIsLoading(false); // Once data is fetched, set loading to false
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        setIsLoading(false); // Set loading to false even if there's an error
+      }
     };
-
+  
     getUser();
   }, [email]);
+  
 
   return (
     <>
