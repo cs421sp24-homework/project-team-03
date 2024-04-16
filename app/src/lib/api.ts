@@ -130,6 +130,18 @@ export const register = async (
     lastName?: string,
     avatar?: string,
     bio?: string,
+    age?: string,
+    gender?: string,
+    major?: string,
+    gradYear?: string,
+    stayLength?: string,
+    budget?: string, 
+    idealDistance?: string,
+    petPreference?: string,
+    cleanliness?: string,
+    smoker?: string,
+    socialPreference?: string,
+    peakProductivity?: string,
   ): Promise<User> => {
     const token = getAuthenticatedUserToken();
     const response = await fetch(`${API_URL}/users/${id}`, {
@@ -138,7 +150,7 @@ export const register = async (
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ firstName, lastName, avatar, bio }),
+      body: JSON.stringify({ firstName, lastName, avatar, bio, age, gender, major, gradYear, stayLength, budget, idealDistance, petPreference, cleanliness, smoker, socialPreference, peakProductivity }),
     });
   
     const responseJson = await response.json();

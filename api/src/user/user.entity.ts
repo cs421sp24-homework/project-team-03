@@ -48,4 +48,40 @@ export class User {
 
   @OneToMany(() => favoritePost, (favoritePosts) => favoritePosts.user)
   favoritePosts: favoritePost[];
+
+  @Column({ nullable: true })
+  age: string;
+
+  @Column({ nullable: true })
+  gender: string;
+
+  @Column({ nullable: true })
+  major: string;
+
+  @Column({ nullable: true })
+  gradYear: string;
+
+  @Column({ nullable: true })
+  stayLength: string;
+
+  @Column({ nullable: true })
+  budget: string;
+
+  @Column({ nullable: true })
+  idealDistance: string;
+
+  @Column({ nullable: true })
+  petPreference: string;
+
+  @Column({ nullable: true })
+  cleanliness: string;
+
+  @Column({ nullable: true })
+  smoker: string;
+
+  @Column({ nullable: true })
+  socialPreference: string;
+
+  @Column({ nullable: true })
+  peakProductivity: string;
 }

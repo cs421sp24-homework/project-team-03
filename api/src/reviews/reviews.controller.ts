@@ -114,7 +114,7 @@ export class ReviewsController {
   async upvote(
     @Param('reviewId') reviewId: string,
     @Param('housingId') housingId: string,
-    @Param('userId') userId: number, 
+    @Param('userId') userId: number,
   ): Promise<{ statusCode: number; message: string }> {
     const review = await this.reviewsService.upvote(
       reviewId,
@@ -137,7 +137,7 @@ export class ReviewsController {
   async upvoteUndo(
     @Param('reviewId') reviewId: string,
     @Param('housingId') housingId: string,
-    @Param('userId') userId: number, 
+    @Param('userId') userId: number,
   ): Promise<{ statusCode: number; message: string }> {
     const review = await this.reviewsService.upvoteUndo(
       reviewId,
