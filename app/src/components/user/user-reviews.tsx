@@ -27,7 +27,7 @@ const UserReview = ({ review, housingId }: { review: ReviewWithUserData, housing
         <div className="flex-grow text-black">
           {housing?.name && (
             <Link to={`/housings/${housingId}`}>
-              <div id='housingName' className="inline-block align-baseline font-medium text-base underline">
+              <div id='housingName' className="inline-block align-baseline font-medium text-base hover:underline">
                 {housing.name}
               </div>
             </Link>
