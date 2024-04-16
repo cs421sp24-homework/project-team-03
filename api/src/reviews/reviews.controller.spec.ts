@@ -70,6 +70,18 @@ describe('ReviewsController', () => {
     reviews: [],
     bio: null,
     notifications: 0,
+    age: '21',
+    gender: 'Female',
+    major: 'Computer Science',
+    gradYear: '2030',
+    stayLength: 'Summer',
+    budget: '>$900',
+    idealDistance: '<0.3 miles',
+    petPreference: 'Pet-Free',
+    cleanliness: 'Not Clean',
+    smoker: 'Non-Smoker',
+    socialPreference: 'Ambivert',
+    peakProductivity: 'Afternoon Person',
   };
 
   const mockHousing: Housing = {
@@ -280,7 +292,7 @@ describe('ReviewsController', () => {
       expect(result).toEqual({ likedBy });
       expect(reviewsService.findLikedBy).toHaveBeenCalledWith(
         reviewId,
-        housingId
+        housingId,
       );
     });
 

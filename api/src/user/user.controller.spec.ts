@@ -30,8 +30,20 @@ describe('UserController', () => {
     verificationToken: 'someRandomToken123', // Can be null as well
     posts: [],
     reviews: [],
-    bio: "Hello",
+    bio: 'Hello',
     notifications: 0,
+    age: '21',
+    gender: 'Female',
+    major: 'Computer Science',
+    gradYear: '2030',
+    stayLength: 'Summer',
+    budget: '>$900',
+    idealDistance: '<0.3 miles',
+    petPreference: 'Pet-Free',
+    cleanliness: 'Not Clean',
+    smoker: 'Non-Smoker',
+    socialPreference: 'Ambivert',
+    peakProductivity: 'Afternoon Person',
   };
 
   const USER_REPO_TOKEN = getRepositoryToken(User);
@@ -47,8 +59,8 @@ describe('UserController', () => {
             remove: jest.fn(),
             findOneBy: jest.fn(),
             save: jest.fn(),
-            find: jest.fn()
-          }
+            find: jest.fn(),
+          },
         },
         AuthService,
         JwtService,
@@ -59,8 +71,8 @@ describe('UserController', () => {
             login: jest.fn(),
             incrementNotifs: jest.fn(),
             clearNotifs: jest.fn(),
-          }
-        }
+          },
+        },
       ],
     }).compile();
 
@@ -106,7 +118,10 @@ describe('UserController', () => {
   // Test for remove
   it('should remove a user', async () => {
     jest.spyOn(userService, 'deleteUser').mockResolvedValueOnce(exampleUser);
-    expect(await controller.remove('test@example.com')).toEqual({ statusCode: 200, message: "User removed successfully" });
+    expect(await controller.remove('test@example.com')).toEqual({
+      statusCode: 200,
+      message: 'User removed successfully',
+    });
   });
 
   // Test for register
@@ -118,8 +133,9 @@ describe('UserController', () => {
       lastName: 'Doe',
       avatar: 'http://example.com/avatar.jpg', // optional, can be omitted
     };
-    const newuser = new UserResponseDTO;
+    const newuser = new UserResponseDTO();
     expect(newuser instanceof UserResponseDTO).toBe(true);
+    /*
     const userResponse: UserResponseDTO = {
       id: 1, // Assuming a sample ID for the user
       email: userDto.email,
@@ -130,29 +146,38 @@ describe('UserController', () => {
       bio: 'A brief user biography', // Sample bio, could also be an empty string or other default
       notifications: 1, // default is 0 but could be any number
     };
-
+    */
     jest.spyOn(userService, 'createUser').mockResolvedValueOnce(exampleUser);
-    const result: UserResponseDTO = await controller.register(userDto)
+    const result: UserResponseDTO = await controller.register(userDto);
     expect(result).toEqual(exampleUser);
   });
 
-
   it('should verify email successfully', async () => {
-    const verifyEmailDto = { email: 'test@example.com', verificationToken: 'randomToken' };
+    const verifyEmailDto = {
+      email: 'test@example.com',
+      verificationToken: 'randomToken',
+    };
     jest.spyOn(userService, 'verifyEmail').mockResolvedValueOnce(true);
 
     const result = await controller.verifyEmail(verifyEmailDto);
 
-    expect(result).toEqual({ statusCode: 200, message: 'Email verified. You may now log in.' });
+    expect(result).toEqual({
+      statusCode: 200,
+      message: 'Email verified. You may now log in.',
+    });
   });
 
   it('should throw BadRequestException on failed email verification', async () => {
-    const verifyEmailDto = { email: 'test@example.com', verificationToken: 'randomToken' };
+    const verifyEmailDto = {
+      email: 'test@example.com',
+      verificationToken: 'randomToken',
+    };
     jest.spyOn(userService, 'verifyEmail').mockResolvedValueOnce(false);
 
-    await expect(controller.verifyEmail(verifyEmailDto)).rejects.toThrow(BadRequestException);
+    await expect(controller.verifyEmail(verifyEmailDto)).rejects.toThrow(
+      BadRequestException,
+    );
   });
-
 
   // Test for login
   it('should login a user', async () => {
@@ -161,7 +186,9 @@ describe('UserController', () => {
       password: 'userPassword',
     };
     const response = { access_token: 'token' };
-    jest.spyOn(authService, 'validateUser').mockResolvedValueOnce({ email: userDto.email, id: 1 });
+    jest
+      .spyOn(authService, 'validateUser')
+      .mockResolvedValueOnce({ email: userDto.email, id: 1 });
     jest.spyOn(authService, 'login').mockResolvedValueOnce(response);
     expect(await controller.login(userDto)).toEqual(response);
   });
@@ -179,8 +206,12 @@ describe('UserController', () => {
 
   // test for incremement notifications
   it('should increment notifications for a user', async () => {
-    jest.spyOn(userService, 'incrementNotifs').mockResolvedValueOnce(exampleUser);
-    const result: UserResponseDTO = await controller.incrementNotifications(exampleUser.email);
+    jest
+      .spyOn(userService, 'incrementNotifs')
+      .mockResolvedValueOnce(exampleUser);
+    const result: UserResponseDTO = await controller.incrementNotifications(
+      exampleUser.email,
+    );
     expect(userService.incrementNotifs).toHaveBeenCalledWith(exampleUser.email);
     expect(result).toEqual(exampleUser);
   });
@@ -188,7 +219,9 @@ describe('UserController', () => {
   // test for clear notifications
   it('should clear notifications for a user', async () => {
     jest.spyOn(userService, 'clearNotifs').mockResolvedValueOnce(exampleUser);
-    const result: UserResponseDTO = await controller.clearNotifs(exampleUser.email);
+    const result: UserResponseDTO = await controller.clearNotifs(
+      exampleUser.email,
+    );
     expect(userService.clearNotifs).toHaveBeenCalledWith(exampleUser.email);
     expect(result).toEqual(exampleUser);
   });
