@@ -93,9 +93,21 @@ function useMutationUser() {
     lastName?: string,
     avatar?: string,
     bio?: string,
+    age?: string,
+    gender?: string,
+    major?: string,
+    gradYear?: string,
+    stayLength?: string,
+    budget?: string, 
+    idealDistance?: string,
+    petPreference?: string,
+    cleanliness?: string,
+    smoker?: string,
+    socialPreference?: string,
+    peakProductivity?: string,
   ) => {
     try {
-      const editedUser = await editUser( id, firstName, lastName, avatar, bio );
+      const editedUser = await editUser( id, firstName, lastName, avatar, bio, age, gender, major, gradYear, stayLength, budget, idealDistance, petPreference, cleanliness, smoker, socialPreference, peakProductivity );
       setEditUser(editedUser);
     } catch (error) {
       toast({
