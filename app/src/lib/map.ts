@@ -20,11 +20,11 @@ export const getAddressCoordinates = async (address: string) => {
   }
 };
 
-export const fetchGroceryStores = async (latitude?: number, longitude?: number): Promise<Locations[]> => {
+export const fetchGroceryStores = async (type: string, latitude?: number, longitude?: number): Promise<Locations[]> => {
   const MAP_API_KEY = 'AIzaSyB7cNWX7H_HmeOKF_NHQID2olOawRJ7o_s';
 
   const requestBody = {
-    includedTypes: ["supermarket"],
+    includedTypes: [`${type}`],
     maxResultCount: 10,
     locationRestriction: {
       circle: {

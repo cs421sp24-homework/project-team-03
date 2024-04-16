@@ -18,11 +18,11 @@ const NearbyPlaces = () => {
         return stars;
       };
 
-    const closestStores = [...nearbyStores].slice(0, 2);
+    const closestStores = [...nearbyStores].slice(0, 3);
     // Render the component UI
     return (
         <div className="bg-white p-6 rounded-lg shadow-lg">
-          <h2 className="text-xl font-semibold mb-4">Nearby Grocery Stores</h2>
+          <h2 className="text-xl font-semibold mb-4">Nearby Places</h2>
           {closestStores.length > 0 ? (
             closestStores.map((store, index) => (
               <div key={index} className="flex mb-4 last:mb-0 items-center">
