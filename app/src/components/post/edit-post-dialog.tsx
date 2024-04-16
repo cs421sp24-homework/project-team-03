@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,9 +15,14 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import useMutationPosts from "@/hooks/use-mutations-posts";
-import { PostWithUserData } from "@/lib/types";
+import { ImageMetadata, PostWithUserData } from "@/lib/types";
 import { DropdownMenuItem } from "../ui/dropdown-menu";
-//TODO: handle image updates
+import useMutationImages from "@/hooks/use-mutations-images";
+//TODO: refactor and replace PreviewType with ImageMetadata
+type PreviewType = {
+  url: string,
+  name: string
+}
 export const EditPostDialog = ({
   post,
   setDropdownState,
@@ -42,7 +47,8 @@ export const EditPostDialog = ({
 
   const handleSave = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    if (!newTitle || !newContent || !newAddress) {
+    if (!newTitle || !newContent || !newAddress) { 
+      //TODO: handle invalid Cost field
       toast({
         variant: "destructive",
         title: "Sorry! Fields cannot be empty! 🙁",
@@ -51,11 +57,19 @@ export const EditPostDialog = ({
       return;
     }
 
-    await editPostById(post.id, newTitle, newContent, newCost, newAddress, post.type );
+    // let imgDataArray: ImageMetadata[] = [];
+    if (imageFiles.length > 0) {
+      const imgDataArray = await postImagesToData(imageFiles);
+      setExistingPreviews([...existingPreviews, ...imgDataArray]);
+    }
+    
+    await editPostById(post.id, newTitle, newContent, newCost, newAddress, post.type, existingPreviews );
     setNewTitle("");
     setNewContent("");
     setNewAddress("");
     setNewCost(0);
+    setImageFiles([]);
+    setExistingPreviews([]);
     setDropdownState(false);
     setDialogueState(false);
   };
@@ -66,9 +80,95 @@ export const EditPostDialog = ({
     setNewContent(post.content);
     setNewAddress(post.address);
     setNewCost(post.cost);
+    setImageFiles([]);
+    setExistingPreviews([]);
     setDropdownState(false);
     setDialogueState(false);
   };
+
+  const [imageFiles, setImageFiles] = useState<File[]>([]); // uploaded images
+  const [newPreviews, setNewPreviews] = useState<PreviewType[]>([]); // data of newly uploaded images
+  const [existingPreviews, setExistingPreviews] = useState<ImageMetadata[]>(post.images); // data of existing post images
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const { postImagesToData } = useMutationImages(); // to convert new Image files to metadata (of Supabase storage)
+
+  const selectFiles = () => {
+    fileInputRef.current?.click();
+  }
+
+  const onFileSelect = (e: React.FormEvent<HTMLInputElement>) => {
+    const target = e.target as HTMLInputElement & {
+      files: FileList,
+    };
+    const files = target.files;
+    if (files.length === 0) return;
+
+    // Filter out duplicate images by name
+    let uniqueImages: File[] = [];
+    let uniquePreviews: PreviewType[] = [];
+    // let uniquePreviews: ImageMetadata[] = [];
+    Array.from(files).forEach((file) => {
+      if (!newPreviews.some((item) => item.name === file.name)) {
+        uniqueImages.push(file);
+        uniquePreviews.push({
+          url: URL.createObjectURL(file),
+          name: file.name,
+        });
+      }
+    });
+
+    // Add unique images to state variable
+    setImageFiles([...imageFiles, ...uniqueImages]);
+    setNewPreviews([...newPreviews, ...uniquePreviews]);
+    //console.log('Selected files', [...uniqueImages]);
+  }
+
+  const deleteImage = (index: number, isNew: boolean) => {
+    if (isNew) {
+      setImageFiles(imageFiles.filter((_, i) => i !== index));
+      setNewPreviews(newPreviews.filter((_, i) => i !== index));
+      return;
+    }
+    setExistingPreviews(existingPreviews.filter((_, i) => i !== index));
+  }
+
+  const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();   // prevent browser from opening dragged file in new tab onDrop
+    setIsDragging(true);
+    e.dataTransfer.dropEffect = 'copy';
+  }
+
+  const onDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();   
+    setIsDragging(false);
+  }
+
+  const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();   
+    setIsDragging(false);
+    const files = e.dataTransfer.files;
+    if (files.length === 0) return;
+
+    // Filter out duplicate images by name
+    let uniqueImages: File[] = [];
+    let uniquePreviews: PreviewType[] = [];
+    // let uniquePreviews: ImageMetadata[] = [];
+    Array.from(files).forEach((file) => {
+      if (!newPreviews.some((item) => item.name === file.name)) {
+        uniqueImages.push(file);
+        uniquePreviews.push({
+          url: URL.createObjectURL(file),
+          name: file.name,
+        });
+      }
+    });
+
+    // Add unique images to state variable
+    setImageFiles([...imageFiles, ...uniqueImages]);
+    setNewPreviews([...newPreviews, ...uniquePreviews]);
+    //console.log('Dropped files', [...uniqueImages]);
+  }
 
   return (
     <Dialog open={dialogueState} onOpenChange={setDialogueState}>
@@ -134,9 +234,52 @@ export const EditPostDialog = ({
                     setNewAddress(e.target.value);
                   } } />
               </div></>
-        }
-            
-        </div>
+          }
+          {/* TODO: Add hide condition for certain post-types if applicable */}
+          <Label htmlFor="upload">
+            Upload Images JPG or PNG only
+          </Label>
+          <div className='card'>
+            <div className='drag-area' onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={onDrop}>
+              {isDragging ? (
+                <span className='select'>
+                  Drop images here
+                </span>
+              ) : (
+                <>
+                  Drag & Drop images here or {' '}
+                  <span className='select' role='button' onClick={selectFiles}>
+                    Browse
+                  </span>
+                </>
+              )}
+              <input
+                id = 'file'
+                name='file' 
+                type='file' 
+                className='file' 
+                accept='image/png, image/jpg'
+                multiple 
+                ref={fileInputRef} 
+                onChange={onFileSelect}
+              />
+            </div>
+            <div className='container'>
+              {existingPreviews.map((item, i) => (
+                <div className='image' key={`img-${i}`}>
+                  <span className='delete' onClick={() => deleteImage(i, false)}>&times;</span>
+                  <img src={item.url} alt={item.path}/>
+                </div>
+              ))}
+              {newPreviews.map((item, i) => (
+                <div className='image' key={`img-${i}`}>
+                  <span className='delete' onClick={() => deleteImage(i, true)}>&times;</span>
+                  <img src={item.url} alt={item.name}/>
+                </div>
+              ))}
+            </div>
+          </div>
+          </div>
 
         <DialogFooter>
           <DialogClose asChild>

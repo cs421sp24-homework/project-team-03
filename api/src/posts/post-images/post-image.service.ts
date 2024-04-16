@@ -24,7 +24,6 @@ export class PostImageService {
     newImagesData: ImageMetadataDTO[],
     postId: string
   ): Promise<PostImage[]> {
-    // return newImagesData.map((imgData) => this.add(imgData, postId));
     return Promise.all(
       newImagesData.map((imgData) => this.add(imgData, postId))
     );

@@ -51,7 +51,7 @@ export class PostsController {
     if (createPostDto.imagesData.length > 0) {
       post.images = await this.postImageService.addBatch(createPostDto.imagesData, post.id);
     }
-    console.log('images', post.images);
+    // console.log('images', post.images);
     return post;
   }
 

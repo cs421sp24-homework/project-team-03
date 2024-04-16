@@ -232,7 +232,8 @@ export const register = async (
     content?: string,
     cost?: number,
     address?: string,
-    image?: string, // change to images: string[]
+    images?: ImageMetadata[],
+    // image?: string, // change to images: string[]
     type?: PostType,
   ): Promise<PostWithUserData | undefined> => {
     const user = getAuthenticatedUser();
@@ -244,7 +245,7 @@ export const register = async (
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ title, content, cost, address, image, type }),
+      body: JSON.stringify({ title, content, cost, address, images, type }),
     });
   
     const responseJson = await response.json();

@@ -54,10 +54,11 @@ function useMutationPosts() {
         cost?: number,
         address?: string,
         type?: PostType,
-        image?: string, // TODO: change to images: string[]
+        images?: ImageMetadata[],
+        // image?: string, // TODO: change to images: string[]
     ) => {
         try {
-            const postEdited = await editPost(postId, title, content, cost, address, image, type);
+            const postEdited = await editPost(postId, title, content, cost, address, images, type);
             if (postEdited) postEdit(postEdited);
         } catch (error) {
             toast({
