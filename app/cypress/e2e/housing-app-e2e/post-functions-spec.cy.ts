@@ -32,7 +32,7 @@ describe('test post functionality', () => {
 
     it('Feed loads when navigating to posts', () => {
         cy.get('#see-posts').click();
-        cy.contains('Community Posts').should('be.visible');
+        cy.contains('I am looking for...').should('be.visible');
         cy.url().should('include', '/posts');
     })
 
@@ -49,16 +49,14 @@ describe('test post functionality', () => {
         cy.get('#add-posts').click();
 
         cy.get('#type').select('Roommate');
+        cy.get('#next').click({ force: true });
+
         cy.get('#title').type(randomTitle);
         cy.get('#content').type(randomContent);
-        cy.get('#cost').type(randomCost);
-        cy.get('#address').type(randomAddress);
         cy.contains('Submit').click();
 
         cy.contains(randomTitle).should('be.visible');
         cy.contains(randomContent).should('be.visible');
-        cy.contains(randomCost).should('be.visible');
-        cy.contains(randomAddress).should('be.visible');
         cy.contains(randomName).parent().parent().parent().find('#post-actions').click({ force: true });
         cy.get('#edit-post').should('exist');
         cy.get('#delete-btn').click({ force: true });
@@ -70,10 +68,10 @@ describe('test post functionality', () => {
         cy.get('#add-posts').click();
 
         cy.get('#type').select('Roommate');
+        cy.get('#next').click({ force: true });
+
         cy.get('#title').type(randomTitle);
         cy.get('#content').type(randomContent);
-        cy.get('#cost').type(randomCost);
-        cy.get('#address').type(randomAddress);
 
         //Browse
         const img = 'cypress/fixtures/House_Test_Image.jpeg';
@@ -93,10 +91,10 @@ describe('test post functionality', () => {
         cy.get('#add-posts').click();
 
         cy.get('#type').select('Roommate');
+        cy.get('#next').click({ force: true });
+
         cy.get('#title').type(randomTitle);
         cy.get('#content').type(randomContent);
-        cy.get('#cost').type(randomCost);
-        cy.get('#address').type(randomAddress);
 
         //Browse
         const img = 'cypress/fixtures/House_Test_Image.jpeg';
@@ -115,24 +113,20 @@ describe('test post functionality', () => {
         cy.get('#add-posts').click();
 
         cy.get('#type').select('Roommate');
+        cy.get('#next').click({ force: true });
+
         cy.get('#title').type(randomTitle);
         cy.get('#content').type(randomContent);
-        cy.get('#cost').type(randomCost);
-        cy.get('#address').type(randomAddress);
         cy.contains('Submit').click();
 
         cy.contains(randomTitle).should('be.visible');
         cy.contains(randomContent).should('be.visible');
-        cy.contains(randomCost).should('be.visible');
-        cy.contains(randomAddress).should('be.visible');
 
         cy.contains(randomName).parent().parent().parent().find('#post-actions').click({ force: true });
         cy.get('#delete-btn').click({ force: true });
 
         cy.contains(randomTitle).should('not.exist');
         cy.contains(randomContent).should('not.exist');
-        cy.contains(randomCost).should('not.exist');
-        cy.contains(randomAddress).should('not.exist');
     })
 
     it('Edit post successfully', () => {
@@ -140,36 +134,28 @@ describe('test post functionality', () => {
         cy.get('#add-posts').click();
 
         cy.get('#type').select('Roommate');
+        cy.get('#next').click({ force: true });
+
         cy.get('#title').type(randomTitle);
         cy.get('#content').type(randomContent);
-        cy.get('#cost').type(randomCost);
-        cy.get('#address').type(randomAddress);
         cy.contains('Submit').click();
 
         cy.contains(randomTitle).should('be.visible');
         cy.contains(randomContent).should('be.visible');
-        cy.contains(randomCost).should('be.visible');
-        cy.contains(randomAddress).should('be.visible');
 
         cy.contains(randomName).parent().parent().parent().find('#post-actions').click({ force: true });
         cy.get('#edit-post').click({ force: true });
 
         const updatedTitle = 'Updated Title';
         const updatedContent = 'Updated Content';
-        const updatedCost = 100; 
-        const updatedAddress = 'Updated Address';
 
         cy.get('#newTitle').clear().type(updatedTitle); 
         cy.get('#newContent').clear().type(updatedContent); 
-        cy.get('#cost').clear().type(updatedCost); 
-        cy.get('#address').clear().type(updatedAddress);
 
         cy.contains('Save').click();
 
         cy.contains(updatedTitle).should('be.visible');
         cy.contains(updatedContent).should('be.visible');
-        cy.contains(updatedCost).should('be.visible');
-        cy.contains(updatedAddress).should('be.visible');
 
         cy.contains(randomName).parent().parent().parent().find('#post-actions').click({ force: true });
         cy.get('#delete-btn').click({ force: true });
@@ -181,29 +167,23 @@ describe('test post functionality', () => {
         cy.get('#add-posts').click();
 
         cy.get('#type').select('Roommate');
+        cy.get('#next').click({ force: true });
+
         cy.get('#title').type(randomTitle);
         cy.get('#content').type(randomContent);
-        cy.get('#cost').type(randomCost);
-        cy.get('#address').type(randomAddress);
         cy.contains('Submit').click();
 
         cy.contains(randomTitle).should('be.visible');
         cy.contains(randomContent).should('be.visible');
-        cy.contains(randomCost).should('be.visible');
-        cy.contains(randomAddress).should('be.visible');
 
         cy.contains(randomName).parent().parent().parent().find('#post-actions').click({ force: true });
         cy.get('#edit-post').click({ force: true });
 
         const updatedTitle = 'Updated Title';
         const updatedContent = 'Updated Content';
-        const updatedCost = 100; 
-        const updatedAddress = 'Updated Address';
 
         cy.get('#newTitle').clear(); 
         cy.get('#newContent').clear().type(updatedContent); 
-        cy.get('#cost').clear().type(updatedCost); 
-        cy.get('#address').clear().type(updatedAddress);
 
         cy.contains('Save').click();
 
@@ -225,9 +205,9 @@ describe('test post functionality', () => {
         cy.get('#add-posts').click();
 
         cy.get('#type').select('Roommate');
+        cy.get('#next').click({ force: true });
+
         cy.get('#content').type(randomContent);
-        cy.get('#cost').type(randomCost);
-        cy.get('#address').type(randomAddress);
         cy.contains('Submit').click();
 
         cy.get('#toast', { timeout: 1000 })
@@ -235,8 +215,6 @@ describe('test post functionality', () => {
             .contains(/must be completed/i);
 
         cy.contains(randomContent).should('not.exist');
-        cy.contains(randomCost).should('not.exist');
-        cy.contains(randomAddress).should('not.exist');
     })
 
     it('Adding a post fails when the cost isnt numerical', () => {
@@ -245,7 +223,9 @@ describe('test post functionality', () => {
 
         randomCost = generateRandomName(3);
 
-        cy.get('#type').select('Roommate');
+        cy.get('#type').select('Sublet');
+        cy.get('#next').click({ force: true });
+
         cy.get('#title').type(randomTitle);
         cy.get('#content').type(randomContent);
         cy.get('#cost').type(randomCost);
@@ -264,6 +244,7 @@ describe('test post functionality', () => {
 
     it('If a user logs out, they should be redirected to home page', () => {
         cy.get('#see-posts').click();
+        cy.get('#user-actions').click();
         cy.logoutUser();
         cy.contains('Community Posts').should('not.exist');
         cy.contains('Off-Campus Housing').should('be.visible');

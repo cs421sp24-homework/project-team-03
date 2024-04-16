@@ -160,7 +160,7 @@ export const SubletDialog = (
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button id="add-posts" aria-label={"Make a Post"} variant="default" >
+        <Button id="next" aria-label={"Make a Post"} variant="default" >
           Next
         </Button>
       </DialogTrigger>
