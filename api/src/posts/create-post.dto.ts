@@ -23,7 +23,7 @@ export class CreatePostDto {
     // @IsString({ each: true })
     // images: string[];
     @IsArray()
-    imgDataArray: ImageMetadataDTO[];
+    imagesData: ImageMetadataDTO[];
 
     @IsString()
     @IsNotEmpty({ message: 'Type cannot be empty' })

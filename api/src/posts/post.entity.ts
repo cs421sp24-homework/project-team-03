@@ -35,7 +35,7 @@ export class Post {
   // @Column('text', { array: true, default: {} })
   // images: string[];
   @OneToMany(() => PostImage, (postImage) => postImage.post)
-  images: PostImage;
+  images: PostImage[];
 
   @ManyToOne(() => User, (user) => user.posts,  {
     onDelete: 'CASCADE',

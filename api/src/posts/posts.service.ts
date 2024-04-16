@@ -16,8 +16,8 @@ export class PostsService {
 
   async create(createPostDto: CreatePostDto, userId: number): Promise<Post> {
     const post = await this.makePost(createPostDto, userId);
-    const { imgDataArray } = createPostDto;
-    await this.postImageService.addBatch(imgDataArray, post.id);
+    const { imagesData } = createPostDto;
+    await this.postImageService.addBatch(imagesData, post.id);
     // return this.postRepository.save(post);
     return post;
   }
@@ -49,7 +49,7 @@ export class PostsService {
     cost?: number,
   ): Promise<Post[]> {
     const queryBuilder = this.postRepository.createQueryBuilder('posts');
-
+    queryBuilder.leftJoinAndSelect('posts.images', 'images');
     // Add condition to join user data
     if (withUserData) {
       queryBuilder.leftJoinAndSelect('posts.user', 'user');

@@ -17,7 +17,8 @@ export type User = {
     timestamp?: string;
     cost: number;
     address: string;
-    images: string[]; //Make it an array later
+    // images: string[]; //Make it an array later
+    images: ImageMetadata[];
     userId: number;
     type: PostType;
     latitude?: number;
@@ -59,6 +60,7 @@ export type Like = {
 };
 
 export type ImageMetadata = {
+  id?: string;  // no id field before uploading
   url: string;
   path: string;
 }

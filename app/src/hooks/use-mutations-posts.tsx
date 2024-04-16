@@ -30,11 +30,11 @@ function useMutationPosts() {
         cost: number,
         address: string,
         type: PostType,
-        imgData: ImageMetadata[],
+        imagesData: ImageMetadata[],
         // images: string[],
     ) => {
         try {
-            const newPost = await createPost(title, content, cost, address, type, imgData);
+            const newPost = await createPost(title, content, cost, address, type, imagesData);
             addPost(newPost);
         } catch (error) {
             toast({

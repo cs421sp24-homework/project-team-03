@@ -89,7 +89,7 @@ export class PostsController {
       type,
       cost,
     );
-
+    // console.log(posts);
     return {
       filter: email,
       search,
@@ -102,7 +102,12 @@ export class PostsController {
         delete post.userId;
         if (post.user) {
           delete post.user.password;
+          // TODO: delete verification token and other unnecessary fields?
         }
+        // Delete path (data minimization?)
+        // post.images?.forEach((img) => {
+        //   delete img.path;
+        // })
         return post;
       }),
     };
