@@ -10,7 +10,7 @@ export class PostResponseDto {
     cost: number;
     address: string;
     // image?: string[];
-    images?: PostImage[];
+    images: PostImage[];
     type: PostType;
     user?: UserResponseDTO;
 }

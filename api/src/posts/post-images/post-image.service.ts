@@ -23,22 +23,23 @@ export class PostImageService {
   async addBatch(
     newImagesData: ImageMetadataDTO[],
     postId: string
-  ) {
-    newImagesData.forEach((imgData) => this.add(imgData, postId));
-    return; // TODO: should I return something here??
+  ): Promise<PostImage[]> {
+    // return newImagesData.map((imgData) => this.add(imgData, postId));
+    return Promise.all(
+      newImagesData.map((imgData) => this.add(imgData, postId))
+    );
   }
 
   async add(
     newImageData: ImageMetadataDTO,
     postId: string
-  ) {
+  ): Promise<PostImage> {
     const postImage = await this.postImageRepository.create({
       url: newImageData.url,
       path: newImageData.path,
       postId,
     });
-    this.postImageRepository.save(postImage);
-    return; // TODO: should I return something here??
+    return this.postImageRepository.save(postImage);
   }
 
   async softDelete() {

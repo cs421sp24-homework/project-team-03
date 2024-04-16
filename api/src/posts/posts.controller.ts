@@ -20,6 +20,7 @@ import { UpdatePostDto } from './update-post.dto';
 import { PostOwnershipGuard } from 'src/guards/post-owner.guard';
 import { UserService } from 'src/user/user.service';
 import { PostType } from './post.entity';
+import { PostImageService } from './post-images/post-image.service';
 
 type PostResponseWithPagination = {
   filter?: string;
@@ -36,6 +37,7 @@ export class PostsController {
   constructor(
     private readonly postsService: PostsService,
     private readonly userService: UserService,
+    private postImageService: PostImageService,
   ) {}
 
   @UseGuards(JwtAuthGuard)
@@ -44,9 +46,12 @@ export class PostsController {
     @Body() createPostDto: CreatePostDto,
     @UserId() userId: number,
   ): Promise<PostResponseDto> {
-    // console.log(createPostDto);
     const post = await this.postsService.create(createPostDto, userId);
     delete post.userId;
+    if (createPostDto.imagesData.length > 0) {
+      post.images = await this.postImageService.addBatch(createPostDto.imagesData, post.id);
+    }
+    console.log('images', post.images);
     return post;
   }
 

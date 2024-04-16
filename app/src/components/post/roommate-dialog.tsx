@@ -132,7 +132,7 @@ export const RoommateDialog = (
     if (imageFiles.length !== 0) {
       imgDataArray = await postImagesToData(imageFiles);
     }
-    console.log('Pre-save data', imgDataArray);
+    // console.log('Pre-save data', imgDataArray);
     await makeNewPost(title, content, 0, "random", "Roommate", imgDataArray);
     handleCancel()
   };
