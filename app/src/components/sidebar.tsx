@@ -48,7 +48,7 @@ function Sidebar({ isPostsView }: SideBarProps) {
   
   return (
     <div className="flex flex-col gap-2 p-4 ">
-      <Button variant={"ghost"} size="sm" onClick={handleClickHome}>
+      <Button id = "home" variant={"ghost"} size="sm" onClick={handleClickHome}>
         <HomeIcon className="w-5 h-5" />
       </Button>
       {!isPostsView && <Button id="see-posts" variant={"ghost"} size="sm" onClick={handleClickAddPost}>

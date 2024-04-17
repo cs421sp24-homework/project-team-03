@@ -54,23 +54,28 @@ describe('test user profile functionality', () => {
         cy.loginUser(randomEmail, randomPassword);
         cy.wait(1000);
         cy.visit(`/#/users/${secondName}`);
-        cy.contains(`#edit-profile`).should('not.exist');
+        cy.contains(`#update-profile`).should('not.exist');
     })
 
     it('A user cannot have an empty firstname or last name', () => {
         cy.wait(1000); // Needs to wait for the user to be in the database
         cy.visit(`/#/users/${randomName}`);
         
-        cy.get('#edit-profile').click();
+        cy.get('#update-profile').click();
         
         cy.get('#firstName').clear()
         cy.get('#lastName').clear()
         cy.get('#bio').clear().type(randomBio);
-        cy.contains('Save').click();
+        cy.get('#next').click({ force: true });
+        cy.get('#next').click({ force: true });
+        cy.get('#next').click({ force: true });
+
+        // cy.contains('#done').click();
+        cy.get('#done').click({ force: true });
 
         cy.get('#toast', { timeout: 1000 })
             .should('exist')
-            .contains(/cannot be empty/i);
+            .contains(/must be completed/i);
     })
 
     it('Once a user logs out, they should be returned to the home screen', () => {
@@ -92,15 +97,74 @@ describe('test user profile functionality', () => {
         cy.wait(5000); // Needs to wait for the user to be in the database
         cy.visit(`/#/users/${randomName}`);
         
-        cy.get('#edit-profile').click();
+        cy.get('#update-profile').click();
 
         cy.get('#firstName').clear().type(secondName);
         cy.get('#lastName').clear().type(secondName);
         cy.get('#bio').clear().type(randomBio);
-        cy.contains('Save').click();
+        cy.get('#next').click({ force: true });
+
+        cy.get('#age').clear().type('100');
+        cy.get('#gender').clear().type('Female');
+        cy.get('#major').clear().type('Psychology');
+        cy.get('#gradYear').clear().type('2030');
+        cy.get('#next').click({ force: true });
+
+        cy.get('#stayLength').select('Summer Lease');
+        cy.get('#budget').select('<$900');
+        cy.get('#idealDistance').select('<0.3 miles');
+        cy.get('#petPreference').select('Pet-Friendly');
+        cy.get('#next').click({ force: true });
+
+        cy.get('#cleanliness').select('Very Clean');
+        cy.get('#smoker').select('Non-Smoker');
+        cy.get('#socialPreference').select('Extrovert');
+        cy.get('#peakProductivity').select('Early Bird');
+        cy.get('#done').click({ force: true });
 
         cy.contains(`${secondName} ${secondName}`).should('be.visible');
         cy.contains(randomBio).should('be.visible');
+        cy.contains('100').should('be.visible');
+        cy.contains('Female').should('be.visible');
+        cy.contains('Psychology').should('be.visible');
+        cy.contains('2030').should('be.visible');
+        
+        cy.contains('Summer Lease').should('be.visible');
+        cy.contains('<$900').should('be.visible');
+        cy.contains('<0.3 miles').should('be.visible');
+        cy.contains('Pet-Friendly').should('be.visible');
+
+        cy.contains('Very Clean').should('be.visible');
+        cy.contains('Non-Smoker').should('be.visible');
+        cy.contains('Extrovert').should('be.visible');
+        cy.contains('Early Bird').should('be.visible');
+    })
+
+    it('Users should see review on profile', () => {
+        cy.get('#home').click();
+        cy.get(':nth-child(1) > a > .p-5').click();
+        cy.url().should('include', '/housings');
+        cy.get('#add-review').click();
+        // Click the third star
+        cy.get('.star-3').click(); 
+        //type in content box
+        cy.get('#content').type('This place looks alright!');
+        //click okay button
+        cy.get('#submit').click();
+        cy.get('#profile').click();
+        cy.contains('This place looks alright!').should('be.visible');
+
+
+        cy.get('#home').click({ force: true });
+        cy.get(':nth-child(1) > a > .p-5').click();
+        cy.url().should('include', '/housings');
+        cy.get('#review-actions').should('exist');
+        //delete the review
+        cy.get('#review-actions').click({ force: true });
+        cy.get('#delete-review').click({ force: true });
+        cy.get('#toast', { timeout: 1000 })
+          .should('exist')
+          .contains(/success/i);
     })
 
     it('A user can send an email to another user', () => {
