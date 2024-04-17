@@ -48,9 +48,16 @@ export class PostsController {
   ): Promise<PostResponseDto> {
     const post = await this.postsService.create(createPostDto, userId);
     delete post.userId;
-    if (createPostDto.imagesData.length > 0) {
-      post.images = await this.postImageService.addBatch(createPostDto.imagesData, post.id);
-    }
+    const { imagesData } = createPostDto;
+    // if (createPostDto.imagesData.length > 0) {
+    //   post.images = await this.postImageService.addBatch(createPostDto.imagesData, post.id);
+    // }
+    // else {
+    //   post.images = [];
+    // }
+    post.images = imagesData.length > 0 
+      ? await this.postImageService.addBatch(imagesData, post.id) 
+      : [];
     // console.log('images', post.images);
     return post;
   }
@@ -118,20 +125,65 @@ export class PostsController {
     };
   }
 
-  // @UseGuards(JwtAuthGuard, PostOwnershipGuard)
-  // @Patch(':id')
-  // async update(
-  //   @Param('id') id: string,
-  //   @Body() updatePostDto: UpdatePostDto,
-  // ): Promise<PostResponseDto> {
-  //   // TODO: logic for deleting images and adding new images (Image entity and mark for Supabase batch delete"
-  //   const post = await this.postsService.update(id, updatePostDto);
-  //   if (!post) {
-  //     throw new NotFoundException(`Post with ID ${id} not found`);
-  //   }
-  //   delete post.userId;
-  //   return post;
+  // @Get(':id/images')
+  // async getImages(@Param('id') id: string) {
+  //   const images = await this.postImageService.findAll(id);
+  //   console.log(images);
   // }
+
+  // @Delete('images/:id')
+  // async deleteImages(@Param('id') id: string) {
+  //   return await this.postImageService.softDelete(ids);
+  // }
+
+  @UseGuards(JwtAuthGuard, PostOwnershipGuard)
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updatePostDto: UpdatePostDto,
+  ): Promise<PostResponseDto> {
+    // Parse data
+    const { imagesData } = updatePostDto;
+    delete updatePostDto.imagesData;
+    console.log('RAW', imagesData);
+    // Update post details
+    const post = await this.postsService.update(id, updatePostDto);
+    if (!post) {
+      throw new NotFoundException(`Post with ID ${id} not found`);
+    }
+    delete post.userId;
+
+    // Update images
+    const currImagesData = await this.postImageService.findAll(id);
+    const newImagesData = imagesData.filter((imgData) => !imgData.id );
+    const oldImagesData = imagesData.filter((imgData) => imgData.id );
+    console.log('CURR',currImagesData);
+    console.log('OLD', oldImagesData);
+    console.log('NEW', newImagesData);
+
+    // Handle if more oldImages sent back then currImages in db?
+
+    // Handle if images were deleted
+    if (oldImagesData.length < currImagesData.length) {
+      let idsToDelete = [];
+      currImagesData.map((imgData) => {
+        if (!oldImagesData.some(item => item.id === imgData.id)) {
+          idsToDelete.push(imgData.id);
+        }
+      });
+      const updateResult = await this.postImageService.softDelete(idsToDelete);
+      // Make sure updateResult.affected === idsToDelete.length
+    }
+
+    // Handle if new images were added
+    if (newImagesData.length > 0) {
+      await this.postImageService.addBatch(newImagesData, id);
+    }
+
+    post.images = await this.postImageService.findAll(id);
+    
+    return post;
+  }
 
   @UseGuards(JwtAuthGuard, PostOwnershipGuard)
   @Delete(':id')

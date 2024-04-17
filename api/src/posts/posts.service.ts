@@ -89,13 +89,13 @@ export class PostsService {
     return await queryBuilder.getMany();
   }
 
-  // async update(id: string, updatePostDto: UpdatePostDto): Promise<Post | null> {
-  //   const post = await this.postRepository.preload({ id, ...updatePostDto });
-  //   if (!post) {
-  //     return null;
-  //   }
-  //   return this.postRepository.save(post);
-  // }
+  async update(id: string, updatePostDto: UpdatePostDto): Promise<Post | null> {
+    const post = await this.postRepository.preload({ id, ...updatePostDto });
+    if (!post) {
+      return null;
+    }
+    return this.postRepository.save(post);
+  }
 
   async remove(id: string): Promise<Post | null> {
     const post = await this.findOne(id);

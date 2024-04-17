@@ -30,6 +30,7 @@ export const EditPostDialog = ({
   post: PostWithUserData;
   setDropdownState: (b: boolean) => void;
 }) => {
+  // console.log(post.images);
   const [newTitle, setNewTitle] = useState(post.title);
   const [newContent, setNewContent] = useState(post.content);
   const [newCost, setNewCost] = useState(post.cost);
@@ -38,53 +39,6 @@ export const EditPostDialog = ({
   const { editPostById } = useMutationPosts();
   const { toast } = useToast();
   const [dialogueState, setDialogueState] = useState(false);
-
-  const handleEditClick = async (event: React.SyntheticEvent) => {
-    event.stopPropagation(); // Stop event propagation to prevent closing the dropdown
-    event.preventDefault(); // Prevent the default behavior (e.g., form submission)
-    setDialogueState(true);
-  };
-
-  const handleSave = async (event: React.SyntheticEvent) => {
-    event.preventDefault();
-    if (!newTitle || !newContent || !newAddress) { 
-      //TODO: handle invalid Cost field
-      toast({
-        variant: "destructive",
-        title: "Sorry! Fields cannot be empty! 🙁",
-        description: "Please fill out all fields for your post.",
-      });
-      return;
-    }
-
-    // let imgDataArray: ImageMetadata[] = [];
-    if (imageFiles.length > 0) {
-      const imgDataArray = await postImagesToData(imageFiles);
-      setExistingPreviews([...existingPreviews, ...imgDataArray]);
-    }
-    
-    await editPostById(post.id, newTitle, newContent, newCost, newAddress, post.type, existingPreviews );
-    setNewTitle("");
-    setNewContent("");
-    setNewAddress("");
-    setNewCost(0);
-    setImageFiles([]);
-    setExistingPreviews([]);
-    setDropdownState(false);
-    setDialogueState(false);
-  };
-
-  const handleCancel = (event: React.SyntheticEvent) => {
-    event.preventDefault();
-    setNewTitle(post.title);
-    setNewContent(post.content);
-    setNewAddress(post.address);
-    setNewCost(post.cost);
-    setImageFiles([]);
-    setExistingPreviews([]);
-    setDropdownState(false);
-    setDialogueState(false);
-  };
 
   const [imageFiles, setImageFiles] = useState<File[]>([]); // uploaded images
   const [newPreviews, setNewPreviews] = useState<PreviewType[]>([]); // data of newly uploaded images
@@ -169,6 +123,55 @@ export const EditPostDialog = ({
     setNewPreviews([...newPreviews, ...uniquePreviews]);
     //console.log('Dropped files', [...uniqueImages]);
   }
+
+  const handleEditClick = async (event: React.SyntheticEvent) => {
+    event.stopPropagation(); // Stop event propagation to prevent closing the dropdown
+    event.preventDefault(); // Prevent the default behavior (e.g., form submission)
+    setDialogueState(true);
+  };
+
+  const handleSave = async (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    if (!newTitle || !newContent || !newAddress) { 
+      //TODO: handle invalid Cost field
+      toast({
+        variant: "destructive",
+        title: "Sorry! Fields cannot be empty! 🙁",
+        description: "Please fill out all fields for your post.",
+      });
+      return;
+    }
+
+    let imgDataArray: ImageMetadata[] = [];
+    if (existingPreviews && existingPreviews.length) {
+      imgDataArray = imgDataArray.concat(existingPreviews);
+    }
+    if (imageFiles.length > 0) {
+      imgDataArray = imgDataArray.concat(await postImagesToData(imageFiles));
+    }
+    
+    await editPostById(post.id, newTitle, newContent, newCost, newAddress, post.type, imgDataArray );
+    setNewTitle("");
+    setNewContent("");
+    setNewAddress("");
+    setNewCost(0);
+    setImageFiles([]);
+    setExistingPreviews([]);
+    setDropdownState(false);
+    setDialogueState(false);
+  };
+
+  const handleCancel = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    setNewTitle(post.title);
+    setNewContent(post.content);
+    setNewAddress(post.address);
+    setNewCost(post.cost);
+    setImageFiles([]);
+    setExistingPreviews([]);
+    setDropdownState(false);
+    setDialogueState(false);
+  };
 
   return (
     <Dialog open={dialogueState} onOpenChange={setDialogueState}>
@@ -265,13 +268,13 @@ export const EditPostDialog = ({
               />
             </div>
             <div className='container'>
-              {existingPreviews.map((item, i) => (
+              {existingPreviews && existingPreviews.map((item, i) => (
                 <div className='image' key={`img-${i}`}>
                   <span className='delete' onClick={() => deleteImage(i, false)}>&times;</span>
                   <img src={item.url} alt={item.path}/>
                 </div>
               ))}
-              {newPreviews.map((item, i) => (
+              {newPreviews && newPreviews.map((item, i) => (
                 <div className='image' key={`img-${i}`}>
                   <span className='delete' onClick={() => deleteImage(i, true)}>&times;</span>
                   <img src={item.url} alt={item.name}/>

@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Post } from "../post.entity";
 
 // Table for storing meta-data of images uploaded to Supabase storage
@@ -21,4 +21,8 @@ export class PostImage {
 
   @Column()
   postId: string; // for joining table row
+
+  @DeleteDateColumn()
+  // @Column({ nullable: true })
+  deletedAt: Date;
 }

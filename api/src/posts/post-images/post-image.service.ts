@@ -13,11 +13,11 @@ export class PostImageService {
   async findAll(
     postId: string
   ): Promise<PostImage[]> {
-    // TODO: Get all images with postId 
-
-    // TODO: filter out 'soft-deleted' images
-
-    return;
+    return this.postImageRepository.find({
+      where: {
+        postId: postId,
+      }
+    });
   }
 
   async addBatch(
@@ -41,7 +41,11 @@ export class PostImageService {
     return this.postImageRepository.save(postImage);
   }
 
-  async softDelete() {
-
+  async softDelete(ids: string[]): Promise<any> {
+    return await this.postImageRepository
+      .createQueryBuilder()
+      .softDelete()
+      .where('id IN (:...ids)', { ids })
+      .execute();
   }
 }
