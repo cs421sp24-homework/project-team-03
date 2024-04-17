@@ -273,27 +273,27 @@ export function UpdateProfileDialog({ user, onUpdateProfile }: { user: User, onU
                     <DialogFooter>
                         <div>
                             {currentDialogIndex === 0 && (
-                                <Button type="button" onClick={handleNextDialog} style={{ backgroundColor: "lightgrey", color: "black" }}><ArrowRightIcon/></Button>
+                                <Button id="next" type="button" onClick={handleNextDialog} style={{ backgroundColor: "lightgrey", color: "black" }}><ArrowRightIcon/></Button>
                             )}
                             {(currentDialogIndex === 1 || currentDialogIndex ===  2) && (
                             <>
-                                <Button type="button" variant="ghost" onClick={handlePrevDialog} style={{ backgroundColor: "lightgrey", color: "black", marginRight: "10px" }}><ArrowLeftIcon/></Button>
-                                <Button type="button" variant="ghost" onClick={handleNextDialog} style={{ backgroundColor: "lightgrey", color: "black" }}><ArrowRightIcon/></Button>
+                                <Button id="prev" type="button" variant="ghost" onClick={handlePrevDialog} style={{ backgroundColor: "lightgrey", color: "black", marginRight: "10px" }}><ArrowLeftIcon/></Button>
+                                <Button id="next" type="button" variant="ghost" onClick={handleNextDialog} style={{ backgroundColor: "lightgrey", color: "black" }}><ArrowRightIcon/></Button>
                             </>
                             )}
                             {currentDialogIndex === 3 && (
-                                <Button type="button" variant="ghost" onClick={handlePrevDialog} style={{ backgroundColor: "lightgrey", color: "black" }}><ArrowLeftIcon/></Button>
+                                <Button id="prev" type="button" variant="ghost" onClick={handlePrevDialog} style={{ backgroundColor: "lightgrey", color: "black" }}><ArrowLeftIcon/></Button>
                             )}
                         </div>
                         {currentDialogIndex === 3 && (
                             <DialogClose asChild>
-                                <Button type="submit" onClick={handleSave}>
+                                <Button id="done" type="submit" onClick={handleSave}>
                                     Done
                                 </Button>
                             </DialogClose>
                         )}
                         <DialogClose asChild>
-                             <Button variant="secondary" type="reset" onClick={clearForm}>
+                             <Button id="cancel" variant="secondary" type="reset" onClick={clearForm}>
                                 Cancel
                             </Button>
                         </DialogClose>
