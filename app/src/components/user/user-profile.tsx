@@ -23,6 +23,10 @@ export const UserProfile = ({ user }: { user: User }) => {
             navigate("/");
         }
     }, [loggedUser, navigate]);
+
+    useEffect(() => {
+        setUpdatedUser(user);
+    }, [user])
     
     const handleUpdateProfile = (updatedUserData: User | void) => {
         setUpdatedUser(updatedUserData);

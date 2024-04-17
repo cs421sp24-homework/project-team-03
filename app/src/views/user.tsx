@@ -13,18 +13,18 @@ function User() {
   const [user, setUser] = useState<UserType | null>(null);
   const [isLoading, setIsLoading] = useState(true); // Add loading state
 
+  const getUser = async () => {
+    try {
+      const userData = await fetchUser(email);
+      setUser(userData);
+      setIsLoading(false); // Once data is fetched, set loading to false
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      setIsLoading(false); // Set loading to false even if there's an error
+    }
+  };
+
   useEffect(() => {
-    const getUser = async () => {
-      try {
-        const userData = await fetchUser(email);
-        setUser(userData);
-        setIsLoading(false); // Once data is fetched, set loading to false
-      } catch (error) {
-        console.error("Error fetching user:", error);
-        setIsLoading(false); // Set loading to false even if there's an error
-      }
-    };
-  
     getUser();
   }, [email]);
   
