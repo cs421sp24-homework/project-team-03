@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { HousingItem as HousingItemType } from "@/lib/types";
-import StarRating from "../catalog/star-rating";
+import StarRating from "../components/catalog/star-rating";
 import { useStore } from "@/lib/store";
 import HousingCarousel from "./housing-carousel";
-import SingleHousingContainer from "../map/single-housing-container";
+import SingleHousingContainer from "../components/map/single-housing-container";
 import NearbyPlaces from "@/housing/nearby-places";
 
 type HousingItemProps = {

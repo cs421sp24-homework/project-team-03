@@ -1,7 +1,7 @@
 import { HousingItem } from "@/lib/types";
 import HousingExpanded from "./housing-expanded";
-import Header from "./header";
-import Reviews from "./reviews";
+import Header from "../components/review/header";
+import Reviews from "../components/review/reviews";
 import { useStore } from "@/lib/store";
 import { useEffect, useState } from "react";
 import { fetchReviews } from "@/lib/api";
