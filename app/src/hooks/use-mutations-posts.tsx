@@ -36,6 +36,10 @@ function useMutationPosts() {
         try {
             const newPost = await createPost(title, content, cost, address, type, imagesData);
             addPost(newPost);
+            console.log('Post received from our DB', newPost);
+            toast({
+                title: "Post Created Successfully!",
+            });
         } catch (error) {
             toast({
                 variant: "destructive",

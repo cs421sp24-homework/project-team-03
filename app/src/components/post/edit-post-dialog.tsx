@@ -18,11 +18,12 @@ import useMutationPosts from "@/hooks/use-mutations-posts";
 import { ImageMetadata, PostWithUserData } from "@/lib/types";
 import { DropdownMenuItem } from "../ui/dropdown-menu";
 import useMutationImages from "@/hooks/use-mutations-images";
-//TODO: refactor and replace PreviewType with ImageMetadata
+
 type PreviewType = {
   url: string,
   name: string
 }
+
 export const EditPostDialog = ({
   post,
   setDropdownState,
@@ -30,7 +31,6 @@ export const EditPostDialog = ({
   post: PostWithUserData;
   setDropdownState: (b: boolean) => void;
 }) => {
-  // console.log(post.images);
   const [newTitle, setNewTitle] = useState(post.title);
   const [newContent, setNewContent] = useState(post.content);
   const [newCost, setNewCost] = useState(post.cost);
@@ -239,7 +239,6 @@ export const EditPostDialog = ({
                   } } />
               </div></>
           }
-          {/* TODO: Add hide condition for certain post-types if applicable */}
           <Label htmlFor="upload">
             Upload Images JPG or PNG only
           </Label>

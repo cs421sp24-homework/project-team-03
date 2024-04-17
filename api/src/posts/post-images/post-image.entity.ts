@@ -14,7 +14,7 @@ export class PostImage {
   path: string;
 
   @ManyToOne(() => Post, (post) => post.images, {
-    onDelete: 'SET NULL', // TODO: soft delete
+    onDelete: 'SET NULL',
   })
   @JoinColumn({ name: 'postId'})
   post: Post;
@@ -23,6 +23,5 @@ export class PostImage {
   postId: string; // for joining table row
 
   @DeleteDateColumn()
-  // @Column({ nullable: true })
   deletedAt: Date;
 }

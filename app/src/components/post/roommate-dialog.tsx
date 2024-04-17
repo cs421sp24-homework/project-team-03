@@ -69,7 +69,6 @@ export const RoommateDialog = (
     // Add unique images to state variable
     setImageFiles([...imageFiles, ...uniqueImages]);
     setPreviews([...previews, ...uniquePreviews]);
-    //console.log('Selected files', [...uniqueImages]);
   }
 
   const deleteImage = (index: number) => {
@@ -94,10 +93,20 @@ export const RoommateDialog = (
     const files = e.dataTransfer.files;
     if (files.length === 0) return;
 
-    // Filter out duplicate images by name
     let uniqueImages: File[] = [];
     let uniquePreviews: PreviewType[] = [];
     Array.from(files).forEach((file) => {
+      // Skip over unaccepted file types
+      if ( file.name.split('.').pop()?.toLowerCase() !== 'png' &&
+           file.name.split('.').pop()?.toLowerCase() !== 'jpg' && 
+           file.name.split('.').pop()?.toLowerCase() !== 'jpeg' ) {
+        toast({
+          title: "Invalid file type ignored!",
+          description: `Sorry! Only JPG, JPEG, and PNG files are accepted.`,
+        });
+        return;
+      }
+      // Only allow unique file names (no duplicates)
       if (!previews.some((item) => item.name === file.name)) {
         uniqueImages.push(file);
         uniquePreviews.push(
@@ -108,11 +117,9 @@ export const RoommateDialog = (
         );
       }
     });
-
-    // Add unique images to state variable
+    // Add images to state variables (for upload and preview)
     setImageFiles([...imageFiles, ...uniqueImages]);
     setPreviews([...previews, ...uniquePreviews]);
-    //console.log('Dropped files', [...uniqueImages]);
   }
 
   const handleSave = async () => {
@@ -127,12 +134,12 @@ export const RoommateDialog = (
       return;
     }
 
-    //console.log('Pre-upload images', imageFiles);
+    console.log('Pre-upload to Supabase', imageFiles);
     let imgDataArray: ImageMetadata[] = [];
     if (imageFiles.length !== 0) {
       imgDataArray = await postImagesToData(imageFiles);
     }
-    // console.log('Pre-save data', imgDataArray);
+    console.log('Metadata received from Supabase', imgDataArray);
     await makeNewPost(title, content, 0, "random", "Roommate", imgDataArray);
     handleCancel()
   };

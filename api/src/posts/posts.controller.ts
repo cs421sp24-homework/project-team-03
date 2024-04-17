@@ -53,7 +53,7 @@ export class PostsController {
     post.images = imagesData.length > 0 
       ? await this.postImageService.addBatch(imagesData, post.id) 
       : [];
-
+    post.images.forEach(img => delete img.deletedAt);
     return post;
   }
 
