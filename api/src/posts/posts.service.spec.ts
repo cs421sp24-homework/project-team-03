@@ -48,12 +48,22 @@ describe('PostsService', () => {
     lastName: 'Doe',
     isEmailVerified: false, // Indicates whether the email is verified
     verificationToken: 'verificationToken123', // Mock verification token, can be null
-
-    // Mock posts array, can be empty or contain multiple Post entities
-    posts: [],
+    posts: [], // Mock posts array, can be empty or contain multiple Post entities
     reviews: [],
     bio: null,
     notifications: 0,
+    age: '21',
+    gender: 'Female',
+    major: 'Computer Science',
+    gradYear: '2030',
+    stayLength: 'Summer',
+    budget: '>$900',
+    idealDistance: '<0.3 miles',
+    petPreference: 'Pet-Free',
+    cleanliness: 'Not Clean',
+    smoker: 'Non-Smoker',
+    socialPreference: 'Ambivert',
+    peakProductivity: 'Afternoon Person',
   };
 
   const resultPost: Post = {

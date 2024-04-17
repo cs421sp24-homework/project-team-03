@@ -12,6 +12,7 @@ type State = {
   selectedHousing: HousingItem | null;
   notifications: number;
   nearbyStores: Locations[];
+  userReviews: ReviewWithUserData[];
   // Add more state variables
 };
 
@@ -27,6 +28,7 @@ type Action = {
   setEditPosts: (post: PostWithUserData) => void;
   removePost: (id: string) => void;
   setReviews: (reviews: ReviewWithUserData[]) => void;
+  setUserReviews: (reviews: ReviewWithUserData[]) => void;
   addReview: (review: ReviewWithUserData) => void;
   removeReview: (id: string) => void;
   setSelectedHousing: (housing: HousingItem) => void;
@@ -47,6 +49,7 @@ const initialState: State = {
   reviews: [],
   selectedHousing: null,
   notifications: 0,
+  userReviews: []
   nearbyStores: []
 };
 
@@ -104,6 +107,7 @@ export const useStore = create<State & Action>()(
     },
 
     setReviews: (reviews) => set({ reviews }),
+    setUserReviews: (userReviews) => set({ userReviews }),
 
     addReview: (review) => {
       const newReviews = [...get().reviews, review];
