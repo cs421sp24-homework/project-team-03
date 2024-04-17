@@ -190,10 +190,15 @@ export class PostsController {
   async remove(
     @Param('id') id: string,
   ): Promise<{ statusCode: number; message: string }> {
-    const post = await this.postsService.remove(id);
+    const post = await this.postsService.findOne(id);
     if (!post) {
       throw new NotFoundException(`Post with ID ${id} not found`);
     }
+    // soft delete all images
+    const postImages = await this.postImageService.findAll(id);
+    const idsToDelete = postImages.map(img => img.id);
+    await this.postImageService.softDelete(idsToDelete);
+    await this.postsService.remove(id);
     return {
       statusCode: 200,
       message: 'Post deleted successfully',

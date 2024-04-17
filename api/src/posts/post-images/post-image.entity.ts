@@ -14,12 +14,12 @@ export class PostImage {
   path: string;
 
   @ManyToOne(() => Post, (post) => post.images, {
-    onDelete: 'CASCADE', // TODO: soft delete
+    onDelete: 'SET NULL', // TODO: soft delete
   })
   @JoinColumn({ name: 'postId'})
   post: Post;
 
-  @Column()
+  @Column({ nullable: true })
   postId: string; // for joining table row
 
   @DeleteDateColumn()
