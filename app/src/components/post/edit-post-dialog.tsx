@@ -133,7 +133,6 @@ export const EditPostDialog = ({
   const handleSave = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     if (!newTitle || !newContent || !newAddress) { 
-      //TODO: handle invalid Cost field
       toast({
         variant: "destructive",
         title: "Sorry! Fields cannot be empty! 🙁",
@@ -141,6 +140,7 @@ export const EditPostDialog = ({
       });
       return;
     }
+    //TODO: handle invalid Cost field
 
     let imgDataArray: ImageMetadata[] = [];
     if (existingPreviews && existingPreviews.length) {
@@ -224,6 +224,7 @@ export const EditPostDialog = ({
               <Input
                 id="cost"
                 type="number"
+                value={newCost}
                 onChange={(e) => setNewCost(Number(e.target.value))} />
             </div><div className="grid items-center grid-cols-4 gap-4">
                 <Label htmlFor="address"> New Address</Label>

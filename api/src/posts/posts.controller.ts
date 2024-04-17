@@ -49,16 +49,11 @@ export class PostsController {
     const post = await this.postsService.create(createPostDto, userId);
     delete post.userId;
     const { imagesData } = createPostDto;
-    // if (createPostDto.imagesData.length > 0) {
-    //   post.images = await this.postImageService.addBatch(createPostDto.imagesData, post.id);
-    // }
-    // else {
-    //   post.images = [];
-    // }
+    
     post.images = imagesData.length > 0 
       ? await this.postImageService.addBatch(imagesData, post.id) 
       : [];
-    // console.log('images', post.images);
+
     return post;
   }
 
@@ -101,7 +96,7 @@ export class PostsController {
       type,
       cost,
     );
-    // console.log(posts);
+
     return {
       filter: email,
       search,
@@ -125,17 +120,6 @@ export class PostsController {
     };
   }
 
-  // @Get(':id/images')
-  // async getImages(@Param('id') id: string) {
-  //   const images = await this.postImageService.findAll(id);
-  //   console.log(images);
-  // }
-
-  // @Delete('images/:id')
-  // async deleteImages(@Param('id') id: string) {
-  //   return await this.postImageService.softDelete(ids);
-  // }
-
   @UseGuards(JwtAuthGuard, PostOwnershipGuard)
   @Patch(':id')
   async update(
@@ -145,7 +129,6 @@ export class PostsController {
     // Parse data
     const { imagesData } = updatePostDto;
     delete updatePostDto.imagesData;
-    console.log('RAW', imagesData);
     // Update post details
     const post = await this.postsService.update(id, updatePostDto);
     if (!post) {
@@ -157,9 +140,6 @@ export class PostsController {
     const currImagesData = await this.postImageService.findAll(id);
     const newImagesData = imagesData.filter((imgData) => !imgData.id );
     const oldImagesData = imagesData.filter((imgData) => imgData.id );
-    console.log('CURR',currImagesData);
-    console.log('OLD', oldImagesData);
-    console.log('NEW', newImagesData);
 
     // Handle if more oldImages sent back then currImages in db?
 
