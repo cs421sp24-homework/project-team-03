@@ -16,6 +16,9 @@ export class PostImageService {
     return this.postImageRepository.find({
       where: {
         postId: postId,
+      },
+      order: {
+        timestamp: "ASC",
       }
     });
   }

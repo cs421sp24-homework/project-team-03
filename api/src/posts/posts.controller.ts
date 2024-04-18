@@ -46,9 +46,10 @@ export class PostsController {
     @Body() createPostDto: CreatePostDto,
     @UserId() userId: number,
   ): Promise<PostResponseDto> {
+    const { imagesData } = createPostDto;
+    delete createPostDto.imagesData;
     const post = await this.postsService.create(createPostDto, userId);
     delete post.userId;
-    const { imagesData } = createPostDto;
     
     post.images = imagesData.length > 0 
       ? await this.postImageService.addBatch(imagesData, post.id) 
@@ -96,6 +97,10 @@ export class PostsController {
       type,
       cost,
     );
+    
+    await Promise.all(posts.map(async (post, i) => {
+      post.images = await this.postImageService.findAll(post.id);
+    }));
 
     return {
       filter: email,
@@ -111,10 +116,6 @@ export class PostsController {
           delete post.user.password;
           // TODO: delete verification token and other unnecessary fields?
         }
-        // Delete path (data minimization?)
-        // post.images?.forEach((img) => {
-        //   delete img.path;
-        // })
         return post;
       }),
     };
@@ -137,7 +138,7 @@ export class PostsController {
     delete post.userId;
 
     // Update images
-    const currImagesData = await this.postImageService.findAll(id);
+    const currImagesData = await this.postImageService.findAll(post.id);
     const newImagesData = imagesData.filter((imgData) => !imgData.id );
     const oldImagesData = imagesData.filter((imgData) => imgData.id );
 

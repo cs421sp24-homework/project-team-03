@@ -30,7 +30,7 @@ function useMutationPosts() {
         cost: number,
         address: string,
         type: PostType,
-        imagesData: ImageMetadata[],
+        imagesData: ImageMetadata[], // empty array if no images
         // images: string[],
     ) => {
         try {

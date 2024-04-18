@@ -177,7 +177,7 @@ export const register = async (
     cost: number,
     address: string,
     type: PostType,
-    imagesData: ImageMetadata[],
+    imagesData: ImageMetadata[], // empty array if no images
     // images: string[],
   ): Promise<PostWithUserData> => {
     const user = getAuthenticatedUser();

@@ -39,7 +39,6 @@ export class PostsService {
     cost?: number,
   ): Promise<Post[]> {
     const queryBuilder = this.postRepository.createQueryBuilder('posts');
-    queryBuilder.leftJoinAndSelect('posts.images', 'images');
     // Add condition to join user data
     if (withUserData) {
       queryBuilder.leftJoinAndSelect('posts.user', 'user');

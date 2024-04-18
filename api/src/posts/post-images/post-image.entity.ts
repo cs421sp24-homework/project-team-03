@@ -1,4 +1,4 @@
-import { Column, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Post } from "../post.entity";
 
 // Table for storing meta-data of images uploaded to Supabase storage
@@ -24,4 +24,7 @@ export class PostImage {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  timestamp: Date;
 }
