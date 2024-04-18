@@ -78,6 +78,7 @@ const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
                         if (index === 1) {
                             return (
                                 <Marker
+                                    key={'housing-item-marker'}
                                     title={`marker-${item.id}`}
                                     position={{ lat: latitude, lng: longitude }}
                                     icon={{
