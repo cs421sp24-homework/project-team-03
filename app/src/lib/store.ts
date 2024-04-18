@@ -49,7 +49,7 @@ const initialState: State = {
   reviews: [],
   selectedHousing: null,
   notifications: 0,
-  userReviews: []
+  userReviews: [],
   nearbyStores: []
 };
 

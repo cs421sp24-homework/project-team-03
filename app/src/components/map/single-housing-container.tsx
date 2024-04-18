@@ -11,6 +11,7 @@ const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
     const [hoveredStore, setHoveredStore] = useState<Locations | null>(null);
     const setStores = useStore((state) => state.setNearbyStores);
     const [selectedCategory, setSelectedCategory] = useState("supermarket");
+    let housingItemArr = [1];
 
 
     const handleMarkerHover = (item: HousingItemType) => {
@@ -40,6 +41,7 @@ const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
                     const storesWithCoordinates = await Promise.all(coordinatesPromises);
                     setGroceryStores(storesWithCoordinates);
                     setStores(storesWithCoordinates);
+                    housingItemArr = [1];
                 } else {
                     throw new Error('No results found');
                 }
@@ -61,8 +63,8 @@ const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
                 <option value="supermarket">Grocery Stores</option>
                 <option value="restaurant">Restaurants</option>
                 <option value="park">Parks</option>
-                <option value="bar">Bars</option>
-                <option value="school">Schools</option>
+                <option value="cafe">Cafe</option>
+                <option value="bakery">Bakery</option>
             </select>
             <GoogleMap
                 id={"housing-map-individual"}
@@ -71,49 +73,55 @@ const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
                 zoom={13}
                 options={{ controlSize: 25 }}
             >
-                <Marker
-                    title={`marker-${item.id}`}
-                    position={{ lat: latitude, lng: longitude }}
-                    icon={{
-                        url: 'http://maps.gstatic.com/mapfiles/ms2/micons/red-pushpin.png',
-                        scaledSize: new window.google.maps.Size(40, 40)
-                    }}
-                    onMouseOver={() => handleMarkerHover(item)}
-                    >
-                    {hoveredHousing === item &&
-                        <InfoWindowF>
-                            <HousingInfoWindow housingItem={item} />
-                        </InfoWindowF>
-                    }
-                </Marker>
-                {groceryStores.map((store, index) => {
-                    if (typeof store.latitude === 'number' && typeof store.longitude === 'number') {
-                        return (
-                            <Marker
-                                key={index}
-                                position={{ lat: store.latitude, lng: store.longitude }}
-                                title={store.displayName}
-                                icon={{
-                                    url: 'http://maps.gstatic.com/mapfiles/ms2/micons/ltblue-dot.png',
-                                    scaledSize: new window.google.maps.Size(40, 40)
-                                }}
-                                onMouseOver={() => handleStoreMarkerHover(store)}
-                            >
-                                {hoveredStore === store &&
-                                    <InfoWindowF>
-                                        <div>
-                                            <h3>{store.displayName}</h3>
-                                            <p>Address: {store.formattedAddress}</p>
-                                        </div>
-                                    </InfoWindowF>
-                                }
-                            </Marker>
-                        );
-                    } else {
+                <>
+                    {groceryStores.map((store, index) => {
+                        if (index === 1) {
+                            return (
+                                <Marker
+                                    title={`marker-${item.id}`}
+                                    position={{ lat: latitude, lng: longitude }}
+                                    icon={{
+                                        url: 'http://maps.gstatic.com/mapfiles/ms2/micons/red-pushpin.png',
+                                        scaledSize: new window.google.maps.Size(40, 40)
+                                    }}
+                                    onMouseOver={() => handleMarkerHover(item)}
+                                >
+                                    {hoveredHousing === item &&
+                                        <InfoWindowF>
+                                            <HousingInfoWindow housingItem={item} />
+                                        </InfoWindowF>
+                                    }
+                                </Marker>
+                            );
+                        }
+                        if (typeof store.latitude === 'number' && typeof store.longitude === 'number') {
+                            return (
+                                <Marker
+                                    key={index}
+                                    position={{ lat: store.latitude, lng: store.longitude }}
+                                    title={store.displayName}
+                                    icon={{
+                                        url: 'http://maps.gstatic.com/mapfiles/ms2/micons/ltblue-dot.png',
+                                        scaledSize: new window.google.maps.Size(40, 40)
+                                    }}
+                                    onMouseOver={() => handleStoreMarkerHover(store)}
+                                >
+                                    {hoveredStore === store &&
+                                        <InfoWindowF>
+                                            <div>
+                                                <h3>{store.displayName}</h3>
+                                                <p>Address: {store.formattedAddress}</p>
+                                            </div>
+                                        </InfoWindowF>
+                                    }
+                                </Marker>
+                            );
+                        }
                         return null;
-                    }
-                })}
+                    })}
+                </>
             </GoogleMap>
+
             </div>
         );
     } else {
