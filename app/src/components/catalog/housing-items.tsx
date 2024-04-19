@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import HousingItem from "./housing-item";
 import useQueryHousingItems from "@/hooks/use-query-housing-items";
 

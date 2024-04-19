@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { HousingItem, Post, User } from "@/lib/types"
 import UserAvatar from "./user-avatar"
 import { useStore } from "@/lib/store";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useQueryUserReviews from "@/hooks/use-query-user-reviews";
 import { EmailDialog } from "../email/send-email-dialog";
 import { useToast } from "../ui/use-toast";
@@ -13,6 +13,9 @@ import { FaSoap } from "react-icons/fa6";
 import { TbSunMoon } from "react-icons/tb";
 import { IoPeopleSharp } from "react-icons/io5";
 import { LuCigarette } from "react-icons/lu";
+import StarRating from "../catalog/star-rating";
+import { formatTimestamp } from "@/lib/utils";
+import { CounterClockwiseClockIcon } from "@radix-ui/react-icons";
 
 export const UserProfile = ({ user }: { user: User }) => {
     const { toast } = useToast();
@@ -153,10 +156,23 @@ export const UserProfile = ({ user }: { user: User }) => {
                     <div className="grid grid-cols-3 gap-4 mt-2">
                         {favoritePosts.map((post) => (
                             <div key={post.id} className="bg-gray-100 p-4 rounded-lg shadow">
+                                <Link to={'/posts'}>
                                 {/* Render post info here */}
-                                <div>Title: {post.title}</div>
-                                <div>Content: {post.content}</div>
+                                <span style={{ fontWeight: 'bold'}}>Title: </span> 
+                                    <span>{post.title}</span>
+                                <div>
+                                    <span style={{ fontWeight: 'bold'}}>Content: </span> 
+                                    <span>{post.content}</span>
+                                </div>
+                               
+                                {post.timestamp && (
+                                    <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+                                        <CounterClockwiseClockIcon style={{ marginRight: '0.2em', verticalAlign: 'sub' }} />
+                                        {formatTimestamp(post.timestamp)}
+                                    </span>
+                                )}
                                 {/* Add more details as needed */}
+                                </Link>
                             </div>
                         ))}
                     </div>
@@ -170,10 +186,19 @@ export const UserProfile = ({ user }: { user: User }) => {
                     <div className="grid grid-cols-3 gap-4 mt-2">
                         {favoriteHousings.map((housing) => (
                             <div key={housing.id} className="bg-gray-100 p-4 rounded-lg shadow">
+                                <Link to={`/housings/${housing.id}`}>
+                                <div id={`info-window-${housing.id}`}>
+                                    <div style={{fontWeight: "bold"}}>{housing.name}</div>
+                                    <div style={{ display:"flex"}}>
+                                        <StarRating rating={housing.avgRating} />
+                                        <div style={{ marginLeft: '0.2rem', fontSize: '15px'}}> | {housing.reviewCount} reviews</div>
+                                    </div>
+                                        <div style={{ fontWeight: 'bold'}}>{housing.price}</div>
+                                        <span style={{ fontWeight: 'bold'}}>{housing.distance} miles</span> from JHU Homewood
+                                </div>
                                 {/* Render housing info here */}
-                                <div>Name: {housing.name}</div>
-                                <div>Address: {housing.address}</div>
                                 {/* Add more details as needed */}
+                                </Link>
                             </div>
                         ))}
                     </div>

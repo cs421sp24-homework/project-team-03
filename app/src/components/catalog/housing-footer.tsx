@@ -54,11 +54,11 @@ const HousingFooter = ({ housingItem }: HousingFooterProps) => {
   };
 
   return (
-    <div className="post-footer" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-      <button className="like-button" onClick={handleLike}>
+    <>
+      <button className="like-button" onClick={handleLike} style={{ display: 'flex', justifyContent: 'flex-end'}}>
       {liked ? <HeartFilledIcon className='h-5 w-8' color="#ff0000" /> : <HeartIcon className='ml-1 h-5 w-8' color="grey" />}
       </button>
-    </div>
+    </>
   );
 };
 
