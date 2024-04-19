@@ -1,4 +1,4 @@
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "../ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "../components/ui/carousel";
 
 
 const HousingCarousel = ({ housingImages }: { housingImages: string[] }) => {

@@ -1,7 +1,7 @@
 import Aside from "@/components/aside";
 import Sidebar from "@/components/sidebar";
 import { useParams } from "react-router-dom";
-import HousingItemWithReviews from "@/components/review/housing-item-with-review";
+import HousingItemWithReviews from "@/housing/housing-item-with-review";
 import useQueryHousing from "@/hooks/use-query-housing";
 
 const HousingView = () => {
