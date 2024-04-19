@@ -177,8 +177,10 @@ export class PostsController {
     }
     // soft delete all images
     const postImages = await this.postImageService.findAll(id);
-    const idsToDelete = postImages.map(img => img.id);
-    await this.postImageService.softDelete(idsToDelete);
+    if (postImages.length > 0) {
+      const idsToDelete = postImages.map(img => img.id);
+      await this.postImageService.softDelete(idsToDelete);
+    }
     await this.postsService.remove(id);
     return {
       statusCode: 200,

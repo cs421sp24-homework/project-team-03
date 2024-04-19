@@ -1,6 +1,6 @@
 import { InjectRepository } from "@nestjs/typeorm";
 import { PostImage } from "./post-image.entity";
-import { Repository } from "typeorm";
+import { Repository, UpdateResult } from "typeorm";
 import { Injectable } from "@nestjs/common";
 import { ImageMetadataDTO } from "./image-metadata.dto";
 
@@ -44,7 +44,7 @@ export class PostImageService {
     return this.postImageRepository.save(postImage);
   }
 
-  async softDelete(ids: string[]): Promise<any> {
+  async softDelete(ids: string[]): Promise<UpdateResult> {
     return await this.postImageRepository
       .createQueryBuilder()
       .softDelete()

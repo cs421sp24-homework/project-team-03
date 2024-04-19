@@ -31,7 +31,8 @@ const HousingExpanded = (props: HousingItemProps) => {
                     <div>{housingItem.distance} miles from JHU Homewood Campus</div>
                 </div>
             <div>
-            {housingItem?.aggregateReview && user && (
+            {housingItem?.reviewCount > 0 &&
+                housingItem?.aggregateReview && user && (
                 <div className="max-w my-3 bg-blue-50 rounded-lg shadow border border-gray-200">
                     <div className="flex px-4 py-2 border-b border-gray-200">
                         <div>

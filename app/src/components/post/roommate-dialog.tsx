@@ -134,12 +134,12 @@ export const RoommateDialog = (
       return;
     }
 
-    console.log('Pre-upload to Supabase', imageFiles);
+    // console.log('Pre-upload to Supabase', imageFiles);
     let imgDataArray: ImageMetadata[] = [];
     if (imageFiles.length !== 0) {
       imgDataArray = await postImagesToData(imageFiles);
     }
-    console.log('Metadata received from Supabase', imgDataArray);
+    // console.log('Metadata received from Supabase', imgDataArray);
     await makeNewPost(title, content, 0, "random", "Roommate", imgDataArray);
     handleCancel()
   };
