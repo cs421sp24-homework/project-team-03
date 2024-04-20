@@ -679,24 +679,36 @@ export const createHousingItem = async (
   };
 
   export const checkIfFavorite = async (userId: number, postId: string): Promise<boolean> => {
-    try {
-      const response = await fetch(`${API_URL}/users/${userId}/favoritePosts/${postId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        // If the response is successful (status code 200), it means the user has liked the post
-        return true;
-      } else {
-        // For other error statuses, throw an error
-        return false;
-      }
-    } catch (error) {
-      return false;
+    // try {
+    const response = await fetch(`${API_URL}/users/${userId}/favoritePosts/${postId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
     }
+
+    // console.log(responseJson.data.id);
+    if ( responseJson.data.id === null ) return false;
+    return true;
+
+    //   if (response.ok) {
+    //     // If the response is successful (status code 200), it means the user has liked the post
+    //     return true;
+    //   } else {
+    //     // For other error statuses, throw an error
+    //     return false;
+    //   }
+    // } catch (error) {
+    //   return false;
+    // }
   };
 
   export const favoriteHousing = async (userId: number, housingId: string): Promise<void> => {
@@ -756,22 +768,33 @@ export const createHousingItem = async (
   };
 
   export const checkIfFavoriteHousing = async (userId: number, housingId: string): Promise<boolean> => {
-    try {
-      const response = await fetch(`${API_URL}/users/${userId}/favoriteHousings/${housingId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      // console.log("This is the response: ", response)
-      if (response.ok) {
-        // If the response is successful (status code 200), it means the user has liked the post
-        return true;
-      } else {
-        // For other error statuses, throw an error
-        return false;
-      }
-    } catch (error) {
-      return false;
+    // try {
+    const response = await fetch(`${API_URL}/users/${userId}/favoriteHousings/${housingId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const responseJson = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
     }
+    // console.log(responseJson.data.id);
+    if ( responseJson.data.id === null ) return false;
+    return true;
+      // console.log("This is the response: ", response)
+    //   if (response.ok) {
+    //     // If the response is successful (status code 200), it means the user has liked the post
+    //     return true;
+    //   } else {
+    //     // For other error statuses, throw an error
+    //     return false;
+    //   }
+    // } catch (error) {
+    //   return false;
+    // }
   };

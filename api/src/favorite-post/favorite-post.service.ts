@@ -23,7 +23,7 @@ export class FavoritePostService {
   }
 
   async findOne(userId: number, postId: string): Promise<favoritePost | null> {
-    return this.favoritePostRepository.findOne({
+    return await this.favoritePostRepository.findOne({
       where: {
         userId,
         postId,

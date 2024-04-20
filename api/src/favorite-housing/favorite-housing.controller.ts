@@ -49,10 +49,16 @@ export class FavoriteHousingController {
       housingId,
     );
     if (!favorite_housing) {
-      return null;
+      return { id: null };
     }
-    delete favorite_housing.userId;
-    return favorite_housing;
+    return {
+      id: favorite_housing.id,
+    }
+    // if (!favorite_housing) {
+    //   return null;
+    // }
+    // delete favorite_housing.userId;
+    // return favorite_housing;
   }
 
   @UseGuards(HousingExistsGuard)

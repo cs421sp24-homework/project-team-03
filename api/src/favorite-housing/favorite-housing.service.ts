@@ -29,15 +29,15 @@ export class FavoriteHousingService {
     userId: number,
     housingId: string,
   ): Promise<favoriteHousing | null> {
-    const favorite_housing = this.favoriteHousingRepository.findOne({
+    const favorite_housing = await this.favoriteHousingRepository.findOne({
       where: {
         userId,
         housingId,
       },
     });
-    if (!favorite_housing) {
-      return null;
-    }
+    // if (!favorite_housing) {
+    //   return null;
+    // }
     return favorite_housing;
   }
 

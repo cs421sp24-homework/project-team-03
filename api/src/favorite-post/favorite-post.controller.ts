@@ -40,12 +40,18 @@ export class FavoritePostController {
       postId,
     );
     if (!favorite_post) {
-      throw new NotFoundException(
-        `User with ID ${userId} not found in favorites list of post with ID ${postId}`,
-      );
+      return { id: null };
     }
-    delete favorite_post.userId;
-    return favorite_post;
+    return {
+      id: favorite_post.id,
+    }
+    // if (!favorite_post) {
+    //   throw new NotFoundException(
+    //     `User with ID ${userId} not found in favorites list of post with ID ${postId}`,
+    //   );
+    // }
+    // delete favorite_post.userId;
+    // return favorite_post;
   }
 
   @UseGuards(JwtAuthGuard)
