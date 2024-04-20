@@ -30,6 +30,8 @@ describe('UserController', () => {
     verificationToken: 'someRandomToken123', // Can be null as well
     posts: [],
     reviews: [],
+    favoriteHousings: [],
+    favoritePosts: [],
     bio: 'Hello',
     notifications: 0,
     age: '21',

@@ -50,6 +50,8 @@ describe('PostsService', () => {
     verificationToken: 'verificationToken123', // Mock verification token, can be null
     posts: [], // Mock posts array, can be empty or contain multiple Post entities
     reviews: [],
+    favoriteHousings: [],
+    favoritePosts: [],
     bio: null,
     notifications: 0,
     age: '21',

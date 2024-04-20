@@ -75,6 +75,8 @@ describe('ReviewsService', () => {
     verificationToken: 'verificationToken123',
     posts: [],
     reviews: [],
+    favoriteHousings: [],
+    favoritePosts: [],
     bio: null,
     notifications: 0,
     age: '21',

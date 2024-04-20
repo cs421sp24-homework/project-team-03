@@ -40,6 +40,8 @@ describe('PostsController', () => {
     verificationToken: null,
     posts: [],
     reviews: [],
+    favoriteHousings: [],
+    favoritePosts: [],
     bio: null,
     notifications: 0,
     age: '21',
