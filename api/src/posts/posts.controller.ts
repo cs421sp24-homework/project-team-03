@@ -50,7 +50,7 @@ export class PostsController {
     delete createPostDto.imagesData;
     const post = await this.postsService.create(createPostDto, userId);
     delete post.userId;
-    console.log(imagesData);
+    
     post.images = imagesData.length > 0 
       ? await this.postImageService.addBatch(imagesData, post.id) 
       : [];
