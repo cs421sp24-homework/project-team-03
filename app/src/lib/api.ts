@@ -5,6 +5,7 @@ import { createClient } from "@supabase/supabase-js";
 const API_URL = import.meta.env.VITE_API_URL;
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 /** 
  * User functions
@@ -427,10 +428,6 @@ export const createHousingItem = async (
    * 
    * 
    */
-
-  // Create singleton Supabase client to fix 'Multiple GoTrueClient instances' browser warning
-  export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
   // Upload image to Supabase and return path
   export const uploadPostImage = async (image: File): Promise<string> => {
     const { data, error } = await supabase.storage.from('post-images').upload(`post-image_${image.name.split('.')[0]}_${Date.now()}.jpg`, image);
