@@ -13,8 +13,13 @@ export class PostsService {
   ) {}
 
   async create(createPostDto: CreatePostDto, userId: number): Promise<Post> {
+    const { title, content, cost, address, type } = createPostDto;
     const post = await this.postRepository.create({
-      ...createPostDto,
+      title,
+      content,
+      cost,
+      address,
+      type,
       userId,
     });
     return this.postRepository.save(post);
@@ -34,7 +39,6 @@ export class PostsService {
     cost?: number,
   ): Promise<Post[]> {
     const queryBuilder = this.postRepository.createQueryBuilder('posts');
-
     // Add condition to join user data
     if (withUserData) {
       queryBuilder.leftJoinAndSelect('posts.user', 'user');

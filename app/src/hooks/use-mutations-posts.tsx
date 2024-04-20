@@ -1,7 +1,7 @@
 import { useToast } from "@/components/ui/use-toast";
 import { createPost, deletePost, editPost } from "@/lib/api";
 import { useStore } from "@/lib/store";
-import { PostType } from "@/lib/types";
+import { ImageMetadata, PostType } from "@/lib/types";
 
 function useMutationPosts() {
     const { toast } = useToast();
@@ -30,11 +30,15 @@ function useMutationPosts() {
         cost: number,
         address: string,
         type: PostType,
-        images: string[],
+        imagesData: ImageMetadata[], // empty array if no images
+        // images: string[],
     ) => {
         try {
-            const newPost = await createPost(title, content, cost, address, type, images);
+            const newPost = await createPost(title, content, cost, address, type, imagesData);
             addPost(newPost);
+            toast({
+                title: "Post Created Successfully!",
+            });
         } catch (error) {
             toast({
                 variant: "destructive",
@@ -53,10 +57,11 @@ function useMutationPosts() {
         cost?: number,
         address?: string,
         type?: PostType,
-        image?: string, // TODO: change to images: string[]
+        images?: ImageMetadata[],
+        // image?: string, // TODO: change to images: string[]
     ) => {
         try {
-            const postEdited = await editPost(postId, title, content, cost, address, image, type);
+            const postEdited = await editPost(postId, title, content, cost, address, images, type);
             if (postEdited) postEdit(postEdited);
         } catch (error) {
             toast({

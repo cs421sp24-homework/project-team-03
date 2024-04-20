@@ -45,10 +45,12 @@ const PostActions = ({
       <DropdownMenuContent>
 
         {isOwner && (
-          <><DropdownMenuItem id="delete-btn" className="text-red-500" onClick={() => removePostById(post.id)}>
-            Delete
-          </DropdownMenuItem>
-          <EditPostDialog post={post} setDropdownState={setDropdownState}/></>
+          <>
+            <EditPostDialog post={post} setDropdownState={setDropdownState}/>
+            <DropdownMenuItem id="delete-btn" className="text-red-500" onClick={() => removePostById(post.id)}>
+              Delete
+            </DropdownMenuItem>
+          </>
         )}
       </DropdownMenuContent>
     </DropdownMenu>
