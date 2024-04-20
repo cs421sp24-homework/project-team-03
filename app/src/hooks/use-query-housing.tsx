@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { fetchHousingItem } from "@/lib/api";
 import { useToast } from "@/components/ui/use-toast";
 import { useStore } from "@/lib/store";
-import useInterval from "./use-intervals";
 
 function useQueryHousing(id: string) {
   const { toast } = useToast();
