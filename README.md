@@ -15,6 +15,10 @@
     `VITE_SUPABASE_URL=https://rmpdscekiuormnkxpubi.supabase.co`
 `VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtcGRzY2VraXVvcm1ua3hwdWJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE5MTM3NjUsImV4cCI6MjAyNzQ4OTc2NX0.Fl9exVy8x-y0y8SINCtwHWZR6n_WrsAn1UUlm_oo6zU`
 
+- **After Iteration 4**: To run locally, paste the following two lines into your environment variables file `/api/.env/`
+`SUPABASE_STORAGE_URL=https://rmpdscekiuormnkxpubi.supabase.co`
+`SUPABASE_STORAGE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtcGRzY2VraXVvcm1ua3hwdWJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE5MTM3NjUsImV4cCI6MjAyNzQ4OTc2NX0.Fl9exVy8x-y0y8SINCtwHWZR6n_WrsAn1UUlm_oo6zU`
+
 ## Testing User Stories
 
 As a developer of the app, I want to post new housing item on the Catalog that are verified by us, so that users can view and review them.
