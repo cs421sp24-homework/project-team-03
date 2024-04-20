@@ -54,7 +54,7 @@ const HousingExpanded = (props: HousingItemProps) => {
                         </div>
                     )}
                 </div>
-                    <button onClick={toggleExpanded} className="text-blue-500 underline py-4">
+                    <button id="nearby-map-button" onClick={toggleExpanded} className="text-blue-500 underline py-4">
                         {expanded ? "Collapse Map" : "See Map and Nearby Locations"}
                     </button>
                 <div className="flex justify-center"> 

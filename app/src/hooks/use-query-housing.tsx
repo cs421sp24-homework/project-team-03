@@ -32,10 +32,7 @@ function useQueryHousing(id: string) {
       useEffect(() => {
         fetchHousing();
       }, [id]);
-    
-      useInterval(() => {
-        fetchHousing();
-      }, 300);
+
 
   return { housingItem };
 }
