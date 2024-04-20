@@ -3,7 +3,7 @@ import { PostImage } from "./post-image.entity";
 import { Repository, UpdateResult } from "typeorm";
 import { Injectable } from "@nestjs/common";
 import { ImageMetadataDTO } from "./image-metadata.dto";
-import { Cron } from "@nestjs/schedule";
+import { Cron, CronExpression } from "@nestjs/schedule";
 import { createClient } from "@supabase/supabase-js";
 
 @Injectable()
@@ -55,26 +55,49 @@ export class PostImageService {
       .execute();
   }
 
-  @Cron('0 * * * * *')
+  @Cron(CronExpression.EVERY_DAY_AT_1AM)
   async batchDeleteImagesFromStorage() {
+    // Create Supabase client
     const SUPABASE_URL = process.env.SUPABASE_STORAGE_URL;
     const SUPABASE_ANON_KEY = process.env.SUPABASE_STORAGE_ANON_KEY;    
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    console.log('DELETING EVERYTHING FROM EVERYWHERE FOREVER AND EVER');
-
+    console.log('===== Batch Deleting =====');
+    // Get softDeleted images
     const imagesToRemove = await this.postImageRepository
-      .createQueryBuilder('entity')
+      .createQueryBuilder('post_image')
       .withDeleted() // Include soft deleted rows
-      .where('entity.deletedAt IS NOT NULL') // Filter soft deleted rows
-      .andWhere('entity.postId IS NULL') // Catch orphaned rows with DeleteDateColumn not set
+      .where('post_image.deletedAt IS NOT NULL') // Filter soft deleted rows
+      .orWhere('post_image.postId IS NULL') // Catch orphaned rows with DeleteDateColumn not set
       .getMany();
-    if (imagesToRemove.length === 0) return;
-
+    if (imagesToRemove.length === 0) {
+      console.log('===== Nothing to Delete. Terminate =====')
+      return;
+    }
+    console.log('Number of Soft-deleted rows:', imagesToRemove.length);
+    // Call Supabase storage API to remove images
+    console.log('...Asking Supabase to delete...')
     const pathsToRemove = imagesToRemove.map(imgData => imgData.path);
     const { data, error } = await supabase.storage.from('post-images').remove(pathsToRemove); 
-    if ( error ) return; // TODO: handle errors
-    if ( data.length !== pathsToRemove.length ) return; // TODO: check returned data array and only remove from DB if deleted successfully
-    imagesToRemove.forEach(imgData => console.log(this.postImageRepository.remove( imgData )));
+    console.log('Number of images Supabase deleted', data.length);
+    if ( error ) return; // handle Supabase delete errors, make sure all posts deleted successfully
+    // Delete soft-deleted rows from our DB.
+    const idsToDelete = imagesToRemove.map(imgData => imgData.id);
+    console.log('...Deleting soft-deleted rows from our DB...')
+    await this.permanentlyDeleteSoftDeletedRows( idsToDelete );
+    console.log('===== Done =====');
+    return;
+  }
+
+  async permanentlyDeleteSoftDeletedRows( idsToDelete: string[] ) {
+    await this.postImageRepository
+      .createQueryBuilder('post_image')
+      .withDeleted()
+      .delete()
+      .from('post_image')
+      .where('post_image.id IN (:...idsToDelete)', { idsToDelete })
+      .execute()
+      .catch(error => console.log(error))
+    return;
   }
 }
