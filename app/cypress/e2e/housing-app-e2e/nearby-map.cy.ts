@@ -15,6 +15,9 @@
     const store_2 = "MOM's Organic Market";
     const store_3 = "Punjab Groceries & Halal Meat";
     const safeStoreId = `info-window-39\\.336278--76\\.622024`;
+    const restaurant_1 = 'Cypriana';
+    const restaurant_2 = 'Ambassador Dining Room';
+    const restaurant_3 = 'One World Cafe';
 
   
     it('check that markers exist for the nearby stores', () => {
@@ -52,4 +55,15 @@
       cy.get(`#${safeStoreId}`).should('not.exist');
   
     });
+
+    it('change category to restaurants 4for nearby places', () => {
+      cy.get('#select-category').select('Restaurants');
+      cy.contains('Nearby Places').should('be.visible');
+
+      cy.contains(`${restaurant_1}`).should('be.visible');
+      cy.contains(`${restaurant_2}`).should('be.visible');
+      cy.contains(`${restaurant_3}`).should('be.visible');
+    });
+
+
   })

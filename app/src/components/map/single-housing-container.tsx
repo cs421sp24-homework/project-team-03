@@ -54,6 +54,7 @@ const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
         return (
             <div> 
             <select
+                id="select-category"
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 className="mb-4"
