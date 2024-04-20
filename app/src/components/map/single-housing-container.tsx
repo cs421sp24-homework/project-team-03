@@ -54,6 +54,7 @@ const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
         return (
             <div> 
             <select
+                id="select-category"
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 className="mb-4"
@@ -98,7 +99,7 @@ const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
                                 <Marker
                                     key={index}
                                     position={{ lat: store.latitude, lng: store.longitude }}
-                                    title={store.displayName}
+                                    title={`marker-${store.displayName}`}
                                     icon={{
                                         url: 'http://maps.gstatic.com/mapfiles/ms2/micons/ltblue-dot.png',
                                         scaledSize: new window.google.maps.Size(40, 40)
@@ -107,7 +108,7 @@ const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
                                 >
                                     {hoveredStore === store &&
                                         <InfoWindowF>
-                                            <div>
+                                            <div id={`info-window-${latitude}-${longitude}`}>
                                                 <h3>{store.displayName}</h3>
                                                 <p>Address: {store.formattedAddress}</p>
                                             </div>
