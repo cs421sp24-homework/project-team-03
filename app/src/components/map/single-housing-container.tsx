@@ -11,7 +11,6 @@ const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
     const [hoveredStore, setHoveredStore] = useState<Locations | null>(null);
     const setStores = useStore((state) => state.setNearbyStores);
     const [selectedCategory, setSelectedCategory] = useState("supermarket");
-    let housingItemArr = [1];
 
 
     const handleMarkerHover = (item: HousingItemType) => {
@@ -41,7 +40,6 @@ const SingleHousingContainer = ({ item }: { item: HousingItemType }) => {
                     const storesWithCoordinates = await Promise.all(coordinatesPromises);
                     setGroceryStores(storesWithCoordinates);
                     setStores(storesWithCoordinates);
-                    housingItemArr = [1];
                 } else {
                     throw new Error('No results found');
                 }
