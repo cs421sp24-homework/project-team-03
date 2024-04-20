@@ -5,7 +5,6 @@ import SubletPost from "./sublet-post";
 
 const Post = ({ post }: { post: PostWithUserData }) => {
   const { title, content, user, images } = post;
-
   if (post.type == "Sublet") return (
     <SubletPost post={post}/>
   );
@@ -20,20 +19,22 @@ const Post = ({ post }: { post: PostWithUserData }) => {
         />
       </div>
       <div className="overflow-y-auto text-sm" style={{ height: '80%', scrollbarWidth: 'none', }}>
-        {images.length > 0 &&
+        {
+        images && 
+          images.length > 0 &&
           <div className="relative ">
           <Carousel>
             <CarouselContent>
               <CarouselItem className="flex justify-center">
                 <img 
-                  src={images[0]} 
+                  src={images[0].url} 
                   style={{ width: '100%', objectFit: 'contain' }}
                 />
               </CarouselItem>
-              {images.slice(1).map((imgUrl, index) => (
+              {images.slice(1).map((imgData, index) => (
                 <CarouselItem className="flex justify-center" key={index}>
                   <img 
-                    src={imgUrl} 
+                    src={imgData.url} 
                     alt={`Image ${index+1}`} 
                     style={{ width: '100%', objectFit: 'contain' }}
                   />

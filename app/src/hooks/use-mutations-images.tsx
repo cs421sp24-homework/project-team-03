@@ -1,15 +1,16 @@
-import { getPostImageURL, uploadPostImage } from "@/lib/api";
+import { getPostImageData, uploadPostImage } from "@/lib/api";
+import { ImageMetadata } from "@/lib/types";
 
 const useMutationImages = () => {
-  const postImagesToURLs = async (
+  const postImagesToData = async (
     images: File[]
-  ): Promise<string[]> => {
+  ): Promise<ImageMetadata[]> => {
     // Method 1
-    const imageURLs: Promise<string>[] = images.map(img => 
-      uploadPostImage(img)                  // get uploaded image's path in Supabase bucket
-      .then(path => getPostImageURL(path))  // get PublicUrl of image at path
+    const imageDataArray: Promise<ImageMetadata>[] = images.map(img => 
+      uploadPostImage(img)  // returns uploaded image's path in Supabase storage
+      .then(path => getPostImageData(path))  // returns image metadata
     );
-    return Promise.all(imageURLs);
+    return Promise.all(imageDataArray);
 
     // Method 2 (doesn't seem to work)
     // let imageURLs: string[] = [];
@@ -22,7 +23,8 @@ const useMutationImages = () => {
   }
 
   return {
-    postImagesToURLs,
+    // postImagesToURLs
+    postImagesToData
   };
 }
 
