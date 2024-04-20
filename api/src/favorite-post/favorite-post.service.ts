@@ -45,7 +45,7 @@ export class FavoritePostService {
       where: { userId },
     });
 
-    // If no favorite posts are found, return null
+    // If no favorite posts are found, return empty array
     if (!favoritePosts) {
       return [];
     }

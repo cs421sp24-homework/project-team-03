@@ -35,9 +35,6 @@ export class FavoriteHousingService {
         housingId,
       },
     });
-    // if (!favorite_housing) {
-    //   return null;
-    // }
     return favorite_housing;
   }
 
@@ -58,7 +55,7 @@ export class FavoriteHousingService {
       where: { userId },
     });
 
-    // If no favorite housings are found, return null
+    // If no favorite housings are found, return empty array
     if (!favoriteHousings) {
       return [];
     }
