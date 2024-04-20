@@ -14,6 +14,7 @@ import { JwtStrategy } from './auth/jwt.strategy';
 import { HousingModule } from './housing/housing.module';
 import { PostsModule } from './posts/posts.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { ReviewsModule } from './reviews/reviews.module';
     HousingModule,
     PostsModule,
     ReviewsModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController, UserController],
   providers: [AppService, AuthService, LocalStrategy, JwtStrategy, UserService],
