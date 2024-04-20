@@ -1,4 +1,4 @@
-import { PostWithUserData, ReviewWithUserData, User } from "./types";
+import { Locations, PostWithUserData, ReviewWithUserData, User } from "./types";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { HousingItem } from "./types";
@@ -11,6 +11,7 @@ type State = {
   reviews: ReviewWithUserData[];
   selectedHousing: HousingItem | null;
   notifications: number;
+  nearbyStores: Locations[];
   userReviews: ReviewWithUserData[];
   // Add more state variables
 };
@@ -34,6 +35,8 @@ type Action = {
   clearSelectedHousing: () => void;
   setEditUser: (user: User) => void;
   userNotificationCount: (notifs: number) => void;
+  setNearbyStores: (stores: Locations[]) => void;
+  clearNearbyStores: () => void;
   // Add more actions
 };
 
@@ -46,7 +49,8 @@ const initialState: State = {
   reviews: [],
   selectedHousing: null,
   notifications: 0,
-  userReviews: []
+  userReviews: [],
+  nearbyStores: []
 };
 
 export const useStore = create<State & Action>()(
@@ -122,6 +126,10 @@ export const useStore = create<State & Action>()(
     userNotificationCount: (notifs) => {
       set({notifications: notifs});
     },
+
+    setNearbyStores: (stores) => set({ nearbyStores: stores }),
+
+    clearNearbyStores: () => set({ nearbyStores: [] }),
     
   }))
 );

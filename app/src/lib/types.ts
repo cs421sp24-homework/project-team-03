@@ -77,3 +77,24 @@ export type ImageMetadata = {
   url: string;
   path: string;
 }
+
+export type Locations = {
+  displayName: string;
+  formattedAddress: string;
+  latitude?: number;
+  longitude?: number;
+  distance: number;
+  rating: number;
+}
+
+export type GooglePlacesAPIResponse = {
+  places: {
+    formattedAddress: string;
+    rating: number;
+    displayName: {text:string};
+    location: {
+        latitude: number;
+        longitude: number;
+    };
+  }
+};
