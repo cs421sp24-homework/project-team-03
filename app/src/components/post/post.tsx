@@ -2,6 +2,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import PostHeader from "./post-header";
 import type { PostWithUserData } from "@/lib/types";
 import SubletPost from "./sublet-post";
+import PostFooter from "./post-footer";
 
 const Post = ({ post }: { post: PostWithUserData }) => {
   const { title, content, user, images } = post;
@@ -10,7 +11,7 @@ const Post = ({ post }: { post: PostWithUserData }) => {
   );
 
   return (
-    <div id="post" className="border border-gray-300 rounded-lg" style={{ width: '340px', height: '360px'}}>
+    <div id="post" className="border border-gray-300 rounded-lg" style={{ width: '340px', height: '360px', position:'relative'}}>
       <div className="">
         <PostHeader
           post={post}
@@ -52,8 +53,16 @@ const Post = ({ post }: { post: PostWithUserData }) => {
         </div>
       }
         <div className="px-4 pb-2 mt-2 text-base font-bold underline">{title}</div>
-            <div className="px-4 pb-2">{content}</div>
-    
+        <div className="px-4 pb-2" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>{content}</div>
+          {images.length === 0 && (
+            <div className="px-4 pb-2" style={{ position: 'absolute', bottom: '0', right: '0' }}><PostFooter post={post} /></div>
+          )}
+          {images.length > 0 && (
+            <div style={{ alignSelf: 'flex-end' }}><PostFooter post={post} /></div>
+          )}
+        </div>
+        
       </div>
     </div>
   );

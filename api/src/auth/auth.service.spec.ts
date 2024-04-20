@@ -58,6 +58,8 @@ describe('AuthService', () => {
       verificationToken: '123456', // Can also be null
       posts: [], // Assuming this user has no posts initially; you can add mock posts if needed
       reviews: [],
+      favoriteHousings: [],
+      favoritePosts: [],
       bio: null,
       notifications: 0,
       age: '21',
@@ -86,6 +88,8 @@ describe('AuthService', () => {
         verificationToken: '123456', // Can also be null
         posts: [], // Assuming this user has no posts initially; you can add mock posts if needed
         reviews: [],
+        favoriteHousings: [],
+        favoritePosts: [],
         bio: null,
         notifications: 0,
         age: '21',
@@ -151,6 +155,8 @@ describe('AuthService', () => {
         verificationToken: '123456', // Can also be null
         posts: [], // Assuming this user has no posts initially; you can add mock posts if needed
         reviews: [],
+        favoriteHousings: [],
+        favoritePosts: [],
         bio: null,
         notifications: 0,
         age: '21',

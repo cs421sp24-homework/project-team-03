@@ -1,5 +1,5 @@
 import { getAuthenticatedUser, getAuthenticatedUserToken, removeAuthenticatedUserToken, storeAuthenticatedUserToken } from "./auth";
-import { PostType, PostWithUserData, User, HousingItem, ReviewWithUserData, ImageMetadata } from "./types";
+import { PostType, PostWithUserData, User, HousingItem, ReviewWithUserData, ImageMetadata, Post } from "./types";
 import { createClient } from "@supabase/supabase-js";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -619,4 +619,182 @@ export const createHousingItem = async (
     const response = await fetch(url);
     const responseJson = await response.json();
     return responseJson.data;
+  };
+
+  export const favoritePost = async (userId: number, postId: string): Promise<void> => {
+    const token = getAuthenticatedUserToken();
+    const response = await fetch(`${API_URL}/users/${userId}/favoritePosts/${postId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  };
+
+  export const unfavoritePost = async (userId: number, postId: string): Promise<void> => {
+    const token = getAuthenticatedUserToken();
+    const response = await fetch(`${API_URL}/users/${userId}/favoritePosts/${postId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  };
+
+  export const findAllFavoritePosts = async (userId: number): Promise<Post[] | null> => {
+    const response = await fetch(`${API_URL}/users/${userId}/favoritePosts`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+    console.log(responseJson.data)
+    return responseJson.data;
+  };
+
+  export const checkIfFavorite = async (userId: number, postId: string): Promise<boolean> => {
+    // try {
+    const response = await fetch(`${API_URL}/users/${userId}/favoritePosts/${postId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+
+    // console.log(responseJson.data.id);
+    if ( responseJson.data.id === null ) return false;
+    return true;
+
+    //   if (response.ok) {
+    //     // If the response is successful (status code 200), it means the user has liked the post
+    //     return true;
+    //   } else {
+    //     // For other error statuses, throw an error
+    //     return false;
+    //   }
+    // } catch (error) {
+    //   return false;
+    // }
+  };
+
+  export const favoriteHousing = async (userId: number, housingId: string): Promise<void> => {
+    const token = getAuthenticatedUserToken();
+    const response = await fetch(`${API_URL}/users/${userId}/favoriteHousings/${housingId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  };
+
+  export const unfavoriteHousing = async (userId: number, housingId: string): Promise<void> => {
+    const token = getAuthenticatedUserToken();
+    const response = await fetch(`${API_URL}/users/${userId}/favoriteHousings/${housingId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+  };
+
+  export const findAllFavoriteHousings = async (userId: number): Promise<HousingItem[] | null> => {
+    const response = await fetch(`${API_URL}/users/${userId}/favoriteHousings`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const responseJson = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+    return responseJson.data;
+  };
+
+  export const checkIfFavoriteHousing = async (userId: number, housingId: string): Promise<boolean> => {
+    // try {
+    const response = await fetch(`${API_URL}/users/${userId}/favoriteHousings/${housingId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const responseJson = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        `Error: ${response.status} - ${responseJson.message || response.statusText}`,
+      );
+    }
+    // console.log(responseJson.data.id);
+    if ( responseJson.data.id === null ) return false;
+    return true;
+      // console.log("This is the response: ", response)
+    //   if (response.ok) {
+    //     // If the response is successful (status code 200), it means the user has liked the post
+    //     return true;
+    //   } else {
+    //     // For other error statuses, throw an error
+    //     return false;
+    //   }
+    // } catch (error) {
+    //   return false;
+    // }
   };

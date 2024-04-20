@@ -1,37 +1,61 @@
-import { User } from "@/lib/types"
+import { useEffect, useState } from "react";
+import { HousingItem, Post, User } from "@/lib/types"
 import UserAvatar from "./user-avatar"
 import { useStore } from "@/lib/store";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useQueryUserReviews from "@/hooks/use-query-user-reviews";
 import { EmailDialog } from "../email/send-email-dialog";
+import { useToast } from "../ui/use-toast";
+import { findAllFavoriteHousings, findAllFavoritePosts } from "@/lib/api";
 import UserReview from "./user-reviews";
 import { UpdateProfileDialog } from "./update-profile-dialog";
 import { FaSoap } from "react-icons/fa6";
 import { TbSunMoon } from "react-icons/tb";
 import { IoPeopleSharp } from "react-icons/io5";
 import { LuCigarette } from "react-icons/lu";
-import { useEffect, useState } from "react";
+import StarRating from "../catalog/star-rating";
+import { formatTimestamp } from "@/lib/utils";
+import { CounterClockwiseClockIcon } from "@radix-ui/react-icons";
 
 export const UserProfile = ({ user }: { user: User }) => {
+    const { toast } = useToast();
     const loggedUser = useStore((state) => state.user);
     const { userReviews } = useQueryUserReviews(user.email)
     const navigate = useNavigate();
+    const [favoritePosts, setFavoritePosts] = useState<Post[]>([]);
+    const [favoriteHousings, setFavoriteHousings] = useState<HousingItem[]>([]);
     const [updatedUser, setUpdatedUser] = useState<User | void>(user);
 
     useEffect(() => {
-        if (!loggedUser) {
-            navigate("/");
-        }
-    }, [loggedUser, navigate]);
+        const fetchData = async () => {
+            try {
+                if (!loggedUser) {
+                    navigate("/");
+                } else {
+                    const posts = await findAllFavoritePosts(user.id);
+                    const housings = await findAllFavoriteHousings(user.id);
+                    setFavoritePosts(posts || []);
+                    setFavoriteHousings(housings || []);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                toast({
+                    variant: "destructive",
+                    title: "Error fetching data",
+                    description: "An error occurred while fetching data.",
+                });
+            }
+        };
+        fetchData();
+    }, [loggedUser, navigate, user.id, toast]);
 
     useEffect(() => {
         setUpdatedUser(user);
     }, [user])
-    
+
     const handleUpdateProfile = (updatedUserData: User | void) => {
         setUpdatedUser(updatedUserData);
     }
-
     return (
         <div className="flex flex-col w-screen min-h-screen border-x-2 border-slate-400 md:max-w-4xl">
             <div className="flex">
@@ -128,6 +152,62 @@ export const UserProfile = ({ user }: { user: User }) => {
                 {userReviews && userReviews.map((review) => (
                     <UserReview review={review} housingId={review.housingId} key={review.id} />
                 ))}
+                <h2 className="text-xl font-semibold mb-2 mt-4 border-b-2 border-gray-300 flex items-center">
+                    Favorite Posts &#128172;
+                </h2>
+                {favoritePosts.length > 0 ? (
+                    <div className="grid grid-cols-3 gap-4 mt-2">
+                        {favoritePosts.map((post) => (
+                            <div key={post.id} className="bg-gray-100 p-4 rounded-lg shadow">
+                                <Link to={'/posts'}>
+                                {/* Render post info here */}
+                                <span style={{ fontWeight: 'bold'}}>Title: </span> 
+                                    <span>{post.title}</span>
+                                <div>
+                                    <span style={{ fontWeight: 'bold'}}>Content: </span> 
+                                    <span>{post.content}</span>
+                                </div>
+                               
+                                {post.timestamp && (
+                                    <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+                                        <CounterClockwiseClockIcon style={{ marginRight: '0.2em', verticalAlign: 'sub' }} />
+                                        {formatTimestamp(post.timestamp)}
+                                    </span>
+                                )}
+                                {/* Add more details as needed */}
+                                </Link>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-center text-gray-500">No favorite posts yet.</p>
+                )}
+                <h2 className="text-xl font-semibold mb-2 mt-4 border-b-2 border-gray-300">
+                    Favorite Housings &#x1F3E0;
+                </h2>
+                {favoriteHousings.length > 0 ? (
+                    <div className="grid grid-cols-3 gap-4 mt-2">
+                        {favoriteHousings.map((housing) => (
+                            <div key={housing.id} className="bg-gray-100 p-4 rounded-lg shadow">
+                                <Link to={`/housings/${housing.id}`}>
+                                <div id={`info-window-${housing.id}`}>
+                                    <div style={{fontWeight: "bold"}}>{housing.name}</div>
+                                    <div style={{ display:"flex"}}>
+                                        <StarRating rating={housing.avgRating} />
+                                        <div style={{ marginLeft: '0.2rem', fontSize: '15px'}}> | {housing.reviewCount} reviews</div>
+                                    </div>
+                                        <div style={{ fontWeight: 'bold'}}>{housing.price}</div>
+                                        <span style={{ fontWeight: 'bold'}}>{housing.distance} miles</span> from JHU Homewood
+                                </div>
+                                {/* Render housing info here */}
+                                {/* Add more details as needed */}
+                                </Link>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-center text-gray-500">No favorite housings yet.</p>
+                )}
             </div>
         </div>
     )
