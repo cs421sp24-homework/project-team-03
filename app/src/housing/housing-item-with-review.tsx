@@ -44,24 +44,7 @@ const HousingItemWithReviews = ({ housingItem }: HousingProps) => {
       <div className="inline-block">
         <HousingExpanded housingItem={housingItem} />
       </div>
-      <Header housingId={housingItem.id} />
-        <div className="px-4 py-2">
-          <select
-            id='sort'
-            className="sort-button rounded text-center"
-            aria-label="Sort"
-            style={{ width: "60px", backgroundColor: "", border: "1px solid black"}}
-            value={sortBy}
-            onChange={(e) => {
-              setSortBy(e.target.value)
-            }}
-          >
-            <option value="">Sort</option>
-            <option value="popularity">Popularity &#128077;</option>
-            <option value="recency">Recency &#x1F550;</option>
-            {/* Add more sorting options here */}
-          </select>        
-        </div>
+      <Header housingId={housingItem.id} sortBy={sortBy} setSortBy={setSortBy} />
       <div className="w-full">
         {user ? (
           housingItem.reviewCount > 0 ? (
