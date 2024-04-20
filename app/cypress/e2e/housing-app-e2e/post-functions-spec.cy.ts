@@ -161,6 +161,47 @@ describe('test post functionality', () => {
         cy.get('#delete-btn').click({ force: true });
     })
 
+    it('Edit post successfully with adding an image', () => {
+        cy.get('#see-posts').click();
+        cy.get('#add-posts').click();
+
+        cy.get('#type').select('Roommate');
+        cy.get('#next').click({ force: true });
+
+        cy.get('#title').type(randomTitle);
+        cy.get('#content').type(randomContent);
+        cy.contains('Submit').click();
+
+        cy.contains(randomTitle).should('be.visible');
+        cy.contains(randomContent).should('be.visible');
+
+        cy.contains(randomName).parent().parent().parent().find('#post-actions').click({ force: true });
+        cy.get('#edit-post').click({ force: true });
+
+        const updatedTitle = 'Updated Title';
+        const updatedContent = 'Updated Content';
+
+        cy.get('#newTitle').clear().type(updatedTitle); 
+        cy.get('#newContent').clear().type(updatedContent); 
+
+        const img = 'cypress/fixtures/House_Test_Image.jpeg';
+        cy.get('[name="file"]').selectFile(img, {force: true});
+        cy.contains('Save').click();
+
+        //cy.get('input[type=file]').selectFile(img, { action: 'drag-drop' , force: true})
+
+        //cy.get('.min-w-0 > img').should('be.visible');
+
+        //cy.contains('Save').click();
+
+        cy.contains(updatedTitle).should('be.visible');
+        cy.contains(updatedContent).should('be.visible');
+
+        cy.contains(randomName).parent().parent().parent().find('#post-actions').click({ force: true });
+        cy.get('#delete-btn').click({ force: true });
+    })
+
+
 
     it('Edit post fails when a field is empty', () => {
         cy.get('#see-posts').click();
@@ -197,6 +238,40 @@ describe('test post functionality', () => {
 
         cy.contains(randomName).parent().parent().parent().find('#post-actions').click({ force: true });
         cy.get('#delete-btn').click({ force: true });
+    })
+
+    it('Dragging an image when editting a post successfully loads', () => {
+        // Create post
+        cy.get('#see-posts').click();
+        cy.get('#add-posts').click();
+
+        cy.get('#type').select('Roommate');
+        cy.get('#next').click({ force: true });
+
+        cy.get('#title').type(randomTitle);
+        cy.get('#content').type(randomContent);
+        cy.contains('Submit').click();
+
+        // Edit post
+        cy.contains(randomName).parent().parent().parent().find('#post-actions').click({ force: true });
+        cy.get('#edit-post').click({ force: true });
+
+        const updatedTitle = 'Updated Title';
+        const updatedContent = 'Updated Content';
+
+        cy.get('#newTitle').clear().type(updatedTitle);
+        cy.get('#newContent').clear().type(updatedContent); 
+
+        //Browse
+        const img = 'cypress/fixtures/House_Test_Image.jpeg';
+
+        cy.get('input[type=file]').selectFile(img, { action: 'drag-drop' , force: true})
+        cy.contains('Save').click();
+
+        cy.get('.min-w-0 > img').should('be.visible');
+        cy.contains(randomName).parent().parent().parent().find('#post-actions').click({ force: true });
+        cy.get('#delete-btn').click({ force: true });
+        
     })
 
 
