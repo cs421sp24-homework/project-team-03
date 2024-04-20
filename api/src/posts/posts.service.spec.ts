@@ -74,7 +74,8 @@ describe('PostsService', () => {
     timestamp: new Date(), // Current date and time
     cost: 1200,
     address: '123 Main Street, CityTown',
-    images: ['http://example.com/image1.jpg'], // Array of image URLs, can be empty
+    images: [],
+    // images: ['http://example.com/image1.jpg'], // Array of image URLs, can be empty
     user: mockUser, // This should be a mock User entity
     userId: 1, // Mock user ID
     type: 'Housing', // Must be 'Roommate', 'Sublet', or 'Housing'
@@ -88,14 +89,15 @@ describe('PostsService', () => {
           'A lovely two-bedroom apartment in the heart of the city, close to amenities. Fully furnished and ready to move in.',
         cost: 1200,
         address: '123 Main Street, CityTown',
-        images: ['http://example.com/apartment.jpg'], // This field is optional
+        imagesData: [],
+        // images: ['http://example.com/apartment.jpg'], // This field is optional
         type: 'Housing', // Must be one of ['Roommate', 'Sublet', 'Housing']
       };
       const userId = 1;
 
       jest.spyOn(repository, 'create').mockReturnValue(resultPost);
       jest.spyOn(repository, 'save').mockResolvedValue(resultPost);
-
+      delete createPostDto.imagesData;
       expect(await service.create(createPostDto, userId)).toEqual(resultPost);
       expect(repository.create).toHaveBeenCalledWith({
         ...createPostDto,
@@ -131,6 +133,7 @@ describe('PostsService', () => {
       orderBy: jest.fn().mockReturnThis(),
       where: jest.fn().mockReturnThis(),
       getMany: jest.fn().mockResolvedValue(resultPostArray),
+      leftJoinAndSelect: jest.fn().mockReturnThis(),
     };
 
     it('should return an array of posts', async () => {
@@ -177,7 +180,8 @@ describe('PostsService', () => {
       content: 'Updated content with more detailed information.',
       cost: 1500,
       address: '321 Updated Address Lane',
-      images: ['http://example.com/updated-image.jpg'],
+      imagesData: [],
+      // images: ['http://example.com/updated-image.jpg'],
       type: 'Sublet',
     };
     it('should update a post', async () => {
@@ -187,10 +191,10 @@ describe('PostsService', () => {
       resultPost.content = updatePostDto.content ?? resultPost.content;
       resultPost.cost = updatePostDto.cost ?? resultPost.cost;
       resultPost.address = updatePostDto.address ?? resultPost.address;
-      // Assuming image is now a single string rather than an array
-      resultPost.images = updatePostDto.images
-        ? updatePostDto.images
-        : resultPost.images;
+      // // Assuming image is now a single string rather than an array
+      // resultPost.images = updatePostDto.images
+      //   ? updatePostDto.images
+      //   : resultPost.images;
       resultPost.type = updatePostDto.type ?? resultPost.type;
 
       jest.spyOn(repository, 'preload').mockResolvedValue(resultPost);

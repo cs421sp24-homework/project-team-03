@@ -17,6 +17,7 @@ import { useState, useRef } from "react";
 import { Label } from "../ui/label";
 import './drag-drop-image-uploader.css';
 import useMutationImages from "@/hooks/use-mutations-images";
+import { ImageMetadata } from "@/lib/types";
 
 type PreviewType = {
   url: string,
@@ -37,7 +38,7 @@ export const HousingDialog = (
   const [previews, setPreviews] = useState<PreviewType[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const { postImagesToURLs } = useMutationImages();
+  const { postImagesToData } = useMutationImages();
 
   const selectFiles = () => {
     fileInputRef.current?.click();
@@ -93,10 +94,20 @@ export const HousingDialog = (
     const files = e.dataTransfer.files;
     if (files.length === 0) return;
 
-    // Filter out duplicate images by name
     let uniqueImages: File[] = [];
     let uniquePreviews: PreviewType[] = [];
     Array.from(files).forEach((file) => {
+      // Skip over unaccepted file types
+      if ( file.name.split('.').pop()?.toLowerCase() !== 'png' &&
+           file.name.split('.').pop()?.toLowerCase() !== 'jpg' && 
+           file.name.split('.').pop()?.toLowerCase() !== 'jpeg' ) {
+        toast({
+          title: "Invalid file type ignored!",
+          description: `Sorry! Only JPG, JPEG, and PNG files are accepted.`,
+        });
+        return;
+      }
+      // Only allow unique file names (no duplicates)
       if (!previews.some((item) => item.name === file.name)) {
         uniqueImages.push(file);
         uniquePreviews.push(
@@ -111,7 +122,6 @@ export const HousingDialog = (
     // Add unique images to state variable
     setImageFiles([...imageFiles, ...uniqueImages]);
     setPreviews([...previews, ...uniquePreviews]);
-    //console.log('Dropped files', [...uniqueImages]);
   }
 
   const handleSave = async () => {
@@ -127,12 +137,12 @@ export const HousingDialog = (
     }
 
     //console.log('Pre-upload images', imageFiles);
-    let imageURLs: string[] = [];
+    let imgDataArray: ImageMetadata[] = [];
     if (imageFiles.length !== 0) {
-      imageURLs = await postImagesToURLs(imageFiles);
+      imgDataArray = await postImagesToData(imageFiles);
     }
     //console.log('Pre-save urls', imageURLs);
-    await makeNewPost(title, content, 0, "random", "Housing", imageURLs);
+    await makeNewPost(title, content, 0, "random", "Housing", imgDataArray);
     handleCancel()
   };
 

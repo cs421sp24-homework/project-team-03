@@ -16,6 +16,7 @@ import { PostsModule } from './posts/posts.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { FavoritePostModule } from './favorite-post/favorite-post.module';
 import { FavoriteHousingModule } from './favorite-housing/favorite-housing.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { FavoriteHousingModule } from './favorite-housing/favorite-housing.modul
     ReviewsModule,
     FavoritePostModule,
     FavoriteHousingModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController, UserController],
   providers: [AppService, AuthService, LocalStrategy, JwtStrategy, UserService],

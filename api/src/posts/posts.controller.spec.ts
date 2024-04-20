@@ -12,17 +12,22 @@ import { CreatePostDto } from './create-post.dto';
 import { UpdatePostDto } from './update-post.dto';
 import { NotFoundException } from '@nestjs/common';
 import { PostResponseDto } from './post-response.dto';
+import { PostImage } from './post-images/post-image.entity';
+import { PostImageService } from './post-images/post-image.service';
 
 describe('PostsController', () => {
   let controller: PostsController;
   let postsService: PostsService;
   let postRepository: Repository<Post>;
   let userService: UserService;
+  let postImageRepository: Repository<PostImage>;
+  let postImageService: PostImageService;
   // let authService: AuthService;
   // let jwtService: JwtService;
 
   const POST_REPO_TOKEN = getRepositoryToken(Post);
   const USER_REPO_TOKEN = getRepositoryToken(User);
+  const POST_IMAGE_REPO_TOKEN = getRepositoryToken(PostImage);
 
   const mockUser: User = {
     id: 1,
@@ -58,7 +63,8 @@ describe('PostsController', () => {
     timestamp: new Date(), // Current timestamp
     cost: 500, // Example cost in your preferred currency
     address: '123 Main Street, City, Country',
-    images: ['http://example.com/image1.jpg'], // Array of image URLs
+    images: [],
+    // images: ['http://example.com/image1.jpg'], // Array of image URLs
     user: mockUser, // Associated User entity
     userId: mockUser.id, // ID of the associated user
     type: 'Roommate', // PostType, e.g., 'Roommate', 'Sublet', or 'Housing'
@@ -101,6 +107,16 @@ describe('PostsController', () => {
             login: jest.fn(),
           },
         },
+        PostImageService,
+        {
+          provide: POST_IMAGE_REPO_TOKEN,
+          useValue: {
+            create: jest.fn(),
+            remove: jest.fn(),
+            find: jest.fn(),
+            save: jest.fn(),
+          }
+        },
       ],
     }).compile();
 
@@ -108,6 +124,8 @@ describe('PostsController', () => {
     postsService = module.get<PostsService>(PostsService);
     postRepository = module.get<Repository<Post>>(POST_REPO_TOKEN);
     userService = module.get<UserService>(UserService);
+    postImageService = module.get<PostImageService>(PostImageService);
+    postImageRepository = module.get<Repository<PostImage>>(POST_IMAGE_REPO_TOKEN);
     // authService = module.get<AuthService>(AuthService);
     // jwtService = module.get<JwtService>(JwtService);
   });
@@ -124,9 +142,24 @@ describe('PostsController', () => {
     expect(postRepository).toBeDefined();
   });
 
+  it('postImageService should be defined', () => {
+    expect(postImageService).toBeDefined();
+  });
+
+  it('postImageRepository should be defined', () => {
+    expect(postImageRepository).toBeDefined();
+  });
+
   // Test for create
   it('should create a new post', async () => {
-    const createPostDto = new CreatePostDto(); // Fill in with appropriate mock data
+    const createPostDto: CreatePostDto = {
+      title: 'Looking for roomie',
+      content: 'Please be good',
+      cost: 0,
+      address: '123 Charm Street',
+      imagesData: [],
+      type: 'Roommate',
+    }; // Fill in with appropriate mock data
     jest.spyOn(postsService, 'create').mockResolvedValue(mockPost);
 
     const result = await controller.create(createPostDto, mockUser.id);
@@ -270,15 +303,26 @@ describe('PostsController', () => {
         controller.findAll(10, 0, '', 'non-existent-email'),
       ).rejects.toThrow(NotFoundException);
     });
+    // Add more tests as necessary for different scenarios
+  });
 
+  describe('update', () => {
     // Test for update
     it('should update a post', async () => {
-      const updatePostDto = new UpdatePostDto(); // Fill in with appropriate mock data
+      const updatePostDto: UpdatePostDto = {
+        // title
+        // content
+        // cost
+        // address
+        // type
+        imagesData: [],
+      }; // Fill in with appropriate mock data
+      postImageRepository.find = jest.fn().mockResolvedValue([]);
       jest.spyOn(postsService, 'update').mockResolvedValue(mockPost);
 
-      const result = await controller.update('1', updatePostDto);
+      const result = await controller.update('uuid-1234', updatePostDto);
 
-      expect(postsService.update).toHaveBeenCalledWith('1', updatePostDto);
+      expect(postsService.update).toHaveBeenCalledWith('uuid-1234', updatePostDto);
       expect(result).toEqual(mockPost);
     });
 
@@ -289,14 +333,24 @@ describe('PostsController', () => {
         controller.update('non-existent-id', new UpdatePostDto()),
       ).rejects.toThrow(NotFoundException);
     });
+  });
 
+  describe('remove', () => {
+    const queryBuilder = {
+      softDelete: jest.fn().mockReturnThis(),
+      where: jest.fn().mockReturnThis(),
+      execute: jest.fn().mockReturnThis(), // TODO: simulate soft delete?
+    }
     // Test for remove
     it('should delete a post', async () => {
+      postImageRepository.createQueryBuilder = jest.fn().mockReturnValue(queryBuilder);
+      jest.spyOn(postImageService, 'findAll').mockResolvedValue([]);
+      jest.spyOn(postsService, 'findOne').mockResolvedValue(mockPost);
       jest.spyOn(postsService, 'remove').mockResolvedValue(mockPost);
 
-      const result = await controller.remove('1');
+      const result = await controller.remove(mockPost.id);
 
-      expect(postsService.remove).toHaveBeenCalledWith('1');
+      expect(postsService.remove).toHaveBeenCalledWith(mockPost.id);
       expect(result).toEqual({
         statusCode: 200,
         message: 'Post deleted successfully',
@@ -310,7 +364,5 @@ describe('PostsController', () => {
         NotFoundException,
       );
     });
-
-    // Add more tests as necessary for different scenarios
   });
 });

@@ -1,5 +1,6 @@
 import { IsArray, IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
 import { PostType } from './post.entity';
+import { ImageMetadataDTO } from './post-images/image-metadata.dto';
 
 export class UpdatePostDto {
     @IsOptional()
@@ -18,11 +19,13 @@ export class UpdatePostDto {
     @IsString()
     address?: string;
 
+    // @IsArray()
+    // @IsOptional()
+    // @IsString({ each: true })
+    // // image?: string; // TODO: change to images: string[]
+    // images: string[]
     @IsArray()
-    @IsOptional()
-    @IsString({ each: true })
-    // image?: string; // TODO: change to images: string[]
-    images: string[]
+    imagesData: ImageMetadataDTO[];
 
     @IsOptional()
     @IsString()

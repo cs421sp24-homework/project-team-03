@@ -1,10 +1,11 @@
 import { getAuthenticatedUser, getAuthenticatedUserToken, removeAuthenticatedUserToken, storeAuthenticatedUserToken } from "./auth";
-import { PostType, PostWithUserData, User, HousingItem, ReviewWithUserData, Post } from "./types";
+import { PostType, PostWithUserData, User, HousingItem, ReviewWithUserData, ImageMetadata, Post } from "./types";
 import { createClient } from "@supabase/supabase-js";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 /** 
  * User functions
@@ -177,7 +178,8 @@ export const register = async (
     cost: number,
     address: string,
     type: PostType,
-    images: string[],
+    imagesData: ImageMetadata[], // empty array if no images
+    // images: string[],
   ): Promise<PostWithUserData> => {
     const user = getAuthenticatedUser();
     const token = getAuthenticatedUserToken();
@@ -188,7 +190,7 @@ export const register = async (
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ title, content, cost, address, images, type }),
+      body: JSON.stringify({ title, content, cost, address, imagesData, type }),
     });
   
     const responseJson = await response.json();
@@ -231,7 +233,8 @@ export const register = async (
     content?: string,
     cost?: number,
     address?: string,
-    image?: string, // change to images: string[]
+    imagesData?: ImageMetadata[],
+    // image?: string, // change to images: string[]
     type?: PostType,
   ): Promise<PostWithUserData | undefined> => {
     const user = getAuthenticatedUser();
@@ -243,7 +246,7 @@ export const register = async (
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ title, content, cost, address, image, type }),
+      body: JSON.stringify({ title, content, cost, address, imagesData, type }),
     });
   
     const responseJson = await response.json();
@@ -425,10 +428,6 @@ export const createHousingItem = async (
    * 
    * 
    */
-
-  // Create singleton Supabase client to fix 'Multiple GoTrueClient instances' browser warning
-  export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
   // Upload image to Supabase and return path
   export const uploadPostImage = async (image: File): Promise<string> => {
     const { data, error } = await supabase.storage.from('post-images').upload(`post-image_${image.name.split('.')[0]}_${Date.now()}.jpg`, image);
@@ -438,40 +437,13 @@ export const createHousingItem = async (
     return data.path;
   }
 
-  export const getPostImageURL = (path: string): string => {
+  export const getPostImageData = (path: string): ImageMetadata => {
     const { data } = supabase.storage.from('post-images').getPublicUrl(path); 
-    return data.publicUrl;
+    return { 
+      path, 
+      url: data.publicUrl 
+    };
   }
-
-  export const deletePostImage = async () => {
-    
-  }
-/*
-  // Store to Supabase
-  if (!file) return;
-  const { data, error } = await supabase.storage.from('test-bucket').upload(`test_${Date.now()}.jpg`, file);
-
-  console.log('UPLOAD...');
-  console.log('data', data);
-  console.log('path', data?.path);
-  
-  if (!data || error) {
-    // TODO: Handle Supabase upload error
-    console.log(error);
-    return;
-  }
-  const path = data.path;
-  const response = await supabase.storage.from('test-bucket').getPublicUrl(path);
-
-  console.log('GET URL...');
-  console.log('data', response.data);
-  console.log('public url', response.data.publicUrl);
-
-  // Store image to backend
-*/
-
-
-
 
   export const sendEmail = async (
     name: string,
@@ -480,7 +452,7 @@ export const createHousingItem = async (
     message: string,
     emailTo: User,
   ) => {
-    const apiKey = "api-CE75802CDC984ECA988EAA1C66B5A40F";
+    const apiKey = "api-CE75802CDC984ECA988EAA1C66B5A40F"; // TODO: put in env
     const url = "https://api.smtp2go.com/v3/email/send";
 
     const emailData = {

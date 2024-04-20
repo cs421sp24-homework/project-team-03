@@ -53,7 +53,7 @@ const Inbox = () => {
     }, [user]);
 
     const clearNotifications = async () => {
-        if (user && user.notifications) {
+        if (user) {
             clearNotif(user.email);
             setNotifications(0); 
         }

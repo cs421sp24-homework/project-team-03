@@ -46,9 +46,12 @@ export const UserProfile = ({ user }: { user: User }) => {
                 });
             }
         };
-
         fetchData();
     }, [loggedUser, navigate, user.id, toast]);
+
+    useEffect(() => {
+        setUpdatedUser(user);
+    }, [user])
 
     const handleUpdateProfile = (updatedUserData: User | void) => {
         setUpdatedUser(updatedUserData);
