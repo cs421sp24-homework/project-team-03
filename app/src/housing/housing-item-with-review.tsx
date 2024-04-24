@@ -47,7 +47,7 @@ const HousingItemWithReviews = ({ housingItem }: HousingProps) => {
       <Header housingId={housingItem.id} sortBy={sortBy} setSortBy={setSortBy} />
       <div className="w-full">
         {user ? (
-          housingItem.reviewCount > 0 ? (
+          housingItem.reviewCount >= 0 ? (
             <div>
               <Reviews housingId={housingItem.id} query={query}/>
             </div>
