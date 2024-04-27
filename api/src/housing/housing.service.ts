@@ -11,7 +11,6 @@ import { createAggregateReviewPrompt } from 'src/chatgpt-prompts';
 const API_URL = 'http://localhost:3000';
 const API_KEY = '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';
 const openai = new OpenAI({ apiKey: API_KEY });
-// const ENDPOINT_COMPLETIONS = 'https://api.openai.com/v1/chat/completions';
 
 @Injectable()
 export class HousingService {
@@ -146,8 +145,14 @@ export class HousingService {
       throw new Error('Failed to fetch data from API');
     }
 
-    housing.aggregateReview = completion.choices[0].message.content;
-    await this.housingRepository.save(housing);
+    const newAggregateReview = completion.choices[0].message.content;
+    if (
+      newAggregateReview !==
+      'Not enough information to create an aggregate review'
+    ) {
+      housing.aggregateReview = newAggregateReview;
+      await this.housingRepository.save(housing);
+    }
   }
 
   async updateAvgReviewAfterCreate(

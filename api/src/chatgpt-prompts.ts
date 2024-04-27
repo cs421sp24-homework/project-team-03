@@ -18,6 +18,8 @@ const apartmentReviewKeywords = [
   'Pet Policies',
   'Parking',
   'Internet/Cell Reception',
+  'Pest',
+  'Good Deal',
   'Pest Control',
   'Storage Space',
   'Utilities',
