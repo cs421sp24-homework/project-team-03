@@ -230,6 +230,7 @@ Relationships and Constraints: Rules and associations that govern the interactio
 
 Iteration 1:
 Date: 2/19/2024 - 3/2/2024
+
 Description:
 - Added functionality for JHU students to view a catalog of off-campus housing options.
 - Implemented posting and verification process for new housing items on the catalog.
@@ -239,6 +240,7 @@ Future Plans: Further enhancements and refinements based on user feedback.
 
 Iteration 2:
 Date: 3/4/2024 - 3/16/2024
+
 Description:
 - Implemented review system for cataloged apartments.
 - Enabled users to read, write, and delete reviews.
@@ -250,6 +252,7 @@ Future Plans: Addressing any identified issues and exploring additional improvem
 
 Iteration 3:
 Date: 3/25/24 - 4/6/2024
+
 Description:
 - Implemented sorting options for reviews by popularity and recency.
 - Integrated aggregation of apartment reviews with ChatGPT.
@@ -261,6 +264,7 @@ Future Plans: Continuing to iterate based on user feedback and considering addit
 
 Iteration 4:
 Date: 4/8/2024 - 4/28/2024
+
 Description:
 - Introduced functionality for users to request addition of apartment listings via email.
 - Integrated display of nearest grocery stores and cafes for user convenience.
