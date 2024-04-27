@@ -397,6 +397,43 @@ create table if not exists public."user"
 
 ### 8.1 Test Plan
 
+#### Overview
+Testing is an integral part of our development process. We conduct tests in the second half of each iteration, ensuring that our code is robust and reliable before merging it into the main branch. This approach supports our Continuous Integration/Continuous Deployment (CI/CD) pipeline, enhancing overall productivity and software quality.
+
+#### Backend Testing
+The backend of our application is developed using Nest.JS, which leverages Jest for unit testing. Our backend architecture is built around a service-controller framework, where:
+
+- **Controllers** handle incoming API requests.
+- **Services** interact with external resources such as databases and other APIs.
+
+**Focus of Testing:**
+- We primarily focus on unit testing the logic contained within the controllers and services.
+
+**Testing Methodology:**
+- **Arrange-Act-Assert Pattern**: Each test is structured to:
+  - **Arrange**: Mock the entity data.
+  - **Act**: Execute the service methods using Jest’s `SpyOn` method.
+  - **Assert**: Compare the method results with the mocked result data to ensure correctness.
+
+**Execution**:
+- Navigate to the API directory (`cd api`) and execute `pnpm run test` to run the backend tests.
+
+#### Frontend Testing
+For frontend end-to-end testing, we utilize Cypress. This intuitive framework simulates user interactions with the application to verify the UI and overall user experience.
+
+**Testing Challenges:**
+- **Popup Dialogs**: Initially, Cypress had difficulty recognizing popup dialogs. We resolved this by assigning unique IDs to each component.
+- **Test Reliability**: Distinguishing between failures caused by flaky tests and actual application errors was challenging. Continuous refinement of test cases and setup has helped mitigate this issue.
+
+**Execution**:
+- To test the frontend, ensure the application is running locally. Then, execute `run Cy:Open` to launch the Cypress testing environment.
+
+#### Testing Schedule
+Tests are executed in the latter part of each development iteration to ensure that all new features and bug fixes meet our quality standards before deployment.
+
+This structured approach to both backend and frontend testing ensures thorough coverage and robustness of our application, aligning with our commitment to quality and reliability.
+
+
 ### 8.2 Test Results
 
 ### 8.3 Known Issues and Limitations
