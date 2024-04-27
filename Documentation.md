@@ -407,7 +407,7 @@ The backend of our application is developed using Nest.JS, which leverages Jest 
 - **Services** interact with external resources such as databases and other APIs.
 
 **Focus of Testing:**
-- We primarily focus on unit testing the logic contained within the controllers and services.
+- We primarily focus on unit testing the logic contained within the controllers and services. We experienced challenges attempting to mock the OpenAI API calls on the backend and mocking the Supabase image database calls. 
 
 **Testing Methodology:**
 - **Arrange-Act-Assert Pattern**: Each test is structured to:
@@ -447,6 +447,45 @@ Everytime we merged code into main, we ensured that all the frontend end-to-end 
 
 
 ### 8.3 Known Issues and Limitations
+
+#### Known Issues
+
+1. **Markers Not Displaying on Initial Page Load**
+   - **Description**: Housing item markers do not appear on the map upon the initial page load and require a page refresh to display.
+   - **Impact**: Affects user experience by requiring additional steps to view essential information.
+   - **Workaround**: Users need to refresh the page after it loads initially to see the markers.
+
+2. **Email Notification Issues**
+   - **Description**: Email notifications fail to clear from the user profile without logging out and then back in.
+   - **Impact**: Can lead to confusion or missed notifications for the user.
+   - **Workaround**: Users must log out and then log back in to clear email notifications.
+
+3. **Session Expired Handling**
+   - **Description**: Accessing a user page during session logout results in an infinite loading screen.
+   - **Impact**: Users may experience frustration due to the inability to access or use the page without refreshing.
+   - **Workaround**: Refresh the page if it gets stuck on an infinite loading screen after a session expiration.
+
+#### Limitations
+
+1. **Handling Non-Existent Emails**
+   - **Description**: Attempting to send emails to non-existent addresses does not send an email, but a notification is shown; repeated attempts increase bounce rates, which may trigger flags on our third-party email API.
+   - **Impact**: Potential for the application's email functionality to be flagged or restricted due to high bounce rates.
+   - **Preventive Measures**: Monitor bounce rates and implement validation checks before attempting to send emails.
+
+2. **Delayed Information Display Between Pages**
+   - **Description**: Information from a previously viewed apartment building page is momentarily displayed when switching to another building's page.
+   - **Impact**: Brief display of incorrect information could confuse users.
+   - **Technical Details**: This is likely caused by the time taken to fetch and render the new data.
+
+3. **Image Loading Delay in Posts**
+   - **Description**: Images in posts take up to 10 seconds to display after the text appears, due to the time required for Supabase to create URL links to the images.
+   - **Impact**: Affects the immediate visibility of images in posts, potentially diminishing user engagement.
+   - **Technical Details**: This delay is associated with the backend process of generating accessible links for newly uploaded images.
+
+### Summary
+
+These issues and limitations have been documented to guide future development priorities and inform users about current challenges. Our team is actively working on addressing these concerns to enhance user experience and system reliability.
+
 
 ## Deployment
 
