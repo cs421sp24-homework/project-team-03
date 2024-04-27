@@ -175,9 +175,706 @@ Email
 
 ### 6.1 Endpoints
 
+Supabase endpoints: Requires Endpoint requests to be predecessed with Supabase URL
+All other endpoints: Require Endpoint requests to be predecessed with API URL
+
+1. **User Endpoints**:
+   - `fetchUser`: GET `/users/{email}`
+   - `login`: POST `/users/login`
+   - `logout`: No specific endpoint, generally used to clear authentication tokens.
+   - `register`: POST `/users/register`
+   - `verifyEmail`: POST `/users/verify`
+   - `editUser`: PATCH `/users/{id}`
+
+2. **Post Endpoints**:
+   - `createPost`: POST `/posts`
+   - `deletePost`: DELETE `/posts/{id}`
+   - `editPost`: PATCH `/posts/{postId}`
+   - `fetchPosts`: GET `/posts`
+   - `fetchReviewsForSort`: GET `/housings/{housingId}/reviews`
+
+3. **HousingItem Endpoints**:
+   - `fetchHousingItems`: GET `/housings`
+   - `fetchHousingItem`: GET `/housings/{id}`
+   - `createHousingItem`: POST `/housings`
+
+4. **Review Endpoints**:
+   - `createReview`: POST `/housings/{housingId}/reviews`
+   - `fetchReviews`: GET `/housings/{housingId}/reviews`
+   - `deleteReview`: DELETE `/housings/{housingId}/reviews/{id}`
+   - `upvoteReview`: PATCH `/housings/{housingId}/reviews/{reviewId}/upvote/{userId}`
+   - `undoUpvoteReview`: PATCH `/housings/{housingId}/reviews/{reviewId}/upvoteUndo/{userId}`
+   - `getLikedBy`: GET `/housings/{housingId}/reviews/{reviewId}/likedBy`
+
+5. **Supabase Storage Endpoints**:
+   - `uploadPostImage`: POST `/storage/upload`
+   - `getPostImageData`: GET `/storage/{path}`
+
+6. **Notification Endpoints**:
+   - `incrementNotifications`: PATCH `/users/{email}/notifications`
+   - `clearNotifs`: PATCH `/users/{email}/clearNotifs`
+   - `getNotifications`: GET `/users/{email}`
+
+7. **Favorite Endpoints**:
+   - `favoritePost`: POST `/users/{userId}/favoritePosts/{postId}`
+   - `unfavoritePost`: DELETE `/users/{userId}/favoritePosts/{postId}`
+   - `findAllFavoritePosts`: GET `/users/{userId}/favoritePosts`
+   - `checkIfFavorite`: GET `/users/{userId}/favoritePosts/{postId}`
+   - `favoriteHousing`: POST `/users/{userId}/favoriteHousings/{housingId}`
+   - `unfavoriteHousing`: DELETE `/users/{userId}/favoriteHousings/{housingId}`
+   - `findAllFavoriteHousings`: GET `/users/{userId}/favoriteHousings`
+   - `checkIfFavoriteHousing`: GET `/users/{userId}/favoriteHousings/{housingId}`
+
+These endpoints correspond to the HTTP methods used in the respective functions (GET, POST, PATCH, DELETE).
+
 ### 6.2 Request and Response Formats
 
+1. **User Endpoints**:
+   - `fetchUser`
+     - Request:
+       - Method: GET
+       - Endpoint: `/users/{email}`
+       - Headers: 
+         - Content-Type: application/json
+         - Authorization: Bearer {token}
+       - Body: None
+     - Response:
+       - Status 200 OK:
+         - Content-Type: application/json
+         - Body: 
+           ```json
+           {
+             "id": 123,
+             "email": "user@example.com",
+             "firstName": "John",
+             "lastName": "Doe",
+             ...
+           }
+           ```
+       - Status 404 Not Found:
+         - Body:
+           ```json
+           {
+             "error": "User not found"
+           }
+           ```
+
+   - `login`
+     - Request:
+       - Method: POST
+       - Endpoint: `/users/login`
+       - Headers: 
+         - Content-Type: application/json
+       - Body: 
+         ```json
+         {
+           "email": "user@example.com",
+           "password": "password123"
+         }
+         ```
+     - Response:
+       - Status 200 OK:
+         - Content-Type: application/json
+         - Body: 
+           ```json
+           {
+             "id": 123,
+             "email": "user@example.com",
+             "firstName": "John",
+             "lastName": "Doe",
+             ...
+           }
+           ```
+       - Status 401 Unauthorized:
+         - Body:
+           ```json
+           {
+             "error": "Invalid credentials"
+           }
+           ```
+
+    - `logout`:
+       - Request:
+         - Method: No specific HTTP method (usually POST or DELETE)
+         - Endpoint: No specific endpoint
+         - Headers: None (as it's typically a client-side operation)
+         - Body: None
+       - Response:
+         - No specific response format as it's generally used for client-side operations like clearing authentication tokens.
+    
+    - `register`:
+       - Request:
+         - Method: POST
+         - Endpoint: `/users/register`
+         - Headers:
+           - Content-Type: application/json
+         - Body:
+           ```json
+           {
+             "email": "user@example.com",
+             "password": "password123",
+             "firstName": "John",
+             "lastName": "Doe",
+             ...
+           }
+           ```
+       - Response:
+         - Status 201 Created:
+           - Content-Type: application/json
+           - Body:
+             ```json
+             {
+               "message": "User registered successfully"
+             }
+             ```
+         - Status 400 Bad Request:
+           - Content-Type: application/json
+           - Body:
+             ```json
+             {
+               "error": "Invalid request payload"
+             }
+             ```
+    
+    - `verifyEmail`:
+       - Request:
+         - Method: POST
+         - Endpoint: `/users/verify`
+         - Headers:
+           - Content-Type: application/json
+         - Body:
+           ```json
+           {
+             "email": "user@example.com",
+             "verificationToken": "abcdef123456" 
+           }
+           ```
+       - Response:
+         - Status 200 OK:
+           - Content-Type: application/json
+           - Body:
+             ```json
+             {
+               "message": "Email verification successful"
+             }
+             ```
+         - Status 401 Unauthorized:
+           - Content-Type: application/json
+           - Body:
+             ```json
+             {
+               "error": "Invalid verification token"
+             }
+             ```
+    
+    - `editUser`:
+       - Request:
+         - Method: PATCH
+         - Endpoint: `/users/{id}`
+         - Headers:
+           - Content-Type: application/json
+           - Authorization: Bearer {token}
+         - Body:
+           ```json
+           {
+             "firstName": "Updated First Name",
+             "lastName": "Updated Last Name",
+             ...
+           }
+           ```
+       - Response:
+         - Status 200 OK:
+           - Content-Type: application/json
+           - Body:
+             ```json
+             {
+               "message": "User details updated successfully"
+             }
+             ```
+         - Status 401 Unauthorized:
+           - Content-Type: application/json
+           - Body:
+             ```json
+             {
+               "error": "Unauthorized: Invalid token"
+             }
+             ```
+         - Status 404 Not Found:
+           - Content-Type: application/json
+           - Body:
+             ```json
+             {
+               "error": "User not found"
+             }
+             ```
+2. **Post Endpoints**:
+
+- **createPost**:
+   - Request:
+     - Method: POST
+     - Endpoint: `/posts`
+     - Headers:
+       - Content-Type: application/json
+       - Authorization: Bearer {token}
+     - Body:
+       ```json
+       {
+         "title": "Post Title",
+         "content": "Post Content",
+         "cost": 1000,
+         "address": "123 Main St",
+         "type": "rent",
+         "imagesData": []
+       }
+       ```
+   - Response:
+     - Status 200 OK:
+       - Content-Type: application/json
+       - Body:
+         ```json
+         {
+           "id": "123",
+           "title": "Post Title",
+           "content": "Post Content",
+           "cost": 1000,
+           "address": "123 Main St",
+           "type": "rent",
+           "imagesData": [],
+           "user": {
+             "id": 456,
+             "firstName": "John",
+             "lastName": "Doe",
+             ...
+           }
+         }
+         ```
+     - Status 400 Bad Request:
+       - Content-Type: application/json
+       - Body:
+         ```json
+         {
+           "error": "Invalid request payload"
+         }
+         ```
+
+- **deletePost**:
+   - Request:
+     - Method: DELETE
+     - Endpoint: `/posts/{id}`
+     - Headers:
+       - Authorization: Bearer {token}
+     - Body: None
+   - Response:
+     - Status 200 OK:
+       - No specific content
+
+- **editPost**:
+   - Request:
+     - Method: PATCH
+     - Endpoint: `/posts/{postId}`
+     - Headers:
+       - Content-Type: application/json
+       - Authorization: Bearer {token}
+     - Body:
+       ```json
+       {
+         "title": "Updated Title",
+         "content": "Updated Content",
+         "cost": 1500,
+         "address": "456 Elm St",
+         "type": "sale",
+         "imagesData": []
+       }
+       ```
+   - Response:
+     - Status 200 OK:
+       - Content-Type: application/json
+       - Body:
+         ```json
+         {
+           "id": "123",
+           "title": "Updated Title",
+           "content": "Updated Content",
+           "cost": 1500,
+           "address": "456 Elm St",
+           "type": "sale",
+           "imagesData": [],
+           "user": {
+             "id": 456,
+             "firstName": "John",
+             "lastName": "Doe",
+             ...
+           }
+         }
+         ```
+     - Status 400 Bad Request:
+       - Content-Type: application/json
+       - Body:
+         ```json
+         {
+           "error": "Invalid request payload"
+         }
+         ```
+
+3. **HousingItem Endpoints**:
+
+    - **fetchHousingItems**:
+       - Request:
+         - Method: GET
+         - Endpoint: `/housings`
+         - Headers: None
+         - Body: None
+       - Response:
+         - Status 200 OK:
+           - Content-Type: application/json
+           - Body: Array of housing items
+             ```json
+             [
+               {
+                 "id": "123",
+                 "name": "Housing Name",
+                 "address": "123 Main St",
+                 "distance": 1.5,
+                 "price": "$1000",
+                 "imageURL": "https://example.com/image.jpg",
+                 ...
+               },
+               ...
+             ]
+             ```
+    
+    - **fetchHousingItem**:
+       - Request:
+         - Method: GET
+         - Endpoint: `/housings/{id}`
+         - Headers: None
+         - Body: None
+       - Response:
+         - Status 200 OK:
+           - Content-Type: application/json
+           - Body: Housing item details
+             ```json
+             {
+               "id": "123",
+               "name": "Housing Name",
+               "address": "123 Main St",
+               "distance": 1.5,
+               "price": "$1000",
+               "imageURL": "https://example.com/image.jpg",
+               ...
+             }
+             ```
+    
+    - **createHousingItem**:
+       - Request:
+         - Method: POST
+         - Endpoint: `/housings`
+         - Headers:
+           - Content-Type: application/json
+         - Body:
+           ```json
+           {
+             "name": "Housing Name",
+             "address": "123 Main St",
+             "distance": 1.5,
+             "price": "$1000",
+             "imageURL": "https://example.com/image.jpg"
+           }
+           ```
+       - Response:
+         - Status 200 OK:
+           - Content-Type: application/json
+           - Body: Newly created housing item
+             ```json
+             {
+               "id": "123",
+               "name": "Housing Name",
+               "address": "123 Main St",
+               "distance": 1.5,
+               "price": "$1000",
+               "imageURL": "https://example.com/image.jpg",
+               ...
+             }
+             ```
+    
+    - **deleteHousingItem**:
+       - Request:
+         - Method: DELETE
+         - Endpoint: `/housings/{id}`
+         - Headers: None
+         - Body: None
+       - Response:
+         - Status 200 OK:
+           - No specific content
+
+4. **Review Endpoints**:
+    For the Review endpoints, the Request and Response Formats section would look like this:
+
+    - **createReview**:
+       - Request:
+         - Method: POST
+         - Endpoint: `/housings/{housingId}/reviews`
+         - Headers:
+           - Content-Type: application/json
+           - Authorization: Bearer {token}
+         - Body:
+           ```json
+           {
+             "content": "This is a review.",
+             "rating": 5
+           }
+           ```
+       - Response:
+         - Status 201 Created:
+           - Content-Type: application/json
+           - Body: Created review with user data
+             ```json
+             {
+               "id": "123",
+               "content": "This is a review.",
+               "rating": 5,
+               "user": {
+                 "id": 456,
+                 "firstName": "John",
+                 "lastName": "Doe",
+                 ...
+               }
+             }
+             ```
+    
+    - **fetchReviews**:
+       - Request:
+         - Method: GET
+         - Endpoint: `/housings/{housingId}/reviews`
+         - Headers: None
+         - Body: None
+       - Response:
+         - Status 200 OK:
+           - Content-Type: application/json
+           - Body: Array of reviews with user data
+             ```json
+             [
+               {
+                 "id": "123",
+                 "content": "This is a review.",
+                 "rating": 5,
+                 "user": {
+                   "id": 456,
+                   "firstName": "John",
+                   "lastName": "Doe",
+                   ...
+                 }
+               },
+               ...
+             ]
+             ```
+    
+    - **deleteReview**:
+       - Request:
+         - Method: DELETE
+         - Endpoint: `/housings/{housingId}/reviews/{id}`
+         - Headers:
+           - Authorization: Bearer {token}
+         - Body: None
+       - Response:
+         - Status 204 No Content:
+           - No specific content
+
+5. **Supabase Storage Endpoints**:
+
+    - **uploadPostImage**:
+       - Request:
+         - Method: POST
+         - Endpoint: N/A (Supabase Storage)
+         - Headers:
+           - Content-Type: multipart/form-data
+         - Body: Form data containing the image file
+       - Response:
+         - Status 200 OK:
+           - Content-Type: application/json
+           - Body: Path to the uploaded image
+             ```json
+             {
+               "path": "path/to/uploaded/image.jpg"
+             }
+             ```
+    
+    - **getPostImageData**:
+       - Request:
+         - Method: GET
+         - Endpoint: N/A (Supabase Storage)
+         - Headers: None
+         - Body: None
+       - Response:
+         - Status 200 OK:
+           - Content-Type: application/json
+           - Body: Image metadata including URL
+             ```json
+             {
+               "path": "path/to/image.jpg",
+               "url": "https://example.com/path/to/image.jpg"
+             }
+             ```
+
+6. **Notification Endpoints**:
+
+    - **incrementNotifications**:
+       - Request:
+         - Method: PATCH
+         - Endpoint: `/users/{email}/notifications`
+         - Headers:
+           - Content-Type: application/json
+           - Authorization: Bearer {token}
+         - Body: None
+       - Response:
+         - Status 200 OK:
+           - Content-Type: application/json
+           - Body: Updated user object with incremented notifications count
+             ```json
+             {
+               "id": 123,
+               "email": "user@example.com",
+               "notifications": 5,
+               ...
+             }
+             ```
+    
+    - **clearNotifs**:
+       - Request:
+         - Method: PATCH
+         - Endpoint: `/users/{email}/clearNotifs`
+         - Headers:
+           - Content-Type: application/json
+           - Authorization: Bearer {token}
+         - Body: None
+       - Response:
+         - Status 200 OK:
+           - Content-Type: application/json
+           - Body: Updated user object with cleared notifications count
+             ```json
+             {
+               "id": 123,
+               "email": "user@example.com",
+               "notifications": 0,
+               ...
+             }
+             ```
+    
+    - **getNotifications**:
+       - Request:
+         - Method: GET
+         - Endpoint: `/users/{email}`
+         - Headers:
+           - Content-Type: application/json
+           - Authorization: Bearer {token}
+         - Body: None
+       - Response:
+         - Status 200 OK:
+           - Content-Type: application/json
+           - Body: Number of notifications for the user
+             ```json
+             {
+               "notifications": 5
+             }
+             ```
+
+7. **Favorite Endpoints**:
+
+    - **favoritePost**:
+       - Request:
+         - Method: POST
+         - Endpoint: `/users/{userId}/favoritePosts/{postId}`
+         - Headers:
+           - Content-Type: application/json
+           - Authorization: Bearer {token}
+         - Body: None
+       - Response:
+         - Status 200 OK:
+           - Content-Type: application/json
+           - Body: Success message indicating the post has been favorited
+             ```json
+             {
+               "message": "Post favorited successfully"
+             }
+             ```
+    
+    - **unfavoritePost**:
+       - Request:
+         - Method: DELETE
+         - Endpoint: `/users/{userId}/favoritePosts/{postId}`
+         - Headers:
+           - Content-Type: application/json
+           - Authorization: Bearer {token}
+         - Body: None
+       - Response:
+         - Status 200 OK:
+           - Content-Type: application/json
+           - Body: Success message indicating the post has been unfavorited
+             ```json
+             {
+               "message": "Post unfavorited successfully"
+             }
+             ```
+    
+    - **findAllFavoritePosts**:
+       - Request:
+         - Method: GET
+         - Endpoint: `/users/{userId}/favoritePosts`
+         - Headers:
+           - Content-Type: application/json
+           - Authorization: Bearer {token}
+         - Body: None
+       - Response:
+         - Status 200 OK:
+           - Content-Type: application/json
+           - Body: Array of favorite posts
+             ```json
+             [
+               {
+                 "id": "post1",
+                 "title": "Favorite Post 1",
+                 ...
+               },
+               {
+                 "id": "post2",
+                 "title": "Favorite Post 2",
+                 ...
+               },
+               ...
+             ]
+             ```
+    
+    - **checkIfFavorite**:
+       - Request:
+         - Method: GET
+         - Endpoint: `/users/{userId}/favoritePosts/{postId}`
+         - Headers:
+           - Content-Type: application/json
+           - Authorization: Bearer {token}
+         - Body: None
+       - Response:
+         - Status 200 OK:
+           - Content-Type: application/json
+           - Body: Indicates whether the post is favorited by the user
+             ```json
+             {
+               "favorite": true
+             }
+             ```
+         - Status 404 Not Found:
+           - Content-Type: application/json
+           - Body: Indicates the post is not favorited by the user
+             ```json
+             {
+               "favorite": false
+             }
+             ```
+
 ### 6.3 Authentication and Authorization
+
+As detailed above, all methods that require authentication require a Bearer token specifically. If not specified, any method that does not mention authentication, it does not require passing a Bearer token.
+
+Regarding authorization, this primarily applies to the frontend permissions where certain guards are placed to prohibit users from editing/deleting entities that are not under their ownership.
 
 ## Database Schema (if applicable)
 
