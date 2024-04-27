@@ -436,6 +436,16 @@ This structured approach to both backend and frontend testing ensures thorough c
 
 ### 8.2 Test Results
 
+#### Results Summary
+Due to the way that the tests are integrated into the CI/CD Pipeline, the unit tests must pass for the app to deploy. Thus, all the unit tests covering the backend pass. However, for the Front-end, due to the likelihood of flaky Cypress tests, sometimes a couple of the frontend tests fail, but they will pass over multiple trials.
+
+#### Detailed Results
+Everytime we merged code into main, we ensured that all the frontend end-to-end tests passed for at least 2 people locally when done over multiple trials.
+
+#### Metrics
+- Average Unit test load time: 11 seconds
+
+
 ### 8.3 Known Issues and Limitations
 
 ## Deployment
