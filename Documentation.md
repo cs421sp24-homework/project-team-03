@@ -236,6 +236,7 @@ Description:
 - Implemented posting and verification process for new housing items on the catalog.
 - Introduced feed feature for viewing and posting about roommate openings or sublets.
 - Enabled JHU email authentication for accessing catalog and feed listings.
+  
 Future Plans: Further enhancements and refinements based on user feedback.
 
 Iteration 2:
@@ -248,6 +249,7 @@ Description:
 - Integrated map feature for visualizing apartment locations on the catalog.
 - Introduced profile viewing for potential roommate matching.
 - Utilized ChatGPT for generating concise summaries of apartment reviews.
+  
 Future Plans: Addressing any identified issues and exploring additional improvements.
 
 Iteration 3:
@@ -260,6 +262,7 @@ Description:
 - Implemented email verification for user registration.
 - Enabled users to edit their posts.
 - Added photo upload feature for posts.
+  
 Future Plans: Continuing to iterate based on user feedback and considering additional enhancements.
 
 Iteration 4:
@@ -271,6 +274,7 @@ Description:
 - Refactored post creation process for flexibility and improved user experience.
 - Enhanced user profiles to include review history and personal information.
 - Implemented favoriting feature for posts and housing items.
+  
 Future Plans: Evaluating user reception and feedback for further iterations and enhancements.
 
 ## Glossary
