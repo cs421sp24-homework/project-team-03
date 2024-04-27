@@ -184,8 +184,214 @@ Email
 ### 7.1 Entity-Relationship Diagram
 
 ### 7.2 Table Definitions
+#### 7.2.1 `FAVORITE_HOUSING` Table
+<!-- &nbsp; -->
+<!-- &ensp; -->
+Each row represents an instance of a `user` favoriting/bookmarking a `housing` item.
+
+```SQL
+create table if not exists public.favorite_housing
+(
+    id          uuid default uuid_generate_v4() not null
+        constraint "PK_1f6a7eee915d27e7392aaaec8af"
+            primary key,
+    "housingId" varchar                         not null,
+    "userId"    integer                         not null
+        constraint "FK_ec47e13fad342a40bdcb914343d"
+            references public."user"
+            on delete cascade
+);
+```
+
+#### 7.2.2 `FAVORITE_POST` Table
+Each row represents an instance of a `user` favoriting/bookmarking a `post`.
+```SQL
+create table public.favorite_post
+(
+    id       uuid default uuid_generate_v4() not null
+        constraint "PK_2643df4f83c97f24e261cbee403"
+            primary key,
+    "postId" varchar                         not null,
+    "userId" integer                         not null
+        constraint "FK_7b6615d620f9df3df2e8bf19a7e"
+            references public."user"
+            on delete cascade
+);
+```
+
+#### 7.2.3 `HOUSING` Table
+Each row represents a `housing` item display on the Housing Catalog.
+```SQL
+create table if not exists public.housing
+(
+    id                uuid          default uuid_generate_v4()     not null
+        constraint "PK_fac21a104febb2697b71464c579"
+            primary key,
+    name              varchar                                      not null,
+    address           varchar                                      not null,
+    latitude          numeric(10, 6)                               not null,
+    longitude         numeric(10, 6)                               not null,
+    "imageURL"        varchar,
+    price             varchar       default '$'::character varying not null,
+    distance          numeric(6, 1)                                not null,
+    "avgRating"       numeric(2, 1) default '0'::numeric           not null,
+    "reviewCount"     integer       default 0                      not null,
+    "aggregateReview" varchar
+);
+```
+
+#### 7.2.4 `REVIEW` Table
+Each row represents a `user` created `review` attached to a `housing` item.
+```SQL
+create table if not exists public.review
+(
+    id            uuid                     default uuid_generate_v4() not null
+        constraint "PK_2e4299a343a81574217255c00ca"
+            primary key,
+    content       varchar                                             not null,
+    timestamp     timestamp with time zone default now()              not null,
+    rating        integer,
+    "upvoteCount" integer                  default 0                  not null,
+    "likedBy"     integer[]                default '{}'::integer[]    not null,
+    "userId"      integer                                             not null
+        constraint "FK_1337f93918c70837d3cea105d39"
+            references public."user"
+            on delete cascade,
+    "housingId"   uuid                                                not null
+        constraint "FK_af3bc9030295aba59581ab279cb"
+            references public.housing
+            on delete cascade
+);
+```
+
+#### 7.2.5 `POST` Table
+Each row represents a `user` created `post`.
+```SQL
+create table if not exists public.post
+(
+    id        uuid                     default uuid_generate_v4() not null
+        constraint "PK_be5fda3aac270b134ff9c21cdee"
+            primary key,
+    title     varchar                                             not null,
+    content   varchar                                             not null,
+    timestamp timestamp with time zone default now()              not null,
+    cost      integer                                             not null,
+    address   varchar                                             not null,
+    "userId"  integer                                             not null
+        constraint "FK_5c1cf55c308037b5aca1038a131"
+            references public."user"
+            on delete cascade,
+    type      varchar                                             not null
+);
+```
+
+#### 7.2.6 `POST_IMAGE` Table
+Each row represents metadata of an image that is either attached to a `post` or marked for soft-delete.
+```SQL
+create table if not exists public.post_image
+(
+    id          uuid                     default uuid_generate_v4() not null
+        constraint "PK_0c74d0ac8869bc3a3cbaa3ec55d"
+            primary key,
+    url         varchar                                             not null,
+    path        varchar                                             not null,
+    "postId"    uuid
+        constraint "FK_668c9fb892f2accb872670c7b1e"
+            references public.post
+            on delete set null,
+    "deletedAt" timestamp,
+    timestamp   timestamp with time zone default now()              not null
+);
+```
+
+#### 7.2.7 `USER` Table:
+Each row represents a registered `user` of the app.
+```SQL
+create table if not exists public."user"
+(
+    id                  serial
+        constraint "PK_cace4a159ff9f2512dd42373760"
+            primary key,
+    password            varchar               not null,
+    email               varchar               not null
+        constraint "UQ_e12875dfb3b1d92d7d7c5377e22"
+            unique,
+    avatar              varchar,
+    "firstName"         varchar               not null,
+    "lastName"          varchar               not null,
+    "isEmailVerified"   boolean default false not null,
+    "verificationToken" varchar,
+    bio                 varchar,
+    notifications       integer default 0     not null,
+    age                 varchar,
+    gender              varchar,
+    major               varchar,
+    "gradYear"          varchar,
+    "stayLength"        varchar,
+    budget              varchar,
+    "idealDistance"     varchar,
+    "petPreference"     varchar,
+    cleanliness         varchar,
+    smoker              varchar,
+    "socialPreference"  varchar,
+    "peakProductivity"  varchar
+);
+```
 
 ### 7.3 Relationships and Constraints
+**<u>Entity Relationships</u>**
+1) `FavoriteHousing` to `User`
+    * Many-to-one relationship where every record of 'favorited housing' belongs to one user, but a user can favorite multiple housings.
+    * Foreign Key `onDelete` behavior: `CASCADE` (when a user gets deleted, all of their favorited housings also get deleted)
+
+2) `FavoritePost` to `User`
+    * Many-to-one relationship where every record of 'favorited post' belongs to one user, but a user can favorite multiple posts.
+    * Foreign Key `onDelete` behavior: `CASCADE` (when a user gets deleted, all of their favorited posts also get deleted)
+
+3) `Review` to `User`
+    * Many-to-one relationship where each review belongs to one user, but a user can create multiple reviews.
+    * Foreign Key `onDelete` behavior: `CASCADE` (when a user gets deleted, all of their reviews also get deleted)
+
+4) `Review` to `Housing`
+    * Many-to-one relationship where each review is attached to one housing, but a housing can have multiple reviews attached.
+    * Foreign Key `onDelete` behavior: `CASCADE` (when a housing gets deleted, all associated reviews also get deleted)
+
+5) `Post` to `User`
+    * Many-to-one relationship where each post is authored by one user, but a user can author multiple posts.
+    * Foreign Key `onDelete` behavior: `CASCADE` (when a user gets deleted, all of their posts also get deleted)
+
+6) `PostImage` to `Post`
+    * Many-to-one relationship where each post-image belongs to one post, but a post can have multiple images.
+    * Foreign Key `onDelete` behavior: `SET NULL` (to support soft-delete/batch-delete of images stored in external storage, associated images get "orphaned" and marked for delete in the next batch-delete cycle when their associated post(s) gets deleted)
+
+**<u>Table Constraints</u>**
+1) `FAVORITE_HOUSING` table
+    * Primary Key: `id`
+    * Foreign Key: `userId` (refers to `id` column of user who favorited a housing)
+    * NOT NULL: `id`, `housingId`, `userId`
+2) `FAVORITE_POST` table
+    * Primary Key: `id`
+    * Foreign Key: `userId` (refers to `id` column of user who favorited a post)
+    * NOT NULL: `id`, `postId`, `userId`
+3) `HOUSING` table
+    * Primary Key: `id`
+    * NOT NULL: `id`, `name`, `address`, `latitude`, `longitude`, `price`, `distance`, `avgRating`, `reviewCount`, `aggregateReview`
+4) `REVIEW` table
+    * Primary Key: `id`
+    * Foreign Keys:
+        * `userId` (refers to `id` column of user that created this review)
+        * `housingId` (refers to `id` column of housing item this review belongs to)
+    * NOT NULL: `id`, `content`, `timestamp`, `upvoteCount`, `likedBy`, `userId`, `housingId`
+5) `POST` table
+    * Primary Key: `id`
+    * Foreign Key: `userId` (refers to `id` column of user that created this post)
+6) `POST_IMAGE` table
+    * Primary Key: `id`
+    * Foreign Key: `postId` (refers to `id` column of post this image belongs to)
+7) `USER` 
+    * Primary Key: `id`
+    * NOT NULL: `id`, `email`, `firstName`, `lastName`, `isEmailVerified`, `notifications`
+    * UNIQUE: `email`
 
 ## Testing
 
