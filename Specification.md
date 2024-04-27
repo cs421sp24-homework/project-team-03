@@ -28,7 +28,7 @@ Must-haves
 - As a JHU student, I want to view a concise summary of reviews on an apartment based on aggregated reviews with ChatGPT’s help, so that I can get quick insights into what to expect from different housing options.
 - As a JHU student, I want to sort reviews by popularity, and recency, and upvote helpful ones, so that I can quickly find the most useful information.
 - As a JHU student, I want to view a concise summary of reviews on an apartment based on aggregated reviews with ChatGPT’s help, so that I can get quick insights into what to expect from different housing options.
-- As a JHU student, I want to be able to edit my posts.
+- As a JHU student, I want to be able to edit my posts, so that my posts are reflective of my current needs.
 
 Nice-to-haves
 
