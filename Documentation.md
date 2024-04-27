@@ -202,8 +202,72 @@ Email
 ## Glossary
 
 ### 10.1 Terms and Definitions
+Off-campus Housing: Housing accommodations located outside the university campus premises, often rented or leased by students attending the university.
+
+Catalog: A comprehensive list or database containing information about available off-campus apartments, including details such as address, price, distance from campus, and reviews.
+
+Feed: A feature within the application allowing users to post and view information about roommate openings, sublets, and housing needs.
+
+User Profile: A personalized section within the application where users can customize their preferences, view their activity history, and manage their account settings.
+
+User Authentication: The process of verifying the identity of users accessing the application through email verification and a unique username/password.
+
+Prerequisites: Necessary conditions or requirements that must be met before installing and running the application, including software dependencies and knowledge prerequisites.
+
+Environment Variables: Configurable parameters used to customize the behavior of the application in different environments, such as development, testing, and production.
+
+Unit Testing: Testing method focusing on individual units or components of the software to ensure their correctness and functionality.
+
+End-to-End (E2E) Testing: Testing method examining the entire application workflow from start to finish to validate its behavior and performance.
+
+Database Schema: A blueprint or structural design that outlines the organization of data in a database system, including tables, fields, relationships, and constraints.
+
+Entity-Relationship Diagram (ERD): A visual representation of the entities (objects or concepts) within a database system and the relationships between them, typically depicted using symbols and connecting lines.
+
+Relationships and Constraints: Rules and associations that govern the interactions and dependencies between entities in a database, ensuring data integrity and consistency. Examples include foreign key constraints and one-to-many relationships
 
 ### 11.2 Change Summary
+
+Iteration 1:
+Date: 2/19/2024 - 3/2/2024
+Description:
+- Added functionality for JHU students to view a catalog of off-campus housing options.
+- Implemented posting and verification process for new housing items on the catalog.
+- Introduced feed feature for viewing and posting about roommate openings or sublets.
+- Enabled JHU email authentication for accessing catalog and feed listings.
+Future Plans: Further enhancements and refinements based on user feedback.
+
+Iteration 2:
+Date: 3/4/2024 - 3/16/2024
+Description:
+- Implemented review system for cataloged apartments.
+- Enabled users to read, write, and delete reviews.
+- Added filtering options for housing options on the catalog and feed.
+- Integrated map feature for visualizing apartment locations on the catalog.
+- Introduced profile viewing for potential roommate matching.
+- Utilized ChatGPT for generating concise summaries of apartment reviews.
+Future Plans: Addressing any identified issues and exploring additional improvements.
+
+Iteration 3:
+Date: 3/25/24 - 4/6/2024
+Description:
+- Implemented sorting options for reviews by popularity and recency.
+- Integrated aggregation of apartment reviews with ChatGPT.
+- Introduced functionality for sending emails to users from their profiles.
+- Implemented email verification for user registration.
+- Enabled users to edit their posts.
+- Added photo upload feature for posts.
+Future Plans: Continuing to iterate based on user feedback and considering additional enhancements.
+
+Iteration 4:
+Date: 4/8/2024 - 4/28/2024
+Description:
+- Introduced functionality for users to request addition of apartment listings via email.
+- Integrated display of nearest grocery stores and cafes for user convenience.
+- Refactored post creation process for flexibility and improved user experience.
+- Enhanced user profiles to include review history and personal information.
+- Implemented favoriting feature for posts and housing items.
+Future Plans: Evaluating user reception and feedback for further iterations and enhancements.
 
 ## Glossary
 
