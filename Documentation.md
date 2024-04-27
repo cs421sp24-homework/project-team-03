@@ -10,6 +10,8 @@ Housing4Hopkins aims to streamline the process of finding off-campus housing and
 
 Housing4Hopkins contains off-campus housing information near the JHU Homewood campus, exclusively serving JHU students. Our app include a catalog of apartments and vetted student reviews, a feed for students to post about roommate openings and available sublets, a customizable user profile indicating housing and lifestyle preferences, and an email feature for user communication. Our app is designed to assist students in finding housing during their time at JHU, focusing on short-term housing needs and not long-term arrangements, which are beyond our app’s scope.
 
+More info here: https://github.com/cs421sp24-homework/project-team-03/blob/main/Specification.md
+
 ### 1.3 Audience
 
 Our app serves JHU students either seeking off-campus housing or have it but need to find roommates or subletters.
