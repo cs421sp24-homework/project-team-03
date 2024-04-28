@@ -1216,7 +1216,7 @@ These endpoints correspond to the HTTP methods used in the respective functions 
           
 ### 6.3 Authentication and Authorization
 
-As detailed above, all methods that require authentication require a Bearer token specifically. If not specified, any method that does not mention authentication, it does not require passing a Bearer token.
+As detailed above, all methods that require authentication require a Bearer token specifically. If not specified, it does not require passing a Bearer token and does not require any authentication.
 
 Regarding authorization, this primarily applies to the frontend permissions where certain guards are placed to prohibit users from editing/deleting entities that are not under their ownership.
 
