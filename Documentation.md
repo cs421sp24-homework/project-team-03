@@ -266,6 +266,7 @@ Email
 ### 6.1 Endpoints
 
 Supabase endpoints: Requires Endpoint requests to be predecessed with Supabase URL
+
 All other endpoints: Require Endpoint requests to be predecessed with API URL
 
 1. **User Endpoints**:
