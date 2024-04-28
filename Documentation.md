@@ -1124,95 +1124,94 @@ These endpoints correspond to the HTTP methods used in the respective functions 
              }
              ```
              
-- **Favorite Housing Endpoints**:
-  - **favoriteHousing**:
-    - Request:
-      - Method: POST
-      - Endpoint: `/users/{userId}/favoriteHousings/{housingId}`
-      - Headers:
-        - Content-Type: application/json
-        - Authorization: Bearer {token}
-      - Body: None
-    - Response:
-      - Status 200 OK:
-        - Content-Type: application/json
-        - Body: Success message indicating the housing has been favorited
-          ```json
-          {
-            "message": "Housing favorited successfully"
-          }
-          ```
-
-  - **unfavoriteHousing**:
-    - Request:
-      - Method: DELETE
-      - Endpoint: `/users/{userId}/favoriteHousings/{housingId}`
-      - Headers:
-        - Content-Type: application/json
-        - Authorization: Bearer {token}
-      - Body: None
-    - Response:
-      - Status 200 OK:
-        - Content-Type: application/json
-        - Body: Success message indicating the housing has been unfavorited
-          ```json
-          {
-            "message": "Housing unfavorited successfully"
-          }
-          ```
-
-  - **findAllFavoriteHousings**:
-    - Request:
-      - Method: GET
-      - Endpoint: `/users/{userId}/favoriteHousings`
-      - Headers:
-        - Content-Type: application/json
-        - Authorization: Bearer {token}
-      - Body: None
-    - Response:
-      - Status 200 OK:
-        - Content-Type: application/json
-        - Body: Array of favorite housings
-          ```json
-          [
+    - **favoriteHousing**:
+      - Request:
+        - Method: POST
+        - Endpoint: `/users/{userId}/favoriteHousings/{housingId}`
+        - Headers:
+          - Content-Type: application/json
+          - Authorization: Bearer {token}
+        - Body: None
+      - Response:
+        - Status 200 OK:
+          - Content-Type: application/json
+          - Body: Success message indicating the housing has been favorited
+            ```json
             {
-              "id": "housing1",
-              "title": "Favorite Housing 1",
-              ...
-            },
+              "message": "Housing favorited successfully"
+            }
+            ```
+  
+    - **unfavoriteHousing**:
+      - Request:
+        - Method: DELETE
+        - Endpoint: `/users/{userId}/favoriteHousings/{housingId}`
+        - Headers:
+          - Content-Type: application/json
+          - Authorization: Bearer {token}
+        - Body: None
+      - Response:
+        - Status 200 OK:
+          - Content-Type: application/json
+          - Body: Success message indicating the housing has been unfavorited
+            ```json
             {
-              "id": "housing2",
-              "title": "Favorite Housing 2",
-              ...
-            },
-            ...
-          ]
-          ```
+              "message": "Housing unfavorited successfully"
+            }
+            ```
 
-  - **checkIfFavoriteHousing**:
-    - Request:
-      - Method: GET
-      - Endpoint: `/users/{userId}/favoriteHousings/{housingId}`
-      - Headers:
-        - Content-Type: application/json
-        - Authorization: Bearer {token}
-      - Body: None
-    - Response:
-      - Status 200 OK:
-        - Content-Type: application/json
-        - Body: Indicates whether the housing is favorited by the user
-          ```json
-          {
-            "favorite": true
-          }
-          ```
-      - Status 404 Not Found:
-        - Content-Type: application/json
-        - Body: Indicates the housing is not favorited by the user
-          ```json
-          {
-            "favorite": false
-          }
+    - **findAllFavoriteHousings**:
+      - Request:
+        - Method: GET
+        - Endpoint: `/users/{userId}/favoriteHousings`
+        - Headers:
+          - Content-Type: application/json
+          - Authorization: Bearer {token}
+        - Body: None
+      - Response:
+        - Status 200 OK:
+          - Content-Type: application/json
+          - Body: Array of favorite housings
+            ```json
+            [
+              {
+                "id": "housing1",
+                "title": "Favorite Housing 1",
+                ...
+              },
+              {
+                "id": "housing2",
+                "title": "Favorite Housing 2",
+                ...
+              },
+              ...
+            ]
+            ```
+  
+    - **checkIfFavoriteHousing**:
+      - Request:
+        - Method: GET
+        - Endpoint: `/users/{userId}/favoriteHousings/{housingId}`
+        - Headers:
+          - Content-Type: application/json
+          - Authorization: Bearer {token}
+        - Body: None
+      - Response:
+        - Status 200 OK:
+          - Content-Type: application/json
+          - Body: Indicates whether the housing is favorited by the user
+            ```json
+            {
+              "favorite": true
+            }
+            ```
+        - Status 404 Not Found:
+          - Content-Type: application/json
+          - Body: Indicates the housing is not favorited by the user
+            ```json
+            {
+              "favorite": false
+            }
           ```
           
 ### 6.3 Authentication and Authorization
