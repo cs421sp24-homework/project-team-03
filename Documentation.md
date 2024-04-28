@@ -20,9 +20,99 @@ Our app serves JHU students either seeking off-campus housing or have it but nee
 
 ### 2.1 Architecture
 
+#### Application Structure
+
+Our apartment app is structured as a monorepo, encapsulating the frontend, backend, and shared libraries within a single repository. This setup facilitates easier maintenance, version control, and continuous integration processes across the entire codebase. 
+
+#### Architectural Style
+
+We follow a modular architectural style, which, while not fully microservices, allows for separation of concerns within our monorepo. Each module is designed to operate independently, ensuring that changes in one service have minimal impact on others.
+
+#### Component Interaction
+
+The application is split into several key components:
+
+- **User**: Manages user information and authentication states.
+- **Post**: Represents the content published by users, including various attributes like type and associated images.
+- **PostImage**: Handles the storage and management of images related to posts, supporting operations such as soft-delete and batch delete.
+- **Review**: Allows users to rate and review housing options, contributing to the aggregate rating system.
+- **Housing**: Stores information about different housing options, including average ratings and reviews.
+- **FavoriteHousing & FavoritePost**: Enable users to mark certain housing options and posts as favorites for easy access.
+
+These components interact with each other to create a comprehensive user experience. For instance, a User can have multiple Reviews and FavoritePosts, and each Housing unit can have multiple Reviews which affect its avgRating.
+
+#### System Flow
+
+Upon user interaction, such as creating a post or a review, the frontend communicates with the backend via RESTful APIs. The backend handles the logic and data manipulation, interfacing with PostgreSQL for data storage through TypeORM. The modular nature of the architecture allows for scalability and the potential to evolve into a microservices architecture as the application grows.
+
+#### UML Class Diagram
+
+Below is the UML Class Diagram illustrating the relationships between the main entities of our application:
+
+![UML Class Diagram](uml_class_diagram.png)
+
+The architecture is designed to be both robust and flexible, ensuring that the application can grow and adapt to future requirements with minimal friction.
+
+
 ### 2.2 Technologies Used
 
+Below we outline the technologies used across various aspects of the app.
+
+#### Database
+- **PostgreSQL**: Serves as the primary database, renowned for its proven architecture and strong community support.
+- **TypeORM**: Utilized as the Object-Relational Mapper (ORM) to facilitate interaction with the database using TypeScript.
+
+#### Deployment
+- **Client-Side**: 
+  - GitHub Pages: Chosen for hosting the frontend due to its ease of use and integration with our source code repositories.
+- **Server-Side**: 
+  - Render: Provides a reliable cloud hosting service for deploying our server-side applications.
+- **Database/Storage**: 
+  - Supabase: Augments our PostgreSQL database by providing a real-time backend-as-a-service.
+
+#### Additional Technologies
+- **Testing**: 
+  - Jest: Employed for its delightful JavaScript testing with a focus on simplicity.
+  - Cypress: Selected for end-to-end testing due to its real browser testing capabilities.
+- **Manual Testing**: 
+  - Postman: Utilized for API testing and interaction.
+  - Docker: Critical for creating isolated environments that are easy to set up and replicate.
+
+#### Frontend
+- **Framework**: 
+  - Vite + React: Chosen for its fast build time and React's robust ecosystem.
+- **Styling**: 
+  - Tailwind CSS: Implemented for its utility-first approach, allowing for rapid UI development.
+- **State Management**: 
+  - Zustand: A minimalist state manager that fits seamlessly with our React setup.
+
+#### Backend
+- **API**: 
+  - Nest.js: A progressive Node.js framework used for building efficient and reliable server-side applications.
+- **Authentication**: 
+  - JWT (JSON Web Tokens): Ensures secure and flexible authentication mechanisms for our applications.
+
+This selection of technologies provides a strong foundation for our application, ensuring high performance, reliability, and ease of development and maintenance.
+
 ### 2.3 Dependencies
+
+Our application relies on a set of external services and APIs, ensuring rich functionality and streamlined processes. Below are the key dependencies that integrate with our system:
+
+#### External APIs
+- **Google Places API**: Integrates with the frontend to enable users to search for addresses and points of interest quickly and accurately.
+- **Google Maps API**: Powers the interactive maps on our website, providing users with geolocation services, map views, and custom markers for location-based data.
+
+#### Communication Services
+- **Chat Completions API by OpenAI**: Provides the underlying AI-driven conversation and language understanding for our chatbot feature, enabling nuanced and human-like interactions.
+- **SMTP2GO**: A robust email delivery service that handles outbound emails. It’s chosen for its reliability and ease of use, ensuring that our email notifications and communications are delivered without fail.
+
+#### Implementation Notes
+- These services require internet connectivity for the APIs to function correctly.
+- API keys and credentials are stored securely and are not included in the public code repositories to maintain security.
+- Our application is designed to gracefully handle API rate limits and downtime, ensuring a smooth user experience.
+
+These dependencies are crucial for the operational excellence of our application, offering advanced capabilities while maintaining a seamless user experience.
+
 
 ## Installation Guide
 
