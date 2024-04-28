@@ -1212,7 +1212,7 @@ These endpoints correspond to the HTTP methods used in the respective functions 
             {
               "favorite": false
             }
-          ```
+            ```
           
 ### 6.3 Authentication and Authorization
 
