@@ -499,112 +499,159 @@ These endpoints correspond to the HTTP methods used in the respective functions 
              ```
 2. **Post Endpoints**:
 
-- **createPost**:
-   - Request:
-     - Method: POST
-     - Endpoint: `/posts`
-     - Headers:
-       - Content-Type: application/json
-       - Authorization: Bearer {token}
-     - Body:
-       ```json
-       {
-         "title": "Post Title",
-         "content": "Post Content",
-         "cost": 1000,
-         "address": "123 Main St",
-         "type": "rent",
-         "imagesData": []
-       }
-       ```
-   - Response:
-     - Status 200 OK:
-       - Content-Type: application/json
-       - Body:
-         ```json
-         {
-           "id": "123",
-           "title": "Post Title",
-           "content": "Post Content",
-           "cost": 1000,
-           "address": "123 Main St",
-           "type": "rent",
-           "imagesData": [],
-           "user": {
-             "id": 456,
-             "firstName": "John",
-             "lastName": "Doe",
-             ...
-           }
-         }
-         ```
-     - Status 400 Bad Request:
-       - Content-Type: application/json
-       - Body:
-         ```json
-         {
-           "error": "Invalid request payload"
-         }
-         ```
+   - **createPost**:
+      - Request:
+        - Method: POST
+        - Endpoint: `/posts`
+        - Headers:
+          - Content-Type: application/json
+          - Authorization: Bearer {token}
+        - Body:
+          ```json
+          {
+            "title": "Post Title",
+            "content": "Post Content",
+            "cost": 1000,
+            "address": "123 Main St",
+            "type": "rent",
+            "imagesData": []
+          }
+          ```
+      - Response:
+        - Status 200 OK:
+          - Content-Type: application/json
+          - Body:
+            ```json
+            {
+              "id": "123",
+              "title": "Post Title",
+              "content": "Post Content",
+              "cost": 1000,
+              "address": "123 Main St",
+              "type": "rent",
+              "imagesData": [],
+              "user": {
+                "id": 456,
+                "firstName": "John",
+                "lastName": "Doe",
+                ...
+              }
+            }
+            ```
+        - Status 400 Bad Request:
+          - Content-Type: application/json
+          - Body:
+            ```json
+            {
+              "error": "Invalid request payload"
+            }
+            ```
+   
+   - **deletePost**:
+      - Request:
+        - Method: DELETE
+        - Endpoint: `/posts/{id}`
+        - Headers:
+          - Authorization: Bearer {token}
+        - Body: None
+      - Response:
+        - Status 200 OK:
+          - No specific content
+   
+   - **editPost**:
+      - Request:
+        - Method: PATCH
+        - Endpoint: `/posts/{postId}`
+        - Headers:
+          - Content-Type: application/json
+          - Authorization: Bearer {token}
+        - Body:
+          ```json
+          {
+            "title": "Updated Title",
+            "content": "Updated Content",
+            "cost": 1500,
+            "address": "456 Elm St",
+            "type": "sale",
+            "imagesData": []
+          }
+          ```
+      - Response:
+        - Status 200 OK:
+          - Content-Type: application/json
+          - Body:
+            ```json
+            {
+              "id": "123",
+              "title": "Updated Title",
+              "content": "Updated Content",
+              "cost": 1500,
+              "address": "456 Elm St",
+              "type": "sale",
+              "imagesData": [],
+              "user": {
+                "id": 456,
+                "firstName": "John",
+                "lastName": "Doe",
+                ...
+              }
+            }
+            ```
+        - Status 400 Bad Request:
+          - Content-Type: application/json
+          - Body:
+            ```json
+            {
+              "error": "Invalid request payload"
+            }
+            ```
 
-- **deletePost**:
-   - Request:
-     - Method: DELETE
-     - Endpoint: `/posts/{id}`
-     - Headers:
-       - Authorization: Bearer {token}
-     - Body: None
-   - Response:
-     - Status 200 OK:
-       - No specific content
-
-- **editPost**:
-   - Request:
-     - Method: PATCH
-     - Endpoint: `/posts/{postId}`
-     - Headers:
-       - Content-Type: application/json
-       - Authorization: Bearer {token}
-     - Body:
-       ```json
-       {
-         "title": "Updated Title",
-         "content": "Updated Content",
-         "cost": 1500,
-         "address": "456 Elm St",
-         "type": "sale",
-         "imagesData": []
-       }
-       ```
-   - Response:
-     - Status 200 OK:
-       - Content-Type: application/json
-       - Body:
-         ```json
-         {
-           "id": "123",
-           "title": "Updated Title",
-           "content": "Updated Content",
-           "cost": 1500,
-           "address": "456 Elm St",
-           "type": "sale",
-           "imagesData": [],
-           "user": {
-             "id": 456,
-             "firstName": "John",
-             "lastName": "Doe",
-             ...
-           }
-         }
-         ```
-     - Status 400 Bad Request:
-       - Content-Type: application/json
-       - Body:
-         ```json
-         {
-           "error": "Invalid request payload"
-         }
-         ```
+   - **fetchPosts**:
+      - Request:
+        - Method: GET
+        - Endpoint: `/posts`
+        - Headers:
+          - Content-Type: application/json
+        - Body: None
+      - Response:
+        - Status 200 OK:
+          - Content-Type: application/json
+          - Body:
+            ```json
+            [
+              {
+                "id": "123",
+                "title": "Post Title",
+                "content": "Post Content",
+                "cost": 1000,
+                "address": "123 Main St",
+                "type": "rent",
+                "imagesData": [],
+                "user": {
+                  "id": 456,
+                  "firstName": "John",
+                  "lastName": "Doe",
+                  ...
+                }
+              },
+              {
+                "id": "456",
+                "title": "Another Post",
+                "content": "Another Content",
+                "cost": 2000,
+                "address": "456 Elm St",
+                "type": "sale",
+                "imagesData": [],
+                "user": {
+                  "id": 789,
+                  "firstName": "Jane",
+                  "lastName": "Smith",
+                  ...
+                }
+              },
+              ...
+            ]
+            ```
 
 3. **HousingItem Endpoints**:
 
@@ -696,9 +743,51 @@ These endpoints correspond to the HTTP methods used in the respective functions 
        - Response:
          - Status 200 OK:
            - No specific content
+   
+    - **fetchReviewsForSort**:
+      - Request:
+        - Method: GET
+        - Endpoint: `/housings/{housingId}/reviews`
+        - Headers:
+          - Content-Type: application/json
+        - Body: None
+      - Response:
+        - Status 200 OK:
+          - Content-Type: application/json
+          - Body:
+            ```json
+            [
+              {
+                "id": "789",
+                "housingId": "123",
+                "userId": "456",
+                "rating": 4.5,
+                "comment": "Great housing!",
+                "user": {
+                  "id": 456,
+                  "firstName": "John",
+                  "lastName": "Doe",
+                  ...
+                }
+              },
+              {
+                "id": "987",
+                "housingId": "123",
+                "userId": "789",
+                "rating": 3.8,
+                "comment": "Could be better.",
+                "user": {
+                  "id": 789,
+                  "firstName": "Jane",
+                  "lastName": "Smith",
+                  ...
+                }
+              },
+              ...
+            ]
+            ```
 
 4. **Review Endpoints**:
-    For the Review endpoints, the Request and Response Formats section would look like this:
 
     - **createReview**:
        - Request:
@@ -769,6 +858,80 @@ These endpoints correspond to the HTTP methods used in the respective functions 
        - Response:
          - Status 204 No Content:
            - No specific content
+
+   - **upvoteReview**:
+     - Request:
+       - Method: PATCH
+       - Endpoint: `/housings/{housingId}/reviews/{reviewId}/upvote/{userId}`
+       - Headers:
+         - Authorization: Bearer {token}
+       - Body: None
+     - Response:
+       - Status 200 OK:
+         - Content-Type: application/json
+         - Body: Updated review with user data
+           ```json
+           {
+             "id": "123",
+             "content": "This is a review.",
+             "rating": 5,
+             "upvotes": 1,
+             "user": {
+               "id": 456,
+               "firstName": "John",
+               "lastName": "Doe",
+               ...
+             }
+           }
+           ```
+
+   - **undoUpvoteReview**:
+     - Request:
+       - Method: PATCH
+       - Endpoint: `/housings/{housingId}/reviews/{reviewId}/upvoteUndo/{userId}`
+       - Headers:
+         - Authorization: Bearer {token}
+       - Body: None
+     - Response:
+       - Status 200 OK:
+         - Content-Type: application/json
+         - Body: Updated review with user data
+           ```json
+           {
+             "id": "123",
+             "content": "This is a review.",
+             "rating": 5,
+             "upvotes": 0,
+             "user": {
+               "id": 456,
+               "firstName": "John",
+               "lastName": "Doe",
+               ...
+             }
+           }
+           ```
+
+   - **getLikedBy**:
+     - Request:
+       - Method: GET
+       - Endpoint: `/housings/{housingId}/reviews/{reviewId}/likedBy`
+       - Headers: None
+       - Body: None
+     - Response:
+       - Status 200 OK:
+         - Content-Type: application/json
+         - Body: Array of users who liked the review
+           ```json
+           [
+             {
+               "id": 456,
+               "firstName": "John",
+               "lastName": "Doe",
+               ...
+             },
+             ...
+           ]
+           ```
 
 5. **Supabase Storage Endpoints**:
 
@@ -959,7 +1122,98 @@ These endpoints correspond to the HTTP methods used in the respective functions 
                "favorite": false
              }
              ```
+             
+- **Favorite Housing Endpoints**:
+  - **favoriteHousing**:
+    - Request:
+      - Method: POST
+      - Endpoint: `/users/{userId}/favoriteHousings/{housingId}`
+      - Headers:
+        - Content-Type: application/json
+        - Authorization: Bearer {token}
+      - Body: None
+    - Response:
+      - Status 200 OK:
+        - Content-Type: application/json
+        - Body: Success message indicating the housing has been favorited
+          ```json
+          {
+            "message": "Housing favorited successfully"
+          }
+          ```
 
+  - **unfavoriteHousing**:
+    - Request:
+      - Method: DELETE
+      - Endpoint: `/users/{userId}/favoriteHousings/{housingId}`
+      - Headers:
+        - Content-Type: application/json
+        - Authorization: Bearer {token}
+      - Body: None
+    - Response:
+      - Status 200 OK:
+        - Content-Type: application/json
+        - Body: Success message indicating the housing has been unfavorited
+          ```json
+          {
+            "message": "Housing unfavorited successfully"
+          }
+          ```
+
+  - **findAllFavoriteHousings**:
+    - Request:
+      - Method: GET
+      - Endpoint: `/users/{userId}/favoriteHousings`
+      - Headers:
+        - Content-Type: application/json
+        - Authorization: Bearer {token}
+      - Body: None
+    - Response:
+      - Status 200 OK:
+        - Content-Type: application/json
+        - Body: Array of favorite housings
+          ```json
+          [
+            {
+              "id": "housing1",
+              "title": "Favorite Housing 1",
+              ...
+            },
+            {
+              "id": "housing2",
+              "title": "Favorite Housing 2",
+              ...
+            },
+            ...
+          ]
+          ```
+
+  - **checkIfFavoriteHousing**:
+    - Request:
+      - Method: GET
+      - Endpoint: `/users/{userId}/favoriteHousings/{housingId}`
+      - Headers:
+        - Content-Type: application/json
+        - Authorization: Bearer {token}
+      - Body: None
+    - Response:
+      - Status 200 OK:
+        - Content-Type: application/json
+        - Body: Indicates whether the housing is favorited by the user
+          ```json
+          {
+            "favorite": true
+          }
+          ```
+      - Status 404 Not Found:
+        - Content-Type: application/json
+        - Body: Indicates the housing is not favorited by the user
+          ```json
+          {
+            "favorite": false
+          }
+          ```
+          
 ### 6.3 Authentication and Authorization
 
 As detailed above, all methods that require authentication require a Bearer token specifically. If not specified, any method that does not mention authentication, it does not require passing a Bearer token.
