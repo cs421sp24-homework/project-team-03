@@ -1559,7 +1559,7 @@ Entity-Relationship Diagram (ERD): A visual representation of the entities (obje
 
 Relationships and Constraints: Rules and associations that govern the interactions and dependencies between entities in a database, ensuring data integrity and consistency. Examples include foreign key constraints and one-to-many relationships
 
-### 11.2 Change Summary
+### 10.2 Change Summary
 
 Iteration 1:
 Date: 2/19/2024 - 3/2/2024
