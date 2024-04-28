@@ -281,13 +281,13 @@ All other endpoints: Require Endpoint requests to be predecessed with API URL
    - `deletePost`: DELETE `/posts/{id}`
    - `editPost`: PATCH `/posts/{postId}`
    - `fetchPosts`: GET `/posts`
-   - `fetchReviewsForSort`: GET `/housings/{housingId}/reviews`
 
 3. **HousingItem Endpoints**:
    - `fetchHousingItems`: GET `/housings`
    - `fetchHousingItem`: GET `/housings/{id}`
    - `createHousingItem`: POST `/housings`
-
+   - `fetchReviewsForSort`: GET `/housings/{housingId}/reviews`
+     
 4. **Review Endpoints**:
    - `createReview`: POST `/housings/{housingId}/reviews`
    - `fetchReviews`: GET `/housings/{housingId}/reviews`
