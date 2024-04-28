@@ -1223,6 +1223,8 @@ Regarding authorization, this primarily applies to the frontend permissions wher
 ## Database Schema (if applicable)
 
 ### 7.1 Entity-Relationship Diagram
+Below is the ERD of our application.
+![Entity Relationship Diagram](entity_relationship_diagram.png)
 
 ### 7.2 Table Definitions
 #### 7.2.1 `FAVORITE_HOUSING` Table
