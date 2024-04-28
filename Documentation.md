@@ -1609,7 +1609,3 @@ Description:
 - Implemented favoriting feature for posts and housing items.
   
 Future Plans: Evaluating user reception and feedback for further iterations and enhancements.
-
-## Glossary
-
-### 12.1 Terms and Definitions
