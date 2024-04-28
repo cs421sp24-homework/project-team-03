@@ -1533,6 +1533,27 @@ These issues and limitations have been documented to guide future development pr
 ## Deployment
 
 ### 9.1 Deployment Process
+1) GitHub Pages Deployment (Frontend):
+
+    * Once the frontend code was ready for deployment, we created a production-ready build of our React app, enabled GitHub Pages in this project's repository, and configured the necessary secrets and frontend ENV variables in Settings. This created a live React app hosted on GitHub Pages.
+  
+    * For every subsequent deployment, we ensure that all E2E (Cypress) and backend (Jest) tests run successfully. This supports CI/CD and ensures that GitHub pages will automatically redeploy when `main` branch gets updated.
+
+2) Supabase Deployment (Database and Storage):
+
+    * The first step to deploying our server-side was creating a database instance on Supabase. This is a one-time process that involved creating a new Supabase project with a PostgreSQL database and configuring the access permissions as necessary. We also created an instance of Supabase storage (which uses Amazon S3) in the same project for storing user-uploaded image files. The connection URL and paths for storage are added to code files and ENV variables.
+
+    * We copied the database connection credentials to be stored in backend ENV variables, which will be used in REST API deployment (detailed in Step 3 below).
+  
+    * Supabase provides a simple UI for editting tables when structural changes are necessary. Clearing the database and reconfiguring with SQL scripts is another option.
+
+3) Render Deployment (Backend - REST API):
+
+    * To complete our backend deployment, we created a Web Service on Render to host our REST APIs. This one-time process involved connecting the web service to both the backend code in our GitHub repository and the cloud-based database and storage on Supabase.
+
+    * Originally, our database was hosted on Render, but we switched to Supabase for a more viable storage option. To make this change, we simply reconfigured the ENV variables on Render for the new database and storage credentials (mentioned above). 
+
+    * The web service is restarted each time backend code is updated, supporting CI/CD by installing new necessary dependencies and refresh its database connection.
 
 ## Glossary
 
