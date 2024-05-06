@@ -270,17 +270,17 @@ Supabase endpoints: Requires Endpoint requests to be predecessed with Supabase U
 All other endpoints: Require Endpoint requests to be predecessed with API URL
 
 1. **User Endpoints**:
-   - `fetchUser`: GET `/users/{email}`
+   - `fetchUser`: GET `/users/{email}` :lock:
    - `login`: POST `/users/login`
    - `logout`: No specific endpoint, generally used to clear authentication tokens.
    - `register`: POST `/users/register`
    - `verifyEmail`: POST `/users/verify`
-   - `editUser`: PATCH `/users/{id}`
+   - `editUser`: PATCH `/users/{id}` :lock:
 
 2. **Post Endpoints**:
-   - `createPost`: POST `/posts`
-   - `deletePost`: DELETE `/posts/{id}`
-   - `editPost`: PATCH `/posts/{postId}`
+   - `createPost`: POST `/posts` :lock:
+   - `deletePost`: DELETE `/posts/{id}` :lock:
+   - `editPost`: PATCH `/posts/{postId}` :lock:
    - `fetchPosts`: GET `/posts`
 
 3. **HousingItem Endpoints**:
@@ -290,11 +290,11 @@ All other endpoints: Require Endpoint requests to be predecessed with API URL
    - `fetchReviewsForSort`: GET `/housings/{housingId}/reviews`
      
 4. **Review Endpoints**:
-   - `createReview`: POST `/housings/{housingId}/reviews`
+   - `createReview`: POST `/housings/{housingId}/reviews` :lock:
    - `fetchReviews`: GET `/housings/{housingId}/reviews`
-   - `deleteReview`: DELETE `/housings/{housingId}/reviews/{id}`
-   - `upvoteReview`: PATCH `/housings/{housingId}/reviews/{reviewId}/upvote/{userId}`
-   - `undoUpvoteReview`: PATCH `/housings/{housingId}/reviews/{reviewId}/upvoteUndo/{userId}`
+   - `deleteReview`: DELETE `/housings/{housingId}/reviews/{id}` :lock:
+   - `upvoteReview`: PATCH `/housings/{housingId}/reviews/{reviewId}/upvote/{userId}` :lock:
+   - `undoUpvoteReview`: PATCH `/housings/{housingId}/reviews/{reviewId}/upvoteUndo/{userId}` :lock:
    - `getLikedBy`: GET `/housings/{housingId}/reviews/{reviewId}/likedBy`
 
 5. **Supabase Storage Endpoints**:
@@ -302,19 +302,19 @@ All other endpoints: Require Endpoint requests to be predecessed with API URL
    - `getPostImageData`: GET `/storage/{path}`
 
 6. **Notification Endpoints**:
-   - `incrementNotifications`: PATCH `/users/{email}/notifications`
-   - `clearNotifs`: PATCH `/users/{email}/clearNotifs`
-   - `getNotifications`: GET `/users/{email}`
+   - `incrementNotifications`: PATCH `/users/{email}/notifications` :lock:
+   - `clearNotifs`: PATCH `/users/{email}/clearNotifs` :lock:
+   - `getNotifications`: GET `/users/{email}` :lock:
 
 7. **Favorite Endpoints**:
-   - `favoritePost`: POST `/users/{userId}/favoritePosts/{postId}`
-   - `unfavoritePost`: DELETE `/users/{userId}/favoritePosts/{postId}`
-   - `findAllFavoritePosts`: GET `/users/{userId}/favoritePosts`
-   - `checkIfFavorite`: GET `/users/{userId}/favoritePosts/{postId}`
-   - `favoriteHousing`: POST `/users/{userId}/favoriteHousings/{housingId}`
-   - `unfavoriteHousing`: DELETE `/users/{userId}/favoriteHousings/{housingId}`
-   - `findAllFavoriteHousings`: GET `/users/{userId}/favoriteHousings`
-   - `checkIfFavoriteHousing`: GET `/users/{userId}/favoriteHousings/{housingId}`
+   - `favoritePost`: POST `/users/{userId}/favoritePosts/{postId}` :lock:
+   - `unfavoritePost`: DELETE `/users/{userId}/favoritePosts/{postId}` :lock:
+   - `findAllFavoritePosts`: GET `/users/{userId}/favoritePosts` :lock:
+   - `checkIfFavorite`: GET `/users/{userId}/favoritePosts/{postId}` :lock:
+   - `favoriteHousing`: POST `/users/{userId}/favoriteHousings/{housingId}` :lock:
+   - `unfavoriteHousing`: DELETE `/users/{userId}/favoriteHousings/{housingId}` :lock:
+   - `findAllFavoriteHousings`: GET `/users/{userId}/favoriteHousings` :lock:
+   - `checkIfFavoriteHousing`: GET `/users/{userId}/favoriteHousings/{housingId}` :lock:
 
 These endpoints correspond to the HTTP methods used in the respective functions (GET, POST, PATCH, DELETE).
 
